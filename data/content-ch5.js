@@ -7,7 +7,7 @@ window.DANSK_CONTENT_CH5 = {
   'ch5-s1': {
     titleDa: 'Indledning',
     titleEn: 'Introduction',
-    summary: 'Danish culture has deep historical roots. The welfare state promoted cultural life, seeing art and culture as foundations for democracy and individual well-being. Denmark is internationally known in several art forms.',
+    summary: 'Dansk kultur har dybe historiske rødder. Velfærdsstaten fremmede kulturlivet og betragtede kunst og kultur som grundlag for demokrati og den enkeltes trivsel. Danmark er internationalt kendt inden for flere kunstformer.',
     paragraphs: [
       {
         textDa: 'I Danmark hører kultur og hverdagsliv sammen. Byerne, landskabet, skolerne, teknologien, videnskaben, kunsten og de måder, danskere møder hinanden på, er blevet til igennem en lang kulturhistorie. Dansk kultur har rødder tilbage til den tid, da de første mennesker slog sig ned her.',
@@ -26,9 +26,9 @@ window.DANSK_CONTENT_CH5 = {
       }
     ],
     keyFacts: [
-      { type: 'concept', da: 'Dansk kulturhistorie', en: 'Danish cultural history', fact: 'Traces back to the earliest human settlements in Denmark' },
-      { type: 'concept', da: 'Velfærdsstaten og kultur', en: 'Welfare state and culture', fact: 'The welfare state actively promoted cultural life as a foundation for democracy and well-being' },
-      { type: 'concept', da: 'Skarpsalling-karret', en: 'Skarpsalling vessel', fact: 'Ceramic piece from approximately 3,200 BC, one of Denmark\'s oldest art objects' }
+      { type: 'concept', da: 'Dansk kulturhistorie', en: 'Danish cultural history', fact: 'Går tilbage til de tidligste menneskelige bosættelser i Danmark' },
+      { type: 'concept', da: 'Velfærdsstaten og kultur', en: 'Welfare state and culture', fact: 'Velfærdsstaten fremmede aktivt kulturlivet som grundlag for demokrati og trivsel' },
+      { type: 'concept', da: 'Skarpsalling-karret', en: 'Skarpsalling vessel', fact: 'Keramikstykke fra ca. 3.200 f.Kr., et af Danmarks ældste kunstgenstande' }
     ]
   },
 
@@ -36,7 +36,7 @@ window.DANSK_CONTENT_CH5 = {
   'ch5-s2': {
     titleDa: 'Litteratur',
     titleEn: 'Literature',
-    summary: 'Danish literature spans from Viking-age runic inscriptions to modern auto-fiction. Key figures include Saxo, Ludvig Holberg, H.C. Andersen, Karen Blixen, and Nobel laureates Henrik Pontoppidan and Johannes V. Jensen. Contemporary literature includes Tove Ditlevsen, Yahya Hassan, and Helle Helle.',
+    summary: 'Dansk litteratur spænder fra vikingetidens runeindskrifter til moderne autofiktion. Centrale skikkelser er Saxo, Ludvig Holberg, H.C. Andersen, Karen Blixen og nobelprismodtagerne Henrik Pontoppidan og Johannes V. Jensen. Nyere litteratur omfatter Tove Ditlevsen, Yahya Hassan og Helle Helle.',
     paragraphs: [
       {
         textDa: 'Den ældste litteratur i Danmark er skrevet på oldnordisk med runer, vikingetidens bogstaver. Den mest kendte danske runeindskrift findes på Harald Blåtands Jellingsten fra anden halvdel af 900-tallet. Her fortæller kong Harald, at han vandt sig hele Danmark og Norge og gjorde danerne kristne.',
@@ -80,14 +80,14 @@ window.DANSK_CONTENT_CH5 = {
       }
     ],
     keyFacts: [
-      { type: 'person', da: 'H.C. Andersen', en: 'H.C. Andersen', fact: 'Born 1805 in Odense; fairy tales translated into 125+ languages' },
-      { type: 'person', da: 'Henrik Pontoppidan', en: 'Henrik Pontoppidan', fact: 'Won Nobel Prize in Literature 1917 for Lykke-Per' },
-      { type: 'person', da: 'Johannes V. Jensen', en: 'Johannes V. Jensen', fact: 'Won Nobel Prize in Literature 1944; wrote Kongens Fald (1901)' },
-      { type: 'person', da: 'Karen Blixen', en: 'Karen Blixen', fact: 'Wrote Den Afrikanske Farm (1937) about life in Kenya' },
-      { type: 'person', da: 'Ludvig Holberg', en: 'Ludvig Holberg', fact: 'Leading Enlightenment-era author; wrote Jeppe på Bjerget (1722)' },
-      { type: 'person', da: 'Tove Ditlevsen', en: 'Tove Ditlevsen', fact: 'Working-class author rediscovered internationally; wrote Barndommens Gade (1943)' },
-      { type: 'person', da: 'Saxo', en: 'Saxo', fact: 'Wrote Gesta Danorum (Deeds of the Danes) in the early 1200s' },
-      { type: 'person', da: 'Yahya Hassan', en: 'Yahya Hassan', fact: 'Best-selling poetry collection in Danish history (100,000+ copies in 2013)' }
+      { type: 'person', da: 'H.C. Andersen', en: 'H.C. Andersen', fact: 'Født 1805 i Odense; eventyr oversat til mere end 125 sprog' },
+      { type: 'person', da: 'Henrik Pontoppidan', en: 'Henrik Pontoppidan', fact: 'Modtog Nobelprisen i litteratur 1917 for Lykke-Per' },
+      { type: 'person', da: 'Johannes V. Jensen', en: 'Johannes V. Jensen', fact: 'Modtog Nobelprisen i litteratur 1944; skrev Kongens Fald (1901)' },
+      { type: 'person', da: 'Karen Blixen', en: 'Karen Blixen', fact: 'Skrev Den Afrikanske Farm (1937) om livet i Kenya' },
+      { type: 'person', da: 'Ludvig Holberg', en: 'Ludvig Holberg', fact: 'Førende forfatter fra oplysningstiden; skrev Jeppe på Bjerget (1722)' },
+      { type: 'person', da: 'Tove Ditlevsen', en: 'Tove Ditlevsen', fact: 'Arbejderklasseforfatter genopdaget internationalt; skrev Barndommens Gade (1943)' },
+      { type: 'person', da: 'Saxo', en: 'Saxo', fact: 'Skrev Gesta Danorum (Danernes bedrifter) i begyndelsen af 1200-tallet' },
+      { type: 'person', da: 'Yahya Hassan', en: 'Yahya Hassan', fact: 'Bedst sælgende digtsamling i dansk historie (over 100.000 eksemplarer i 2013)' }
     ]
   },
 
@@ -95,7 +95,7 @@ window.DANSK_CONTENT_CH5 = {
   'ch5-s3': {
     titleDa: 'Billedkunst og skulptur',
     titleEn: 'Visual Arts and Sculpture',
-    summary: 'Danish visual art ranges from the Bronze Age Sun Chariot to contemporary works by Olafur Eliasson. The Golden Age (early 1800s) produced sculptor Bertel Thorvaldsen and painter C.W. Eckersberg. The Skagen Painters thrived in the late 1800s. Modern artists include Asger Jorn (Cobra movement), Per Kirkeby, and Bjorn Norgaard.',
+    summary: 'Dansk billedkunst spænder fra bronzealderens Solvogn til nutidige værker af Olafur Eliasson. Guldalderen (begyndelsen af 1800-tallet) frembragte billedhuggeren Bertel Thorvaldsen og maleren C.W. Eckersberg. Skagensmalerne blomstrede i slutningen af 1800-tallet. Moderne kunstnere omfatter Asger Jorn (Cobra-bevægelsen), Per Kirkeby og Bjørn Nørgaard.',
     paragraphs: [
       {
         textDa: 'Den vigtigste skat fra de ældste tider er den såkaldte Solvogn – en figur, der forestiller solen, der bliver trukket af en hest. Solvognen stammer fra den ældre bronzealder, cirka 1350 før Kristus. I den tids religion blev solen tilbedt.',
@@ -129,13 +129,13 @@ window.DANSK_CONTENT_CH5 = {
       }
     ],
     keyFacts: [
-      { type: 'concept', da: 'Solvognen', en: 'The Sun Chariot', fact: 'Bronze Age artifact from ~1350 BC depicting the sun pulled by a horse' },
-      { type: 'person', da: 'Bertel Thorvaldsen', en: 'Bertel Thorvaldsen', fact: 'Denmark\'s most famous sculptor (1770-1844); museum opened 1848' },
-      { type: 'person', da: 'Vilhelm Hammershøi', en: 'Vilhelm Hammershøi', fact: 'Known for painting light and shadow; his work sold for 62.8 million DKK in 2023' },
-      { type: 'person', da: 'Asger Jorn', en: 'Asger Jorn', fact: 'Co-founded the Cobra group (1948-51); painted "Stalingrad" (1957-72)' },
-      { type: 'person', da: 'Olafur Eliasson', en: 'Olafur Eliasson', fact: 'Created Your Rainbow Panorama (2011) atop ARoS in Aarhus' },
-      { type: 'person', da: 'Anne Marie Carl-Nielsen', en: 'Anne Marie Carl-Nielsen', fact: 'First woman in the world commissioned to create a royal equestrian statue' },
-      { type: 'place', da: 'Skagen', en: 'Skagen', fact: 'Northern Danish town where painters gathered in the late 1800s' }
+      { type: 'concept', da: 'Solvognen', en: 'The Sun Chariot', fact: 'Bronzealdergenstand fra ca. 1350 f.Kr., der forestiller solen trukket af en hest' },
+      { type: 'person', da: 'Bertel Thorvaldsen', en: 'Bertel Thorvaldsen', fact: 'Danmarks mest berømte billedhugger (1770-1844); museum åbnet 1848' },
+      { type: 'person', da: 'Vilhelm Hammershøi', en: 'Vilhelm Hammershøi', fact: 'Kendt for at male lys og skygge; hans værk solgt for 62,8 mio. kr. i 2023' },
+      { type: 'person', da: 'Asger Jorn', en: 'Asger Jorn', fact: 'Medstifter af Cobra-gruppen (1948-51); malede "Stalingrad" (1957-72)' },
+      { type: 'person', da: 'Olafur Eliasson', en: 'Olafur Eliasson', fact: 'Skabte Your Rainbow Panorama (2011) oven på ARoS i Aarhus' },
+      { type: 'person', da: 'Anne Marie Carl-Nielsen', en: 'Anne Marie Carl-Nielsen', fact: 'Første kvinde i verden, der fik bestilling på en kongelig rytterstatue' },
+      { type: 'place', da: 'Skagen', en: 'Skagen', fact: 'Nordjysk by, hvor malere samledes i slutningen af 1800-tallet' }
     ]
   },
 
@@ -143,7 +143,7 @@ window.DANSK_CONTENT_CH5 = {
   'ch5-s4': {
     titleDa: 'Musik',
     titleEn: 'Music',
-    summary: 'Danish music ranges from Bronze Age lurer to modern pop. Key figures include hymn writers Kingo, Brorson, and Grundtvig, composer Carl Nielsen, and rock bands like Gasolin. Denmark has won Eurovision three times (1963, 2000, 2013). Aqua, Lukas Graham, and MO have achieved international success.',
+    summary: 'Dansk musik spænder fra bronzealderens lurer til moderne pop. Centrale skikkelser er salmedigterne Kingo, Brorson og Grundtvig, komponisten Carl Nielsen og rockbands som Gasolin. Danmark har vundet Eurovision tre gange (1963, 2000, 2013). Aqua, Lukas Graham og MØ har opnået international succes.',
     paragraphs: [
       {
         textDa: 'De mange store horn, der er bevaret fra bronzealderen (1700-500 før Kristus), tyder på, at musik har været kendt i Danmark i flere tusinde år. De smukke såkaldte "lurer" er fundet parvis. Med kristendommen kom den katolske kirkemusik til Danmark, og efter reformationen i 1536 blev salmesangen en vigtig del af gudstjenesten.',
@@ -177,13 +177,13 @@ window.DANSK_CONTENT_CH5 = {
       }
     ],
     keyFacts: [
-      { type: 'person', da: 'Carl Nielsen', en: 'Carl Nielsen', fact: 'Denmark\'s greatest composer (1865-1931); operas, symphonies, and folk songs' },
-      { type: 'person', da: 'Kim Larsen', en: 'Kim Larsen', fact: 'Lead singer of Gasolin (1945-2018); beloved Danish singer-songwriter' },
-      { type: 'concept', da: 'To nationalsange', en: 'Two national anthems', fact: '"Kong Christian stod ved højen mast" and "Der er et yndigt land"' },
-      { type: 'date', da: '1963', en: '1963', fact: 'Denmark wins Eurovision first time with "Dansevise"' },
-      { type: 'date', da: '2000', en: '2000', fact: 'Second Eurovision win with "Fly on the Wings of Love" by Brødrene Olsen' },
-      { type: 'date', da: '2013', en: '2013', fact: 'Third Eurovision win with "Only Teardrops" by Emmelie de Forest' },
-      { type: 'concept', da: 'Lurer', en: 'Bronze Age lurer', fact: 'Large ceremonial horns from 1700-500 BC found in pairs' }
+      { type: 'person', da: 'Carl Nielsen', en: 'Carl Nielsen', fact: 'Danmarks største komponist (1865-1931); operaer, symfonier og folkelige sange' },
+      { type: 'person', da: 'Kim Larsen', en: 'Kim Larsen', fact: 'Forsanger i Gasolin (1945-2018); elsket dansk singer-songwriter' },
+      { type: 'concept', da: 'To nationalsange', en: 'Two national anthems', fact: '"Kong Christian stod ved højen mast" og "Der er et yndigt land"' },
+      { type: 'date', da: '1963', en: '1963', fact: 'Danmark vinder Eurovision for første gang med "Dansevise"' },
+      { type: 'date', da: '2000', en: '2000', fact: 'Anden Eurovision-sejr med "Fly on the Wings of Love" af Brødrene Olsen' },
+      { type: 'date', da: '2013', en: '2013', fact: 'Tredje Eurovision-sejr med "Only Teardrops" af Emmelie de Forest' },
+      { type: 'concept', da: 'Lurer', en: 'Bronze Age lurer', fact: 'Store ceremonihorn fra 1700-500 f.Kr. fundet parvis' }
     ]
   },
 
@@ -191,7 +191,7 @@ window.DANSK_CONTENT_CH5 = {
   'ch5-s5': {
     titleDa: 'Arkitektur og design',
     titleEn: 'Architecture and Design',
-    summary: 'Danish architecture and design are known for functionalism, which emphasizes practical function and simplicity. Key figures include Poul Henningsen (PH lamps), Arne Jacobsen (the Egg chair), Jorn Utzon (Sydney Opera House), Dorte Mandrup, and Bjarke Ingels (BIG).',
+    summary: 'Dansk arkitektur og design er kendt for funktionalismen, som lægger vægt på praktisk funktion og enkelhed. Centrale skikkelser er Poul Henningsen (PH-lamperne), Arne Jacobsen (Ægget), Jørn Utzon (Sydneys Operahus), Dorte Mandrup og Bjarke Ingels (BIG).',
     paragraphs: [
       {
         textDa: 'I Danmark er der tradition for at lægge vægt på hensyn til praktiske funktioner og på enkelhed. Det ser man allerede i de mange landsbykirker og bindingsværksgårde. Dansk arkitektur og design forbindes især med funktionalismen, som opstod i 1920\'erne og først og fremmest var med til at forbedre byernes dårlige boligstandard.',
@@ -220,12 +220,12 @@ window.DANSK_CONTENT_CH5 = {
       }
     ],
     keyFacts: [
-      { type: 'person', da: 'Poul Henningsen', en: 'Poul Henningsen', fact: 'Designer of the iconic PH lamp (1894-1967); also known as PH' },
-      { type: 'person', da: 'Arne Jacobsen', en: 'Arne Jacobsen', fact: 'Architect and designer (1902-71); created the Egg and Series 7 chairs' },
-      { type: 'person', da: 'Jørn Utzon', en: 'Jorn Utzon', fact: 'Designed the Sydney Opera House (1918-2008)' },
-      { type: 'person', da: 'Bjarke Ingels', en: 'Bjarke Ingels', fact: 'Founder of BIG; designed Copenhill/Amager Bakke (born 1974)' },
-      { type: 'person', da: 'Dorte Mandrup', en: 'Dorte Mandrup', fact: 'Architect of Icefjord Centre in Greenland and Wadden Sea Centre in Ribe' },
-      { type: 'concept', da: 'Funktionalismen', en: 'Functionalism', fact: 'Design philosophy emphasizing practical function, emerging in the 1920s; political agenda of social equality' }
+      { type: 'person', da: 'Poul Henningsen', en: 'Poul Henningsen', fact: 'Designer af den ikoniske PH-lampe (1894-1967); også kendt som PH' },
+      { type: 'person', da: 'Arne Jacobsen', en: 'Arne Jacobsen', fact: 'Arkitekt og designer (1902-71); skabte Ægget og 7\'eren' },
+      { type: 'person', da: 'Jørn Utzon', en: 'Jorn Utzon', fact: 'Tegnede Sydney Operahuset (1918-2008)' },
+      { type: 'person', da: 'Bjarke Ingels', en: 'Bjarke Ingels', fact: 'Grundlægger af BIG; tegnede Copenhill/Amager Bakke (født 1974)' },
+      { type: 'person', da: 'Dorte Mandrup', en: 'Dorte Mandrup', fact: 'Arkitekt bag Isafjordcenteret i Grønland og Vadehavscentret i Ribe' },
+      { type: 'concept', da: 'Funktionalismen', en: 'Functionalism', fact: 'Designfilosofi med vægt på praktisk funktion, opstået i 1920\'erne; politisk dagsorden om social lighed' }
     ]
   },
 
@@ -233,7 +233,7 @@ window.DANSK_CONTENT_CH5 = {
   'ch5-s6': {
     titleDa: 'Scenekunst',
     titleEn: 'Performing Arts',
-    summary: 'Danish performing arts include theatre, ballet, opera, musicals, and revue. Ludvig Holberg wrote the first Danish comedies in the 1700s. August Bournonville created the Sylfiden ballet (1836). The Victor Borge comedy tradition led to modern standup. Line Knutzon and Sebastian are notable modern contributors.',
+    summary: 'Dansk scenekunst omfatter teater, ballet, opera, musical og revy. Ludvig Holberg skrev de første danske komedier i 1700-tallet. August Bournonville skabte balletten Sylfiden (1836). Victor Borges komedietradition banede vejen for moderne standup. Line Knutzon og Sebastian er fremtrædende moderne bidragydere.',
     paragraphs: [
       {
         textDa: 'Scenekunsten omfatter en række forskellige genrer: skuespil, ballet, opera, musical og revy. I 1700-tallet blev Ludvig Holberg opfordret til at skrive komedier til teateret. Han forfattede 25 komedier, hvor der bliver gjort grin med borgere, bønder og adelsfolk. En af de mest opførte er Erasmus Montanus (1723).',
@@ -267,12 +267,12 @@ window.DANSK_CONTENT_CH5 = {
       }
     ],
     keyFacts: [
-      { type: 'person', da: 'August Bournonville', en: 'August Bournonville', fact: 'Created the Sylfiden ballet (1836), one of the world\'s oldest surviving ballets' },
-      { type: 'person', da: 'Victor Borge', en: 'Victor Borge', fact: 'Danish-American comedian; Comedy in Music on Broadway 800+ times (1953-56)' },
-      { type: 'person', da: 'Kaj Munk', en: 'Kaj Munk', fact: 'Priest and playwright murdered by Nazis in 1944; wrote Niels Ebbesen' },
-      { type: 'person', da: 'Ludvig Holberg', en: 'Ludvig Holberg', fact: 'First to write comedies in Danish; Erasmus Montanus (1723)' },
-      { type: 'place', da: 'Det Kongelige Teater', en: 'The Royal Theatre', fact: 'Major cultural institution in Copenhagen for theatre and ballet' },
-      { type: 'concept', da: 'Modstandskunst', en: 'Resistance art', fact: 'Artists used revues and theatre to oppose Nazism during the occupation' }
+      { type: 'person', da: 'August Bournonville', en: 'August Bournonville', fact: 'Skabte balletten Sylfiden (1836), en af verdens ældste bevarede balletter' },
+      { type: 'person', da: 'Victor Borge', en: 'Victor Borge', fact: 'Dansk-amerikansk komiker; Comedy in Music på Broadway over 800 gange (1953-56)' },
+      { type: 'person', da: 'Kaj Munk', en: 'Kaj Munk', fact: 'Præst og dramatiker myrdet af nazister i 1944; skrev Niels Ebbesen' },
+      { type: 'person', da: 'Ludvig Holberg', en: 'Ludvig Holberg', fact: 'Den første til at skrive komedier på dansk; Erasmus Montanus (1723)' },
+      { type: 'place', da: 'Det Kongelige Teater', en: 'The Royal Theatre', fact: 'Stor kulturinstitution i København for teater og ballet' },
+      { type: 'concept', da: 'Modstandskunst', en: 'Resistance art', fact: 'Kunstnere brugte revyer og teater til at modsætte sig nazismen under besættelsen' }
     ]
   },
 
@@ -280,7 +280,7 @@ window.DANSK_CONTENT_CH5 = {
   'ch5-s7': {
     titleDa: 'Film',
     titleEn: 'Film',
-    summary: 'Danish film began around 1900. Nordisk Film was founded in 1906. Major directors include Carl Th. Dreyer, Lars von Trier (Dogme 95), Thomas Vinterberg (Druk/Another Round, Oscar 2021), Susanne Bier, and Bille August. The TV series Matador is the most-watched Danish TV series ever. Mads Mikkelsen is internationally renowned.',
+    summary: 'Dansk film begyndte omkring 1900. Nordisk Film blev grundlagt i 1906. Betydningsfulde instruktører er Carl Th. Dreyer, Lars von Trier (Dogme 95), Thomas Vinterberg (Druk, Oscar 2021), Susanne Bier og Bille August. Tv-serien Matador er den mest sete danske tv-serie nogensinde. Mads Mikkelsen er internationalt anerkendt.',
     paragraphs: [
       {
         textDa: 'Omkring år 1900 blev de første film optaget i Danmark. I 1906 blev Nordisk Film grundlagt. Asta Nielsen (1881-1972) var Danmarks første filmstjerne. Carl Th. Dreyer (1889-1968) er den ældre danske filmhistories vigtigste instruktør med film som Vredens Dag (1943) og Ordet (1955).',
@@ -314,14 +314,14 @@ window.DANSK_CONTENT_CH5 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1906', en: '1906', fact: 'Nordisk Film founded, Denmark\'s film industry grows rapidly' },
-      { type: 'person', da: 'Lars von Trier', en: 'Lars von Trier', fact: 'Created Dogme 95; won Palme d\'Or for Dancer in the Dark (2000)' },
-      { type: 'person', da: 'Thomas Vinterberg', en: 'Thomas Vinterberg', fact: 'Won Oscar for Druk/Another Round (2021)' },
-      { type: 'person', da: 'Mads Mikkelsen', en: 'Mads Mikkelsen', fact: 'Won Best Actor at Cannes 2012; internationally renowned for Casino Royale' },
-      { type: 'concept', da: 'Dogme 95', en: 'Dogme 95', fact: '1995 filmmaking manifesto focusing on storytelling over technical effects' },
-      { type: 'concept', da: 'Matador', en: 'Matador', fact: 'Most-watched Danish TV series ever (1978-82); set in 1930s-40s small-town Denmark' },
-      { type: 'person', da: 'Susanne Bier', en: 'Susanne Bier', fact: 'Won Oscar and Golden Globe for Hævnen/In a Better World (2010)' },
-      { type: 'person', da: 'Sofie Gråbøl', en: 'Sofie Grabol', fact: 'Starred as Sarah Lund in the internationally popular crime series Forbrydelsen (2007-12)' }
+      { type: 'date', da: '1906', en: '1906', fact: 'Nordisk Film grundlagt; Danmarks filmindustri vokser hurtigt' },
+      { type: 'person', da: 'Lars von Trier', en: 'Lars von Trier', fact: 'Skabte Dogme 95; vandt Den Gyldne Palme for Dancer in the Dark (2000)' },
+      { type: 'person', da: 'Thomas Vinterberg', en: 'Thomas Vinterberg', fact: 'Vandt Oscar for Druk (2021)' },
+      { type: 'person', da: 'Mads Mikkelsen', en: 'Mads Mikkelsen', fact: 'Vandt prisen for bedste mandlige skuespiller i Cannes 2012; internationalt kendt for Casino Royale' },
+      { type: 'concept', da: 'Dogme 95', en: 'Dogme 95', fact: 'Filmmanifest fra 1995 med fokus på fortælling frem for tekniske effekter' },
+      { type: 'concept', da: 'Matador', en: 'Matador', fact: 'Den mest sete danske tv-serie nogensinde (1978-82); foregår i 1930\'ernes og 1940\'ernes provinsby' },
+      { type: 'person', da: 'Susanne Bier', en: 'Susanne Bier', fact: 'Vandt Oscar og Golden Globe for Hævnen (2010)' },
+      { type: 'person', da: 'Sofie Gråbøl', en: 'Sofie Grabol', fact: 'Spillede Sarah Lund i den internationalt populære krimiserie Forbrydelsen (2007-12)' }
     ]
   }
 };

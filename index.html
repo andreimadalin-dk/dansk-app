@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Indfødsretsprøven — Danish Citizenship Test Study</title>
+  <title>Indfødsretsprøven — Studievejledning</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,45 +15,41 @@
   <nav class="top-nav">
     <a href="index.html" class="top-nav__title">Indfødsretsprøven</a>
     <div class="top-nav__right">
-      <div class="lang-toggle">
-        <button class="lang-toggle__btn active" data-lang="da">DA</button>
-        <button class="lang-toggle__btn" data-lang="en">EN</button>
-      </div>
       <div id="authWidget"></div>
     </div>
   </nav>
 
   <div class="hero">
-    <h1 class="hero__title">Danish Citizenship Test</h1>
-    <p class="hero__subtitle">Study Guide</p>
-    <a href="#chapters" class="btn btn--coral" id="startBtn">Start Learning</a>
+    <h1 class="hero__title">Indfødsretsprøven</h1>
+    <p class="hero__subtitle">Studievejledning</p>
+    <a href="#chapters" class="btn btn--coral" id="startBtn">Begynd at lære</a>
   </div>
 
   <div class="page-container">
 
     <!-- Stats Row -->
-    <div class="section-header">Your Progress</div>
+    <div class="section-header">Din fremgang</div>
     <div class="stats-grid" id="statsGrid">
       <div class="stat-card">
-        <div class="stat-card__label">Sections Read</div>
+        <div class="stat-card__label">Afsnit læst</div>
         <div class="stat-card__value" id="statSections">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-card__label">Quiz Score</div>
+        <div class="stat-card__label">Quiz-score</div>
         <div class="stat-card__value" id="statQuiz">0%</div>
       </div>
       <div class="stat-card">
-        <div class="stat-card__label">Cards Mastered</div>
+        <div class="stat-card__label">Kort mestret</div>
         <div class="stat-card__value" id="statCards">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-card__label">Study Streak</div>
+        <div class="stat-card__label">Studiestreak</div>
         <div class="stat-card__value" id="statStreak">0</div>
       </div>
     </div>
 
     <!-- Chapter Grid -->
-    <div class="section-header" id="chapters" style="margin-top: 32px;">Chapters</div>
+    <div class="section-header" id="chapters" style="margin-top: 32px;">Kapitler</div>
     <div class="chapter-grid" id="chapterGrid"></div>
 
   </div>
@@ -89,17 +85,16 @@
 
         html += '<div class="card">' +
           '<div class="card__body" style="padding: 16px;">' +
-            '<div class="chapter-card__number">Chapter ' + ch.number + '</div>' +
+            '<div class="chapter-card__number">Kapitel ' + ch.number + '</div>' +
             '<div class="chapter-card__title-da">' + DanskApp.escapeHtml(ch.titleDa) + '</div>' +
-            '<div class="chapter-card__title-en">' + DanskApp.escapeHtml(ch.titleEn) + '</div>' +
             '<div class="chapter-card__progress">' +
               '<div class="progress-bar"><div class="progress-bar__fill" style="width:' + pct + '%"></div></div>' +
               '<span>' + prog.read + '/' + prog.total + '</span>' +
             '</div>' +
             '<div class="chapter-card__actions">' +
-              '<a href="study.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Study</a>' +
+              '<a href="study.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Læs</a>' +
               '<a href="quiz.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Quiz</a>' +
-              '<a href="flashcards.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Flashcards</a>' +
+              '<a href="flashcards.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Flashkort</a>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -107,8 +102,6 @@
 
       grid.innerHTML = html;
 
-      // Language toggle
-      DanskApp.initLangToggle();
 
       // Start Learning button -> first unfinished chapter
       document.getElementById('startBtn').addEventListener('click', function(e) {

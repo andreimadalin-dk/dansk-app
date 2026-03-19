@@ -134,47 +134,6 @@
     return window['DANSK_QUIZ_CH' + num] || [];
   }
 
-  // ── Language toggle ──
-  var LANG_KEY = 'dansk-app-lang';
-
-  function getLang() {
-    return localStorage.getItem(LANG_KEY) || 'da';
-  }
-
-  function setLang(lang) {
-    localStorage.setItem(LANG_KEY, lang);
-    applyLang(lang);
-  }
-
-  function isEn() {
-    return getLang() === 'en';
-  }
-
-  // Apply lang class to <body> and update toggle buttons
-  function applyLang(lang) {
-    if (lang === 'en') {
-      document.body.classList.add('lang-en');
-    } else {
-      document.body.classList.remove('lang-en');
-    }
-    // Sync all lang-toggle buttons on the page
-    document.querySelectorAll('.lang-toggle__btn').forEach(function(btn) {
-      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-    });
-  }
-
-  // Wire up any .lang-toggle__btn buttons on the page
-  function initLangToggle(onToggle) {
-    applyLang(getLang());
-    document.querySelectorAll('.lang-toggle__btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var lang = btn.getAttribute('data-lang');
-        setLang(lang);
-        if (typeof onToggle === 'function') onToggle(lang);
-      });
-    });
-  }
-
   window.DanskApp = {
     getParam: getParam,
     renderTopNav: renderTopNav,
@@ -192,10 +151,6 @@
     getChapter: getChapter,
     getLeafSections: getLeafSections,
     getContentObj: getContentObj,
-    getQuizArr: getQuizArr,
-    getLang: getLang,
-    setLang: setLang,
-    isEn: isEn,
-    initLangToggle: initLangToggle
+    getQuizArr: getQuizArr
   };
 })();

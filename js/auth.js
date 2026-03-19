@@ -127,7 +127,7 @@
             '<div class="auth-widget__divider"></div>' +
             '<button class="auth-widget__logout-btn" id="authLogoutBtn">' +
               '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 14H3.333A1.333 1.333 0 0 1 2 12.667V3.333A1.333 1.333 0 0 1 3.333 2H6M10.667 11.333L14 8l-3.333-3.333M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-              ' Log out' +
+              ' Log ud' +
             '</button>' +
           '</div>' +
         '</div>';
@@ -150,7 +150,7 @@
       });
     } else {
       container.innerHTML =
-        '<button class="btn btn--outlined btn--sm" id="authSignInBtn">Sign In</button>';
+        '<button class="btn btn--outlined btn--sm" id="authSignInBtn">Log ind</button>';
 
       document.getElementById('authSignInBtn').addEventListener('click', function() {
         showAuthModal();
@@ -195,7 +195,7 @@
     overlay.innerHTML =
       '<div class="modal" style="width:420px;">' +
         '<div class="modal__header">' +
-          '<h2 class="modal__title" id="authModalTitle">Sign In</h2>' +
+          '<h2 class="modal__title" id="authModalTitle">Log ind</h2>' +
           '<button class="icon-btn" id="authModalClose" aria-label="Close">' +
             '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
           '</button>' +
@@ -208,26 +208,26 @@
               '<path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.997 8.997 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>' +
               '<path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>' +
             '</svg>' +
-            ' Continue with Google' +
+            ' Fortsæt med Google' +
           '</button>' +
           '<div class="auth-divider">' +
             '<div class="auth-divider__line"></div>' +
-            '<span class="auth-divider__text">or</span>' +
+            '<span class="auth-divider__text">eller</span>' +
             '<div class="auth-divider__line"></div>' +
           '</div>' +
           '<div class="form-group">' +
-            '<label class="form-label" for="authEmail">Email</label>' +
+            '<label class="form-label" for="authEmail">E-mail</label>' +
             '<input type="email" id="authEmail" class="form-input" placeholder="you@example.com">' +
           '</div>' +
           '<div class="form-group">' +
-            '<label class="form-label" for="authPassword">Password</label>' +
-            '<input type="password" id="authPassword" class="form-input" placeholder="Password (min 6 chars)">' +
+            '<label class="form-label" for="authPassword">Adgangskode</label>' +
+            '<input type="password" id="authPassword" class="form-input" placeholder="Adgangskode (mindst 6 tegn)">' +
           '</div>' +
           '<div id="authError" class="auth-error"></div>' +
         '</div>' +
         '<div class="modal__footer" style="flex-direction:column; gap:8px;">' +
-          '<button class="btn btn--primary" id="authSubmitBtn" style="width:100%;">Sign In</button>' +
-          '<button class="btn btn--ghost" id="authToggleBtn" style="font-size:12px;">Don\'t have an account? Sign up</button>' +
+          '<button class="btn btn--primary" id="authSubmitBtn" style="width:100%;">Log ind</button>' +
+          '<button class="btn btn--ghost" id="authToggleBtn" style="font-size:12px;">Har du ikke en konto? Opret en</button>' +
         '</div>' +
       '</div>';
 
@@ -257,11 +257,11 @@
     // Toggle sign-in / sign-up
     document.getElementById('authToggleBtn').addEventListener('click', function() {
       isSignUp = !isSignUp;
-      document.getElementById('authModalTitle').textContent = isSignUp ? 'Sign Up' : 'Sign In';
-      document.getElementById('authSubmitBtn').textContent = isSignUp ? 'Create Account' : 'Sign In';
+      document.getElementById('authModalTitle').textContent = isSignUp ? 'Opret konto' : 'Log ind';
+      document.getElementById('authSubmitBtn').textContent = isSignUp ? 'Opret konto' : 'Log ind';
       this.textContent = isSignUp
-        ? 'Already have an account? Sign in'
-        : "Don't have an account? Sign up";
+        ? 'Har du allerede en konto? Log ind'
+        : 'Har du ikke en konto? Opret en';
       clearError();
     });
 
@@ -293,11 +293,11 @@
     var password = document.getElementById('authPassword').value;
 
     if (!email || !password) {
-      showError({ message: 'Please fill in all fields.' });
+      showError({ message: 'Udfyld venligst alle felter.' });
       return;
     }
     if (password.length < 6) {
-      showError({ message: 'Password must be at least 6 characters.' });
+      showError({ message: 'Adgangskoden skal være mindst 6 tegn.' });
       return;
     }
 
@@ -330,15 +330,15 @@
 
   function friendlyError(code) {
     var map = {
-      'auth/email-already-in-use': 'An account with this email already exists.',
-      'auth/invalid-email': 'Please enter a valid email address.',
-      'auth/wrong-password': 'Incorrect password. Please try again.',
-      'auth/user-not-found': 'No account found with this email.',
-      'auth/weak-password': 'Password must be at least 6 characters.',
-      'auth/popup-closed-by-user': 'Sign-in popup was closed.',
-      'auth/network-request-failed': 'Network error. Check your connection.',
-      'auth/too-many-requests': 'Too many attempts. Please wait a moment.',
-      'auth/invalid-credential': 'Invalid email or password.'
+      'auth/email-already-in-use': 'Der findes allerede en konto med denne e-mail.',
+      'auth/invalid-email': 'Indtast venligst en gyldig e-mailadresse.',
+      'auth/wrong-password': 'Forkert adgangskode. Prøv igen.',
+      'auth/user-not-found': 'Ingen konto fundet med denne e-mail.',
+      'auth/weak-password': 'Adgangskoden skal være mindst 6 tegn.',
+      'auth/popup-closed-by-user': 'Login-vinduet blev lukket.',
+      'auth/network-request-failed': 'Netværksfejl. Tjek din forbindelse.',
+      'auth/too-many-requests': 'For mange forsøg. Vent venligst et øjeblik.',
+      'auth/invalid-credential': 'Ugyldig e-mail eller adgangskode.'
     };
     return map[code] || code;
   }

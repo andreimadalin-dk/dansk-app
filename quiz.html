@@ -14,17 +14,13 @@
 
   <nav class="top-nav">
     <div style="display:flex; align-items:center; gap:12px;">
-      <a href="index.html" class="icon-btn" aria-label="Back to home">
+      <a href="index.html" class="icon-btn" aria-label="Tilbage til forsiden">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <span class="top-nav__title" id="quizTitle">Quiz</span>
     </div>
     <div class="top-nav__right">
       <span style="font-size:11px; color:var(--gray-50); letter-spacing:0.16px;" id="quizCounter"></span>
-      <div class="lang-toggle">
-        <button class="lang-toggle__btn active" data-lang="da">DA</button>
-        <button class="lang-toggle__btn" data-lang="en">EN</button>
-      </div>
       <div id="authWidget"></div>
     </div>
   </nav>
@@ -33,34 +29,34 @@
   <div class="modal-overlay" id="configModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <div class="modal__header">
-        <h2 class="modal__title" id="modalTitle">Quiz Settings</h2>
-        <button class="icon-btn" id="closeModal" aria-label="Close">
+        <h2 class="modal__title" id="modalTitle">Quiz-indstillinger</h2>
+        <button class="icon-btn" id="closeModal" aria-label="Luk">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
       </div>
       <div class="modal__body">
         <div class="form-group">
-          <label class="form-label">Chapter</label>
+          <label class="form-label">Kapitel</label>
           <select class="form-select" id="chapterSelect"></select>
         </div>
         <div class="form-group">
-          <label class="form-label">Number of questions</label>
+          <label class="form-label">Antal spørgsmål</label>
           <div class="pill-group" id="countGroup">
             <button class="pill-toggle active" data-count="10">10</button>
             <button class="pill-toggle" data-count="20">20</button>
-            <button class="pill-toggle" data-count="0">All</button>
+            <button class="pill-toggle" data-count="0">Alle</button>
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">Mode</label>
+          <label class="form-label">Tilstand</label>
           <div class="pill-group" id="modeGroup">
-            <button class="pill-toggle active" data-mode="all">All questions</button>
-            <button class="pill-toggle" data-mode="wrong">Review wrong answers</button>
+            <button class="pill-toggle active" data-mode="all">Alle spørgsmål</button>
+            <button class="pill-toggle" data-mode="wrong">Gennemgå forkerte svar</button>
           </div>
         </div>
       </div>
       <div class="modal__footer">
-        <button class="btn btn--primary" id="startQuiz">Start Quiz</button>
+        <button class="btn btn--primary" id="startQuiz">Start quiz</button>
       </div>
     </div>
   </div>
@@ -86,9 +82,9 @@
         </div>
       </div>
       <div class="quiz-results__actions">
-        <button class="btn btn--outlined" id="reviewBtn">Review Wrong</button>
-        <button class="btn btn--primary" id="retryBtn">Try Again</button>
-        <a href="index.html" class="btn btn--outlined">Home</a>
+        <button class="btn btn--outlined" id="reviewBtn">Gennemgå forkerte</button>
+        <button class="btn btn--primary" id="retryBtn">Prøv igen</button>
+        <a href="index.html" class="btn btn--outlined">Forside</a>
       </div>
     </div>
   </div>
@@ -105,7 +101,6 @@
   <script src="js/auth.js"></script>
   <script>
     (function() {
-      DanskApp.initLangToggle();
       var chapterId = DanskApp.getParam('chapter') || 'ch1';
       var questions = [];
       var currentIdx = 0;
@@ -119,7 +114,7 @@
       DANSK_CHAPTERS.forEach(function(ch) {
         var opt = document.createElement('option');
         opt.value = ch.id;
-        opt.textContent = ch.number + '. ' + ch.titleDa + ' (' + ch.titleEn + ')';
+        opt.textContent = ch.number + '. ' + ch.titleDa;
         if (ch.id === chapterId) opt.selected = true;
         sel.appendChild(opt);
       });
@@ -166,7 +161,7 @@
         script.onload = function() {
           var allQ = DanskApp.getQuizArr(chapterId);
           if (allQ.length === 0) {
-            alert('No quiz questions available for this chapter yet.');
+            alert('Der er endnu ingen quizspørgsmål til dette kapitel.');
             return;
           }
 
@@ -192,7 +187,7 @@
           startQuizUI();
         };
         script.onerror = function() {
-          alert('Quiz data for this chapter is not yet available.');
+          alert('Quizdata for dette kapitel er endnu ikke tilgængeligt.');
         };
         document.head.appendChild(script);
       });
@@ -221,7 +216,6 @@
         html += '<div class="card" style="padding:24px;">';
         html += '<div class="quiz-question-wrap">';
         html += '<div class="quiz-question">' + DanskApp.escapeHtml(q.questionDa) + '</div>';
-        html += '<div class="quiz-question-en">' + DanskApp.escapeHtml(q.questionEn) + '</div>';
         html += '</div>';
         html += '<div class="quiz-options">';
 
@@ -231,7 +225,6 @@
             '<span class="quiz-option__letter">' + letters[i] + '</span>' +
             '<div class="quiz-option__texts">' +
               '<div class="quiz-option__text-da">' + DanskApp.escapeHtml(opt.textDa) + '</div>' +
-              '<div class="quiz-option__text-en">' + DanskApp.escapeHtml(opt.textEn) + '</div>' +
             '</div>' +
           '</button>';
         });
@@ -270,7 +263,6 @@
         // Show explanation
         var expHtml = '<div class="quiz-explanation">' +
           '<div class="quiz-explanation__da">' + DanskApp.escapeHtml(q.explanationDa) + '</div>' +
-          '<div class="quiz-explanation__en">' + DanskApp.escapeHtml(q.explanationEn) + '</div>' +
         '</div>';
         document.getElementById('explanationArea').innerHTML = expHtml;
 
@@ -278,7 +270,7 @@
         var isLast = currentIdx >= quizQuestions.length - 1;
         document.getElementById('nextArea').innerHTML =
           '<button class="btn btn--primary" id="nextQuestionBtn">' +
-            (isLast ? 'See Results' : 'Next Question') +
+            (isLast ? 'Se resultater' : 'Næste spørgsmål') +
           '</button>';
         document.getElementById('nextQuestionBtn').addEventListener('click', function() {
           currentIdx++;
@@ -295,13 +287,13 @@
         var pct = total > 0 ? Math.round((correct / total) * 100) : 0;
 
         document.getElementById('resultScore').textContent = correct + '/' + total;
-        document.getElementById('resultLabel').textContent = pct + '% correct';
+        document.getElementById('resultLabel').textContent = pct + '% korrekt';
         document.getElementById('resultBar').style.width = pct + '%';
 
         // Review wrong
         document.getElementById('reviewBtn').addEventListener('click', function() {
           var wrongQ = answers.filter(function(a) { return !a.isCorrect; });
-          if (wrongQ.length === 0) { alert('No wrong answers to review!'); return; }
+          if (wrongQ.length === 0) { alert('Ingen forkerte svar at gennemgå!'); return; }
           quizQuestions = wrongQ.map(function(a) {
             return quizQuestions.find(function(q) { return q.id === a.questionId; }) ||
               answers.find(function(ans) { return ans.questionId === a.questionId; });

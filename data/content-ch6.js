@@ -7,7 +7,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s1': {
     titleDa: 'Danmarks geografi',
     titleEn: 'Denmark\'s Geography',
-    summary: 'Denmark consists of the Jutland peninsula and 443 named islands, covering ~43,000 km2. The highest point is Mollehoj at 170m. The climate is mild due to the Gulf Stream. Major cities include Copenhagen, Aarhus, Odense, Aalborg, and Esbjerg. Key bridges include the Great Belt (1997-98) and Oresund (2000).',
+    summary: 'Danmark bestaar af halvoen Jylland og 443 navngivne oer og daekker ca. 43.000 km2. Det hoejeste punkt er Mollehoj paa 170 m. Klimaet er mildt paa grund af Golfstrommen. De storste byer er Kobenhavn, Aarhus, Odense, Aalborg og Esbjerg. Vigtige broer omfatter Storebaeltsbroen (1997-98) og Oresundsbroen (2000).',
     paragraphs: [
       {
         textDa: 'Det danske landskab er formet af de istider, som i flere omgange helt har dækket det område, der i dag udgør Danmark. Isen smeltede for cirka 11.500 år siden. Danmark er et af verdens lavest beliggende lande. I gennemsnit ligger Danmarks areal 34 meter over havets overflade. Det højeste naturlige punkt hedder Møllehøj og ligger i det østlige Jylland cirka 170 meter over havets overflade.',
@@ -36,12 +36,12 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'place', da: 'Møllehøj', en: 'Mollehoj', fact: 'Denmark\'s highest natural point at ~170m in eastern Jutland' },
-      { type: 'concept', da: '43.000 km2', en: '43,000 km2', fact: 'Denmark\'s total area' },
-      { type: 'concept', da: '443 øer', en: '443 islands', fact: 'Number of named islands; ~80 inhabited' },
-      { type: 'date', da: '1997-98', en: '1997-98', fact: 'Great Belt Fixed Link opens (rail 1997, road 1998)' },
-      { type: 'date', da: '2000', en: '2000', fact: 'Oresund Bridge opens connecting Denmark and Sweden' },
-      { type: 'place', da: 'København', en: 'Copenhagen', fact: 'Capital; about one-third of Denmark\'s population lives in the metropolitan area' }
+      { type: 'place', da: 'Møllehøj', en: 'Mollehoj', fact: 'Danmarks højeste naturlige punkt på ca. 170 m i det østlige Jylland' },
+      { type: 'concept', da: '43.000 km2', en: '43,000 km2', fact: 'Danmarks samlede areal' },
+      { type: 'concept', da: '443 øer', en: '443 islands', fact: 'Antal navngivne øer; ca. 80 beboede' },
+      { type: 'date', da: '1997-98', en: '1997-98', fact: 'Storebæltsforbindelsen åbner (tog 1997, bil 1998)' },
+      { type: 'date', da: '2000', en: '2000', fact: 'Øresundsbroen åbner og forbinder Danmark og Sverige' },
+      { type: 'place', da: 'København', en: 'Copenhagen', fact: 'Hovedstad; cirka en tredjedel af Danmarks befolkning bor i hovedstadsområdet' }
     ]
   },
 
@@ -49,7 +49,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s2': {
     titleDa: 'Danmarks seværdigheder',
     titleEn: 'Denmark\'s Attractions',
-    summary: 'Denmark has seven UNESCO World Heritage Sites. Major attractions include Kronborg Castle (Hamlet), Roskilde Cathedral (royal burial church), Skagen, the Wadden Sea, Tivoli, the Little Mermaid statue, and Copenhagen\'s modern architecture. In 2024, 66 million overnight stays were registered.',
+    summary: 'Danmark har syv UNESCO-verdensarvssteder. Blandt de store attraktioner er Kronborg Slot (Hamlet), Roskilde Domkirke (kongelig begravelseskirke), Skagen, Vadehavet, Tivoli, Den Lille Havfrue og Kobenhavns moderne arkitektur. I 2024 blev der registreret 66 millioner overnatninger.',
     paragraphs: [
       {
         textDa: 'Ifølge VisitDenmark blev der i 2024 registreret 66 millioner overnatninger i Danmark. Mange turister vælger at se Danmarks seværdigheder, deriblandt de syv steder optaget på UNESCO\'s verdensarvliste.',
@@ -83,13 +83,13 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'place', da: 'Kronborg Slot', en: 'Kronborg Castle', fact: 'Setting for Shakespeare\'s Hamlet; home to the Holger Danske statue' },
-      { type: 'place', da: 'Roskilde Domkirke', en: 'Roskilde Cathedral', fact: 'Denmark\'s most significant church; ~40 kings and queens buried here' },
-      { type: 'place', da: 'Tivoli', en: 'Tivoli', fact: 'Opened 1843; Denmark\'s most visited tourist attraction' },
-      { type: 'place', da: 'Vadehavet', en: 'The Wadden Sea', fact: 'World\'s largest connected tidal flat; one of 10 most important wetlands globally' },
-      { type: 'place', da: 'Amalienborg', en: 'Amalienborg', fact: 'Royal family\'s main residence with four palaces; daily guard change at noon' },
-      { type: 'date', da: '1843', en: '1843', fact: 'Tivoli opens in Copenhagen' },
-      { type: 'concept', da: 'Den lille Havfrue', en: 'The Little Mermaid', fact: 'Bronze statue from 1913 in Copenhagen Harbor; only 125 cm tall' }
+      { type: 'place', da: 'Kronborg Slot', en: 'Kronborg Castle', fact: 'Rammen om Shakespeares Hamlet; hjemsted for statuen af Holger Danske' },
+      { type: 'place', da: 'Roskilde Domkirke', en: 'Roskilde Cathedral', fact: 'Danmarks mest betydningsfulde kirke; ca. 40 konger og dronninger begravet her' },
+      { type: 'place', da: 'Tivoli', en: 'Tivoli', fact: 'Åbnet 1843; Danmarks mest besøgte turistattraktion' },
+      { type: 'place', da: 'Vadehavet', en: 'The Wadden Sea', fact: 'Verdens største sammenhængende vadehavslandskab; et af de 10 vigtigste vådområder globalt' },
+      { type: 'place', da: 'Amalienborg', en: 'Amalienborg', fact: 'Kongefamiliens hovedresidens med fire palæer; daglig vagtskifte ved middagstid' },
+      { type: 'date', da: '1843', en: '1843', fact: 'Tivoli åbner i København' },
+      { type: 'concept', da: 'Den lille Havfrue', en: 'The Little Mermaid', fact: 'Bronzestatue fra 1913 i Københavns Havn; kun 125 cm høj' }
     ]
   },
 
@@ -97,7 +97,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s3': {
     titleDa: 'Det danske flag',
     titleEn: 'The Danish Flag',
-    summary: 'Dannebrog, a white cross on a red background, is one of the world\'s oldest national flags. Legend says it fell from the sky during a battle in Estonia in 1219. Danes fly it at celebrations and official occasions. Flying foreign flags requires police permission (except Nordic, Greenlandic, Faroese, EU, and UN flags).',
+    summary: 'Dannebrog, et hvidt kors paa rod baggrund, er et af verdens aeldste nationalflag. Ifølge legenden faldt det ned fra himlen under et slag i Estland i 1219. Danskerne flager ved festlige og officielle lejligheder. Det kraever politiets tilladelse at flage med udenlandske flag (undtagen nordiske, gronlandske, faeroske, EU- og FN-flag).',
     paragraphs: [
       {
         textDa: 'Det danske nationalflag, Dannebrog, er et hvidt kors på rød baggrund. Dannebrog betyder "danernes fane" eller "rødfarvet fane". Legenden fortæller, at Dannebrog faldt ned fra himlen under et militært slag i Estland i 1219 og sikrede danskerne sejren.',
@@ -121,11 +121,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1219', en: '1219', fact: 'Legend says Dannebrog fell from the sky during a battle in Estonia' },
-      { type: 'concept', da: 'Dannebrog', en: 'Dannebrog', fact: 'White cross on red background; one of the world\'s oldest national flags' },
-      { type: 'date', da: '5. maj', en: 'May 5', fact: 'Denmark\'s liberation day (1945)' },
-      { type: 'date', da: '5. juni', en: 'June 5', fact: 'Constitution Day (Grundlovsdag)' },
-      { type: 'concept', da: 'Dannebrogordenen', en: 'Order of the Dannebrog', fact: 'Denmark\'s most notable medal, awarded by the king' }
+      { type: 'date', da: '1219', en: '1219', fact: 'Ifølge legenden faldt Dannebrog ned fra himlen under et slag i Estland' },
+      { type: 'concept', da: 'Dannebrog', en: 'Dannebrog', fact: 'Hvidt kors på rød baggrund; et af verdens ældste nationalflag' },
+      { type: 'date', da: '5. maj', en: 'May 5', fact: 'Danmarks befrielsesdag (1945)' },
+      { type: 'date', da: '5. juni', en: 'June 5', fact: 'Grundlovsdag' },
+      { type: 'concept', da: 'Dannebrogordenen', en: 'Order of the Dannebrog', fact: 'Danmarks mest kendte orden, tildelt af kongen' }
     ]
   },
 
@@ -133,7 +133,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s4': {
     titleDa: 'Kongehuset',
     titleEn: 'The Royal House',
-    summary: 'The Danish monarchy is over 1,000 years old, dating back to Gorm the Old. Denmark has had 54 monarchs (52 kings, 2 queens). The current king is Frederik X (born 1968), who succeeded his mother Margrethe II on January 14, 2024. Denmark is a constitutional monarchy where the monarch has no political power.',
+    summary: 'Det danske monarki er over 1.000 aar gammelt og gaar tilbage til Gorm den Gamle. Danmark har haft 54 monarker (52 konger, 2 dronninger). Den nuvaerende konge er Frederik X (fodt 1968), som efterfulgte sin mor Margrethe II den 14. januar 2024. Danmark er et konstitutionelt monarki, hvor monarken ikke har politisk magt.',
     paragraphs: [
       {
         textDa: 'Det danske kongehus er blandt de ældste af verdens i alt 43 monarkier. Det er over tusind år gammelt og kan med sikkerhed føres tilbage til Gorm den Gamle i 900-tallet. Fra og med ham har Danmark i alt haft 54 monarker – 52 konger og to dronninger.',
@@ -157,12 +157,12 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'person', da: 'Kong Frederik 10.', en: 'King Frederik X', fact: 'Current Danish monarch (born 1968); succeeded Margrethe II on January 14, 2024' },
-      { type: 'person', da: 'Dronning Margrethe 2.', en: 'Queen Margrethe II', fact: 'Abdicated January 14, 2024 after reigning since 1972' },
-      { type: 'person', da: 'Gorm den Gamle', en: 'Gorm the Old', fact: 'Earliest confirmed Danish monarch in the 900s' },
-      { type: 'person', da: 'Dronning Mary', en: 'Queen Mary', fact: 'Born 1972 in Australia; married Frederik in 2004' },
-      { type: 'date', da: '14. januar 2024', en: 'January 14, 2024', fact: 'Frederik X becomes king after Margrethe II\'s abdication' },
-      { type: 'concept', da: '54 monarker', en: '54 monarchs', fact: '52 kings and 2 queens since Gorm the Old' }
+      { type: 'person', da: 'Kong Frederik 10.', en: 'King Frederik X', fact: 'Danmarks nuværende monark (født 1968); efterfulgte Margrethe 2. den 14. januar 2024' },
+      { type: 'person', da: 'Dronning Margrethe 2.', en: 'Queen Margrethe II', fact: 'Abdicerede den 14. januar 2024 efter at have regeret siden 1972' },
+      { type: 'person', da: 'Gorm den Gamle', en: 'Gorm the Old', fact: 'Den tidligst bekræftede danske monark i 900-tallet' },
+      { type: 'person', da: 'Dronning Mary', en: 'Queen Mary', fact: 'Født 1972 i Australien; gift med Frederik i 2004' },
+      { type: 'date', da: '14. januar 2024', en: 'January 14, 2024', fact: 'Frederik 10. bliver konge efter Margrethe 2.\'s abdikation' },
+      { type: 'concept', da: '54 monarker', en: '54 monarchs', fact: '52 konger og 2 dronninger siden Gorm den Gamle' }
     ]
   },
 
@@ -170,7 +170,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s5': {
     titleDa: 'Indvandring til Danmark gennem tiderne',
     titleEn: 'Immigration to Denmark Through the Ages',
-    summary: 'Denmark\'s immigrant population has grown from ~150,000 in 1980 to 977,000 in 2025 (16.3% of population). Historical immigration includes Jews (1600s), guest workers from Turkey, Pakistan, and Yugoslavia (1960s), and refugees from various conflicts. The top 10 origin countries in 2025 are Turkey, Poland, Ukraine, Romania, Syria, Germany, Iraq, Lebanon, Iran, and Pakistan.',
+    summary: 'Danmarks indvandrerbefolkning er vokset fra ca. 150.000 i 1980 til 977.000 i 2025 (16,3 % af befolkningen). Historisk indvandring omfatter joder (1600-tallet), gastearbejdere fra Tyrkiet, Pakistan og Jugoslavien (1960erne) samt flygtninge fra forskellige konflikter. De 10 storste oprindelseslande i 2025 er Tyrkiet, Polen, Ukraine, Rumaenien, Syrien, Tyskland, Irak, Libanon, Iran og Pakistan.',
     paragraphs: [
       {
         textDa: 'Den danske befolkning er forholdsvis homogen. Alligevel har mennesker fra andre lande gennem tiderne bosat sig permanent i landet. Indvandringen til Danmark har dog været klart størst i nyere tid – fra cirka 150.000 i 1980 til 977.000 i 2025, svarende til 16,3 procent af Danmarks samlede befolkning.',
@@ -199,12 +199,12 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1814', en: '1814', fact: 'Jewish Emancipation Decree (Jødiske Frihedsbrev) gives near-equal rights' },
-      { type: 'date', da: '1943', en: '1943', fact: 'Most Danish Jews helped to escape to Sweden during Nazi occupation' },
-      { type: 'date', da: '1973', en: '1973', fact: 'Immigration stop introduced in Denmark' },
-      { type: 'date', da: '2015', en: '2015', fact: 'Peak of refugee crisis with 21,000 asylum seekers' },
-      { type: 'concept', da: '977.000 i 2025', en: '977,000 in 2025', fact: 'Number of immigrants and descendants (16.3% of population)' },
-      { type: 'concept', da: 'Gæstearbejdere', en: 'Guest workers', fact: '1960s labor migrants mainly from Turkey, Pakistan, and Yugoslavia' }
+      { type: 'date', da: '1814', en: '1814', fact: 'Det Jødiske Frihedsbrev giver næsten lige rettigheder' },
+      { type: 'date', da: '1943', en: '1943', fact: 'De fleste danske jøder hjulpet til flugt til Sverige under nazistisk besættelse' },
+      { type: 'date', da: '1973', en: '1973', fact: 'Indvandringsstop indført i Danmark' },
+      { type: 'date', da: '2015', en: '2015', fact: 'Flygtningekrisen topper med 21.000 asylansøgere' },
+      { type: 'concept', da: '977.000 i 2025', en: '977,000 in 2025', fact: 'Antal indvandrere og efterkommere (16,3 % af befolkningen)' },
+      { type: 'concept', da: 'Gæstearbejdere', en: 'Guest workers', fact: 'Arbejdsmigranter i 1960\'erne hovedsageligt fra Tyrkiet, Pakistan og Jugoslavien' }
     ]
   },
 
@@ -212,7 +212,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s6': {
     titleDa: 'Rigsfællesskabet mellem Danmark, Grønland og Færøerne',
     titleEn: 'The Commonwealth of Denmark, Greenland, and the Faroe Islands',
-    summary: 'The Kingdom of Denmark comprises Denmark, Greenland, and the Faroe Islands. Greenland (2.1 million km2) received home rule in 1979 and self-government in 2009. The Faroe Islands (18 islands, 54,000 people) received home rule in 1948. Both territories elect 2 members to the Danish parliament and receive annual subsidies from Denmark.',
+    summary: 'Kongeriget Danmark bestaar af Danmark, Gronland og Faeroerne. Gronland (2,1 millioner km2) fik hjemmestyre i 1979 og selvstyre i 2009. Faeroerne (18 oer, 54.000 indbyggere) fik hjemmestyre i 1948. Begge rigsdele vaelger 2 medlemmer til det danske Folketing og modtager aarlige tilskud fra Danmark.',
     paragraphs: [
       {
         textDa: 'Danmark er i rigsfællesskab med Grønland og Færøerne. Det officielle navn for dette rigsfællesskab er \'Kongeriget Danmark\'. Grundloven gælder for alle tre dele. Færøerne og Grønland vælger hver to medlemmer til Folketinget.',
@@ -246,13 +246,13 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1721', en: '1721', fact: 'Missionary Hans Egede travels to Greenland' },
-      { type: 'date', da: '1948', en: '1948', fact: 'Faroe Islands receive home rule' },
-      { type: 'date', da: '1979', en: '1979', fact: 'Greenland receives home rule' },
-      { type: 'date', da: '2009', en: '2009', fact: 'Greenland receives self-government (selvstyre)' },
-      { type: 'place', da: 'Nuuk', en: 'Nuuk', fact: 'Capital of Greenland (~20,000 inhabitants)' },
-      { type: 'place', da: 'Tórshavn', en: 'Torshavn', fact: 'Capital of the Faroe Islands (~14,000 inhabitants)' },
-      { type: 'concept', da: '2,1 millioner km2', en: '2.1 million km2', fact: 'Greenland is the world\'s largest island' }
+      { type: 'date', da: '1721', en: '1721', fact: 'Missionæren Hans Egede rejser til Grønland' },
+      { type: 'date', da: '1948', en: '1948', fact: 'Færøerne får hjemmestyre' },
+      { type: 'date', da: '1979', en: '1979', fact: 'Grønland får hjemmestyre' },
+      { type: 'date', da: '2009', en: '2009', fact: 'Grønland får selvstyre' },
+      { type: 'place', da: 'Nuuk', en: 'Nuuk', fact: 'Grønlands hovedstad (ca. 20.000 indbyggere)' },
+      { type: 'place', da: 'Tórshavn', en: 'Torshavn', fact: 'Færøernes hovedstad (ca. 14.000 indbyggere)' },
+      { type: 'concept', da: '2,1 millioner km2', en: '2.1 million km2', fact: 'Grønland er verdens største ø' }
     ]
   },
 
@@ -260,7 +260,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s7': {
     titleDa: 'Danmark og Norden',
     titleEn: 'Denmark and the Nordic Countries',
-    summary: 'The five Nordic countries (Denmark, Sweden, Norway, Finland, Iceland) share historical, cultural, and linguistic ties. Danish, Swedish, and Norwegian are mutually intelligible. The Kalmar Union (1397-1523) was the only period of full Nordic political unity. All Nordic countries are known for their welfare models and high living standards.',
+    summary: 'De fem nordiske lande (Danmark, Sverige, Norge, Finland, Island) deler historiske, kulturelle og sproglige baand. Dansk, svensk og norsk er indbyrdes forstaaelige. Kalmarunionen (1397-1523) var den eneste periode med fuld nordisk politisk enhed. Alle nordiske lande er kendt for deres velfaerdsmodeller og hoje levestandard.',
     paragraphs: [
       {
         textDa: 'Mange danskere føler stærke bånd til deres nordiske nabolande. Der er væsentlige historiske, kulturelle, politiske og sproglige fællestræk mellem Danmark, Sverige, Norge, Finland og Island. Alle fem lande har det samme kors i deres flag med forskellige farvekombinationer.',
@@ -284,11 +284,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1397-1523', en: '1397-1523', fact: 'The Kalmar Union: only period of full Nordic political unity' },
-      { type: 'concept', da: 'Nordiske velfærdsmodel', en: 'Nordic welfare model', fact: 'Combines wealth with economic equality; welfare funded by taxes' },
-      { type: 'concept', da: 'Sprogfællesskab', en: 'Linguistic community', fact: 'Danish, Swedish, and Norwegian are mutually intelligible' },
-      { type: 'concept', da: 'Nordisk Råd', en: 'Nordic Council', fact: 'Parliamentary cooperation body for the five Nordic countries' },
-      { type: 'date', da: '2023-2024', en: '2023-2024', fact: 'Finland and Sweden join NATO' }
+      { type: 'date', da: '1397-1523', en: '1397-1523', fact: 'Kalmarunionen: den eneste periode med fuld nordisk politisk enhed' },
+      { type: 'concept', da: 'Nordiske velfærdsmodel', en: 'Nordic welfare model', fact: 'Kombinerer velstand med økonomisk lighed; velfærd finansieret af skatter' },
+      { type: 'concept', da: 'Sprogfællesskab', en: 'Linguistic community', fact: 'Dansk, svensk og norsk er indbyrdes forståelige' },
+      { type: 'concept', da: 'Nordisk Råd', en: 'Nordic Council', fact: 'Parlamentarisk samarbejdsorgan for de fem nordiske lande' },
+      { type: 'date', da: '2023-2024', en: '2023-2024', fact: 'Finland og Sverige indtræder i NATO' }
     ]
   },
 
@@ -296,7 +296,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s8': {
     titleDa: 'Dansk videnskab og tænkning',
     titleEn: 'Danish Science and Thought',
-    summary: 'Denmark has a rich scientific tradition. Key figures include astronomer Tycho Brahe, physicist H.C. Orsted (electromagnetism), philosopher Soren Kierkegaard, physicist Niels Bohr (Nobel 1922), explorer Knud Rasmussen, and recent Nobel laureate Morten Meldal (chemistry 2022).',
+    summary: 'Danmark har en rig videnskabelig tradition. Centrale skikkelser omfatter astronomen Tycho Brahe, fysikeren H.C. Orsted (elektromagnetisme), filosoffen Soren Kierkegaard, fysikeren Niels Bohr (Nobelpris 1922), opdagelsesrejsende Knud Rasmussen og den seneste nobelpristager Morten Meldal (kemi 2022).',
     paragraphs: [
       {
         textDa: 'Forskning og innovation er i dag en af grundforudsætningerne i dansk økonomi. Særligt inden for medicin, biokemi og teknologi er Danmark internationalt kendt. En af de første danske videnskabsmænd var astronomen Tycho Brahe (1546-1601), som foretog den mest præcise kortlægning af stjernehimlen.',
@@ -325,13 +325,13 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'person', da: 'Tycho Brahe', en: 'Tycho Brahe', fact: 'Astronomer (1546-1601); most precise star mapping of his era' },
-      { type: 'person', da: 'H.C. Ørsted', en: 'H.C. Orsted', fact: 'Discovered electromagnetism in 1820; coined Danish words for oxygen and hydrogen' },
-      { type: 'person', da: 'Søren Kierkegaard', en: 'Soren Kierkegaard', fact: 'Founder of existentialist philosophy (1813-55); wrote Either/Or (1843)' },
-      { type: 'person', da: 'Niels Bohr', en: 'Niels Bohr', fact: 'Nobel Prize in Physics 1922 for atomic model; quantum mechanics pioneer' },
-      { type: 'person', da: 'Knud Rasmussen', en: 'Knud Rasmussen', fact: 'Danish-Greenlandic polar explorer; 18,000 km dogsled journey (1921-24)' },
-      { type: 'person', da: 'Morten Meldal', en: 'Morten Meldal', fact: 'Nobel Prize in Chemistry 2022 for click chemistry' },
-      { type: 'person', da: 'Inge Lehmann', en: 'Inge Lehmann', fact: 'Proved in 1936 that Earth has an inner core' }
+      { type: 'person', da: 'Tycho Brahe', en: 'Tycho Brahe', fact: 'Astronom (1546-1601); den mest præcise stjernekortlægning i sin tid' },
+      { type: 'person', da: 'H.C. Ørsted', en: 'H.C. Orsted', fact: 'Opdagede elektromagnetismen i 1820; opfandt de danske ord ilt og brint' },
+      { type: 'person', da: 'Søren Kierkegaard', en: 'Soren Kierkegaard', fact: 'Grundlægger af den eksistentialistiske filosofi (1813-55); skrev Enten – Eller (1843)' },
+      { type: 'person', da: 'Niels Bohr', en: 'Niels Bohr', fact: 'Nobelprisen i fysik 1922 for atommodellen; pioner inden for kvantemekanik' },
+      { type: 'person', da: 'Knud Rasmussen', en: 'Knud Rasmussen', fact: 'Dansk-grønlandsk polarforsker; 18.000 km hundeslæderejse (1921-24)' },
+      { type: 'person', da: 'Morten Meldal', en: 'Morten Meldal', fact: 'Nobelprisen i kemi 2022 for klik-kemi' },
+      { type: 'person', da: 'Inge Lehmann', en: 'Inge Lehmann', fact: 'Påviste i 1936, at Jorden har en indre kerne' }
     ]
   },
 
@@ -339,7 +339,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s9': {
     titleDa: 'Kirke og religion i Danmark',
     titleEn: 'Church and Religion in Denmark',
-    summary: 'Denmark has religious freedom since the 1849 Constitution. The Evangelical Lutheran Church (folkekirken) is supported by the state, with ~71% membership in 2025. The monarch must be Lutheran. In 2025 there are 436 recognized religious communities. Islam is the second-largest faith. Most Danes consider religion a private matter.',
+    summary: 'Danmark har haft religionsfrihed siden grundloven af 1849. Den evangelisk-lutherske kirke (folkekirken) stottes af staten, og ca. 71 % er medlemmer i 2025. Monarken skal vaere lutheraner. I 2025 er der 436 anerkendte trossamfund. Islam er den naestStorste tro. De fleste danskere betragter religion som en privat sag.',
     paragraphs: [
       {
         textDa: 'Der er religionsfrihed i Danmark. Den sikrer, at borgerne har ret til at forene sig i trossamfund for at dyrke deres tro. Religionsfriheden blev indskrevet i grundloven i 1849. Alle borgere har de samme rettigheder uanset religiøs tro. Danmarks monark er den eneste person, der skal tilhøre den evangelisk-lutherske kirke.',
@@ -363,11 +363,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1849', en: '1849', fact: 'Religious freedom enshrined in the Danish Constitution' },
-      { type: 'concept', da: 'Folkekirken', en: 'The Danish National Church', fact: 'Evangelical Lutheran; ~71% of population are members (2025)' },
-      { type: 'concept', da: '436 trossamfund', en: '436 recognized religious communities', fact: 'Recognized congregations and religious communities in 2025' },
-      { type: 'concept', da: 'Kirkeskat', en: 'Church tax', fact: 'Special tax paid only by members of the national church' },
-      { type: 'concept', da: 'Islam', en: 'Islam', fact: 'Second-largest religion in Denmark' }
+      { type: 'date', da: '1849', en: '1849', fact: 'Religionsfrihed indskrives i den danske grundlov' },
+      { type: 'concept', da: 'Folkekirken', en: 'The Danish National Church', fact: 'Evangelisk-luthersk; ca. 71 % af befolkningen er medlemmer (2025)' },
+      { type: 'concept', da: '436 trossamfund', en: '436 recognized religious communities', fact: 'Anerkendte menigheder og trossamfund i 2025' },
+      { type: 'concept', da: 'Kirkeskat', en: 'Church tax', fact: 'Særlig skat, der kun betales af folkekirkens medlemmer' },
+      { type: 'concept', da: 'Islam', en: 'Islam', fact: 'Den næststørste religion i Danmark' }
     ]
   },
 
@@ -375,7 +375,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s10': {
     titleDa: 'Skikke og mærkedage',
     titleEn: 'Customs and Commemorative Days',
-    summary: 'Denmark celebrates various holidays and traditions throughout the year, including Fastelavn (carnival), Easter, May 1 (Labor Day), Pentecost, Constitution Day (June 5), Sankt Hans (Midsummer, June 23), Christmas, and New Year. Muslim holidays like Ramadan and Eid are also observed. Denmark has no official national day.',
+    summary: 'Danmark fejrer forskellige helligdage og traditioner aaret rundt, herunder fastelavn, paaske, 1. maj (arbejdernes kampdag), pinse, grundlovsdag (5. juni), Sankt Hans (23. juni), jul og nytaar. Muslimske hojtider som ramadan og eid fejres ogsaa. Danmark har ingen officiel nationaldag.',
     paragraphs: [
       {
         textDa: 'I Danmark fejrer man i løbet af året en række helligdage, mærkedage og særlige skikke. Danmark er et af de eneste lande i verden, som ikke har en egentlig officiel nationaldag.',
@@ -399,11 +399,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '5. juni', en: 'June 5', fact: 'Constitution Day (Grundlovsdag); celebrates Danish democracy' },
-      { type: 'date', da: '23. juni', en: 'June 23', fact: 'Sankt Hans/Midsummer Eve; bonfires lit across Denmark' },
-      { type: 'date', da: '24. december', en: 'December 24', fact: 'Christmas Eve; families gather, dance around the tree, exchange gifts' },
-      { type: 'concept', da: 'Fastelavn', en: 'Shrovetide/Carnival', fact: 'Children dress up and hit a barrel; 7 weeks before Easter' },
-      { type: 'concept', da: 'Ingen officiel nationaldag', en: 'No official national day', fact: 'Denmark is one of few countries without an official national day' }
+      { type: 'date', da: '5. juni', en: 'June 5', fact: 'Grundlovsdag; fejrer det danske demokrati' },
+      { type: 'date', da: '23. juni', en: 'June 23', fact: 'Sankthansaften; der tændes bål over hele Danmark' },
+      { type: 'date', da: '24. december', en: 'December 24', fact: 'Juleaften; familierne samles, danser om træet og udveksler gaver' },
+      { type: 'concept', da: 'Fastelavn', en: 'Shrovetide/Carnival', fact: 'Børn klæder sig ud og slår katten af tønden; 7 uger før påske' },
+      { type: 'concept', da: 'Ingen officiel nationaldag', en: 'No official national day', fact: 'Danmark er et af de få lande uden en officiel nationaldag' }
     ]
   },
 
@@ -411,7 +411,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s11': {
     titleDa: 'N.F.S. Grundtvig, danskhed, højskoler og kirkeliv',
     titleEn: 'N.F.S. Grundtvig, Danishness, Folk High Schools, and Church Life',
-    summary: 'N.F.S. Grundtvig (1783-1872) was a priest, hymn writer, and thinker who shaped Danish national identity ("danskhed") and founded the folk high school movement. His concept of "folkelighed" (the people\'s culture) became central to Danish self-understanding. The first Grundtvigian folk high school opened in Rodding in 1844.',
+    summary: 'N.F.S. Grundtvig (1783-1872) var praest, salmedigter og taenker, som formede dansk nationalidentitet ("danskhed") og grundlagde hojskolebavaegelsen. Hans begreb "folkelighed" blev centralt for danskernes selvforstaaelse. Den forste grundtvigske hojskole aabnede i Rodding i 1844.',
     paragraphs: [
       {
         textDa: 'Præsten, salmedigteren og samfundsdebattøren Nikolai Frederik Severin Grundtvig (1783-1872) blev en central skikkelse i udviklingen af tænkning, kultur og foreningsliv i Danmark i 1800-tallet. Hans tanker har haft meget stor indflydelse på nutidig dansk selvforståelse.',
@@ -440,12 +440,12 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'person', da: 'N.F.S. Grundtvig', en: 'N.F.S. Grundtvig', fact: 'Priest, hymn writer, thinker (1783-1872); shaped Danish national identity' },
-      { type: 'date', da: '1844', en: '1844', fact: 'First Grundtvigian folk high school opens in Rodding, Southern Jutland' },
-      { type: 'concept', da: 'Folkelighed', en: 'The people\'s culture', fact: 'Grundtvig\'s core concept: taking common people as the foundation for everything' },
-      { type: 'concept', da: 'Folkehøjskole', en: 'Folk high school', fact: 'Education based on "the living word"; no exams; learn for life' },
-      { type: 'concept', da: 'Grundtvigianismen', en: 'Grundtvigianism', fact: 'Dominant direction in the Danish church; undogmatic, joy of life' },
-      { type: 'concept', da: '1.500+ salmer', en: '1,500+ hymns', fact: 'Number of hymns and patriotic songs Grundtvig wrote' }
+      { type: 'person', da: 'N.F.S. Grundtvig', en: 'N.F.S. Grundtvig', fact: 'Præst, salmedigter, tænker (1783-1872); formede dansk national identitet' },
+      { type: 'date', da: '1844', en: '1844', fact: 'Den første grundtvigske folkehøjskole åbner i Rødding i Sønderjylland' },
+      { type: 'concept', da: 'Folkelighed', en: 'The people\'s culture', fact: 'Grundtvigs kernebegreb: at tage udgangspunkt i almindelige mennesker' },
+      { type: 'concept', da: 'Folkehøjskole', en: 'Folk high school', fact: 'Uddannelse baseret på "det levende ord"; ingen eksamener; læring for livet' },
+      { type: 'concept', da: 'Grundtvigianismen', en: 'Grundtvigianism', fact: 'Dominerende retning i den danske kirke; udogmatisk, livsglæde' },
+      { type: 'concept', da: '1.500+ salmer', en: '1,500+ hymns', fact: 'Antal salmer og fædrelandssange Grundtvig skrev' }
     ]
   },
 
@@ -453,7 +453,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s12': {
     titleDa: 'Skolegang og uddannelse i Danmark',
     titleEn: 'Education in Denmark',
-    summary: 'Denmark has 10 years of compulsory education (not school attendance). The folkeskole includes grades 0-9 with optional 10th grade. The 7-point grading scale ranges from -3 to 12. Most education is free. In 2023, 72% completed a gymnasium education vs. 36% in 1982, while vocational education dropped from 36% to 19%.',
+    summary: 'Danmark har 10 aars undervisningspligt (ikke skolepligt). Folkeskolen omfatter 0.-9. klasse med mulighed for 10. klasse. 7-trins-karakterskalaen gaar fra -3 til 12. Det meste uddannelse er gratis. I 2023 gennemforte 72 % en gymnasial uddannelse mod 36 % i 1982, mens erhvervsuddannelserne faldt fra 36 % til 19 %.',
     paragraphs: [
       {
         textDa: 'Der er ikke skolepligt i Danmark, men derimod ti års undervisningspligt. Folkeskolen omfatter en et-årig børnehaveklasse (0. klasse) og et ni-årigt grundlæggende skoleforløb. Der er mulighed for et ekstra år i 10. klasse.',
@@ -482,11 +482,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'concept', da: 'Undervisningspligt', en: 'Compulsory education', fact: '10 years of compulsory education (not school attendance)' },
-      { type: 'concept', da: '7-trins-skala', en: '7-point grading scale', fact: 'Grades: -3, 00, 02, 4, 7, 10, 12 (12 is highest)' },
-      { type: 'date', da: '1814', en: '1814', fact: 'School law establishes uniform education rules across Denmark' },
-      { type: 'date', da: '1479', en: '1479', fact: 'University of Copenhagen opens as Denmark\'s first university' },
-      { type: 'concept', da: '72% gymnasium i 2023', en: '72% gymnasium in 2023', fact: 'Up from 36% in 1982; vocational education fell from 36% to 19%' }
+      { type: 'concept', da: 'Undervisningspligt', en: 'Compulsory education', fact: '10 års undervisningspligt (ikke skolepligt)' },
+      { type: 'concept', da: '7-trins-skala', en: '7-point grading scale', fact: 'Karakterer: -3, 00, 02, 4, 7, 10, 12 (12 er den højeste)' },
+      { type: 'date', da: '1814', en: '1814', fact: 'Skolelov indfører ensartede uddannelsesregler i hele Danmark' },
+      { type: 'date', da: '1479', en: '1479', fact: 'Københavns Universitet åbner som Danmarks første universitet' },
+      { type: 'concept', da: '72% gymnasium i 2023', en: '72% gymnasium in 2023', fact: 'Op fra 36 % i 1982; erhvervsuddannelse faldt fra 36 % til 19 %' }
     ]
   },
 
@@ -494,7 +494,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s13': {
     titleDa: 'Familie og familieliv',
     titleEn: 'Family and Family Life',
-    summary: 'Danish family structures have diversified since the 1960s. In 2025, 73% of cohabiting couples are married. Denmark was the first country to legalize same-sex partnerships (1989) and allows same-sex marriage (since 2012). The age of majority is 18. Physical punishment of children is prohibited.',
+    summary: 'Danske familiestrukturer er blevet mere mangfoldige siden 1960erne. I 2025 er 73 % af samboende par gift. Danmark var det forste land til at legalisere registreret partnerskab for homoseksuelle (1989) og tillader ligekosnnet aegteskab (siden 2012). Myndighedsalderen er 18 aar. Fysisk afstraffelse af born er forbudt.',
     paragraphs: [
       {
         textDa: 'Familien har undergået store forandringer i Danmark siden 1960\'erne. Der er i dag mange familietyper: ugifte samlevende par, par af samme køn, enlige med børn og enlige uden børn. Ægteskabet mellem mand og kvinde er stadig mest almindeligt (73 procent i 2025).',
@@ -518,11 +518,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1989', en: '1989', fact: 'Denmark becomes first country to legalize same-sex registered partnerships' },
-      { type: 'date', da: '2012', en: '2012', fact: 'Same-sex marriage legalized, including in the national church' },
-      { type: 'concept', da: 'Myndighedsalder 18 år', en: 'Age of majority: 18', fact: 'Legal age for marriage, voting, and full rights' },
-      { type: 'concept', da: 'Tvangsægteskab er strafbart', en: 'Forced marriage is criminal', fact: 'All marriages must be entered voluntarily' },
-      { type: 'concept', da: '55% enlige voksne', en: '55% single adults', fact: 'Percentage of adults living without a partner in 2024' }
+      { type: 'date', da: '1989', en: '1989', fact: 'Danmark bliver det første land til at legalisere registreret partnerskab for par af samme køn' },
+      { type: 'date', da: '2012', en: '2012', fact: 'Ægteskab for par af samme køn lovliggøres, herunder i folkekirken' },
+      { type: 'concept', da: 'Myndighedsalder 18 år', en: 'Age of majority: 18', fact: 'Lovlig alder for ægteskab, stemmeret og fulde rettigheder' },
+      { type: 'concept', da: 'Tvangsægteskab er strafbart', en: 'Forced marriage is criminal', fact: 'Alle ægteskaber skal indgås frivilligt' },
+      { type: 'concept', da: '55% enlige voksne', en: '55% single adults', fact: 'Andel af voksne, der lever uden partner i 2024' }
     ]
   },
 
@@ -530,7 +530,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s14': {
     titleDa: 'Diskrimination, antisemitisme, hadforbrydelser og ekstremisme',
     titleEn: 'Discrimination, Antisemitism, Hate Crimes, and Extremism',
-    summary: 'Denmark\'s constitution guarantees freedom of speech, religion, assembly, and association. However, discrimination and hate speech are illegal. In 2017-22, police registered 3,107 hate crimes (55% racial/ethnic, 29% religious, 17% sexual orientation). Jews are disproportionately targeted. A 2015 terrorist attack targeted the Copenhagen synagogue.',
+    summary: 'Danmarks grundlov garanterer ytringsfrihed, religionsfrihed, forsamlingsfrihed og foreningsfrihed. Diskrimination og hadefulde ytringer er dog ulovlige. I 2017-22 registrerede politiet 3.107 hadforbrydelser (55 % racistiske/etniske, 29 % religioese, 17 % seksuel orientering). Joder er uforholdsmaessigt ofte maal. Et terrorangreb i 2015 var rettet mod synagogen i Kobenhavn.',
     paragraphs: [
       {
         textDa: 'Grundloven bestemmer ytringsfrihed, religionsfrihed, foreningsfrihed og forsamlingsfrihed. Men det er ulovligt at diskriminere – at behandle mennesker dårligere på grund af tro, hudfarve, køn, etnicitet, seksuel orientering eller alder.',
@@ -554,11 +554,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '2015', en: '2015', fact: 'Terrorist attack at Copenhagen synagogue; one guard killed' },
-      { type: 'concept', da: '3.107 hadforbrydelser', en: '3,107 hate crimes', fact: 'Registered by police in 2017-22 (~517 per year)' },
-      { type: 'concept', da: '55% race/etnicitet', en: '55% race/ethnicity', fact: 'Largest category of hate crimes (2017-22)' },
-      { type: 'concept', da: '337 mod jøder', en: '337 against Jews', fact: 'Antisemitic hate crimes 2017-22; disproportionate to Jewish population of 6-8,000' },
-      { type: 'concept', da: 'Ytringsfrihed under ansvar', en: 'Free speech with responsibility', fact: 'Hate speech and incitement to violence are criminal offenses' }
+      { type: 'date', da: '2015', en: '2015', fact: 'Terrorangreb mod Københavns synagoge; en vagt dræbt' },
+      { type: 'concept', da: '3.107 hadforbrydelser', en: '3,107 hate crimes', fact: 'Registreret af politiet i 2017-22 (ca. 517 om året)' },
+      { type: 'concept', da: '55% race/etnicitet', en: '55% race/ethnicity', fact: 'Største kategori af hadforbrydelser (2017-22)' },
+      { type: 'concept', da: '337 mod jøder', en: '337 against Jews', fact: 'Antisemitiske hadforbrydelser 2017-22; uforholdsmæssigt i forhold til den jødiske befolkning på 6-8.000' },
+      { type: 'concept', da: 'Ytringsfrihed under ansvar', en: 'Free speech with responsibility', fact: 'Hadefulde ytringer og opfordring til vold er strafbare handlinger' }
     ]
   },
 
@@ -566,7 +566,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s15': {
     titleDa: 'Ligestilling mellem kønnene',
     titleEn: 'Gender Equality',
-    summary: 'Gender equality is a core Danish value. The gender pay gap has narrowed but persists at ~12% in 2022 (4-7% adjusted). In 1976, equal pay legislation was adopted. Women now receive more higher education than men (64% vs 45%). The MeToo movement reached Denmark in 2020, and consent-based rape law was enacted in 2021.',
+    summary: 'Ligestilling mellem konsene er en central dansk vaerdi. Lonforskellen mellem konsene er blevet mindre, men ligger stadig paa ca. 12 % i 2022 (4-7 % korrigeret). I 1976 blev ligelonsloven vedtaget. Kvinder tager nu mere videregaaende uddannelse end maend (64 % mod 45 %). MeToo-bevaegelsen naaede Danmark i 2020, og en samtykkebaseret voldtaegtslov blev vedtaget i 2021.',
     paragraphs: [
       {
         textDa: 'Ligestilling mellem mænd og kvinder er i dag en af det danske samfunds grundværdier. Det skyldes ikke mindst kvindebevægelsens kamp. En milepæl var, da Folketinget i 1976 vedtog lov om lige løn for samme arbejde. I 2022 tjente kvinder i gennemsnit 12 procent mindre end mænd.',
@@ -590,12 +590,12 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1976', en: '1976', fact: 'Parliament adopts equal pay law (required by EEC/EU)' },
-      { type: 'date', da: '2020', en: '2020', fact: 'MeToo movement gains major traction in Denmark' },
-      { type: 'date', da: '2021', en: '2021', fact: 'Consent-based rape legislation takes effect' },
-      { type: 'concept', da: '12% lønforskel', en: '12% pay gap', fact: 'Average hourly pay gap between men and women in 2022' },
-      { type: 'concept', da: '52 ugers barsel', en: '52 weeks parental leave', fact: 'Total parental leave; fathers must take at least 11 weeks since 2022' },
-      { type: 'concept', da: '64% vs 45%', en: '64% vs 45%', fact: 'Women vs men completing higher education in 2023' }
+      { type: 'date', da: '1976', en: '1976', fact: 'Folketinget vedtager lov om ligeløn (krævet af EF/EU)' },
+      { type: 'date', da: '2020', en: '2020', fact: 'MeToo-bevægelsen slår for alvor igennem i Danmark' },
+      { type: 'date', da: '2021', en: '2021', fact: 'Samtykkebaseret voldtægtslovgivning træder i kraft' },
+      { type: 'concept', da: '12% lønforskel', en: '12% pay gap', fact: 'Gennemsnitlig forskel i timeløn mellem mænd og kvinder i 2022' },
+      { type: 'concept', da: '52 ugers barsel', en: '52 weeks parental leave', fact: 'Samlet barselsorlov; fædre skal tage mindst 11 uger siden 2022' },
+      { type: 'concept', da: '64% vs 45%', en: '64% vs 45%', fact: 'Kvinder mod mænd, der fuldførte en videregående uddannelse i 2023' }
     ]
   },
 
@@ -603,7 +603,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s16': {
     titleDa: 'Sundhed og sundhedsvæsen',
     titleEn: 'Health and the Healthcare System',
-    summary: 'Life expectancy in Denmark is 83.7 years for women and 79.9 for men (2023-24). Healthcare is publicly funded and mostly free, run by the five regions. Lifestyle diseases are a growing concern with 19% of the population severely overweight in 2023. Smoking causes ~16,000 deaths annually. Mental health issues are increasing, especially among young people.',
+    summary: 'Den forventede levealder i Danmark er 83,7 aar for kvinder og 79,9 aar for maend (2023-24). Sundhedsvaesenet er offentligt finansieret og stort set gratis og drives af de fem regioner. Livsstilssygdomme er en voksende bekymring, da 19 % af befolkningen var svaert overvaegtige i 2023. Rygning forarsager ca. 16.000 dodsfald aarligt. Psykiske problemer er stigende, saerligt blandt unge.',
     paragraphs: [
       {
         textDa: 'Sundhedsvæsenet er det område, som det offentlige bruger næstflest penge på i Danmark. I 2024 udgjorde det 9,4 procent af den samlede økonomi. Middellevetiden er 83,7 år for kvinder og 79,9 år for mænd (2023-2024). Et stykke op i 1800-tallet var middellevetiden kun cirka 40 år.',
@@ -632,11 +632,11 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'concept', da: 'Middellevetid', en: 'Life expectancy', fact: '83.7 years for women, 79.9 for men (2023-24)' },
-      { type: 'concept', da: '16.000 rygerelaterede dødsfald', en: '16,000 smoking-related deaths', fact: 'More than every fourth death in Denmark is caused by smoking' },
-      { type: 'concept', da: '19% svært overvægtige', en: '19% severely overweight', fact: 'Up from 5-6% in 1987 to 19% in 2023' },
-      { type: 'date', da: '1973', en: '1973', fact: 'Public health insurance replaces the old sickness funds (sygekasser)' },
-      { type: 'concept', da: 'Gratis sundhedsvæsen', en: 'Free healthcare', fact: 'Hospitals and GP visits are free; partial costs for dentistry, psychology, and medicine' }
+      { type: 'concept', da: 'Middellevetid', en: 'Life expectancy', fact: '83,7 år for kvinder, 79,9 for mænd (2023-24)' },
+      { type: 'concept', da: '16.000 rygerelaterede dødsfald', en: '16,000 smoking-related deaths', fact: 'Mere end hvert fjerde dødsfald i Danmark skyldes rygning' },
+      { type: 'concept', da: '19% svært overvægtige', en: '19% severely overweight', fact: 'Op fra 5-6 % i 1987 til 19 % i 2023' },
+      { type: 'date', da: '1973', en: '1973', fact: 'Offentlig sygesikring afløser de gamle sygekasser' },
+      { type: 'concept', da: 'Gratis sundhedsvæsen', en: 'Free healthcare', fact: 'Sygehuse og lægebesøg er gratis; delvis egenbetaling for tandlæge, psykolog og medicin' }
     ]
   },
 
@@ -644,7 +644,7 @@ window.DANSK_CONTENT_CH6 = {
   'ch6-s17': {
     titleDa: 'Klima',
     titleEn: 'Climate',
-    summary: 'Denmark aims to reduce greenhouse gas emissions by 70% (vs 1990) by 2030 and achieve climate neutrality by 2050. In 2023, ~50% of energy came from renewable sources (vs 6% in 1990). Denmark pioneered offshore wind with the world\'s first wind farm in 1991. The 2024 Green Tripartite agreement introduces a CO2 tax on agriculture and plans to convert 15% of farmland to nature.',
+    summary: 'Danmark sigter mod at reducere drivhusgasudledningen med 70 % (i forhold til 1990) inden 2030 og opnaa klimaneutralitet inden 2050. I 2023 kom ca. 50 % af energien fra vedvarende energikilder (mod 6 % i 1990). Danmark var pioner inden for havvindmoller med verdens forste havvindmollepark i 1991. Den gronne trepartsaftale fra 2024 indforer en CO2-afgift paa landbruget og planlaegger at omdanne 15 % af landbrugsjorden til natur.',
     paragraphs: [
       {
         textDa: 'Forbrug af fossile brændsler har ført til stor udledning af CO2 og drivhusgasser i atmosfæren. Det globale klima er blevet mere end én grad varmere sammenlignet med 1850-1900. FN forudser 1,4 til 4,4 graders opvarmning i slutningen af dette århundrede.',
@@ -673,13 +673,13 @@ window.DANSK_CONTENT_CH6 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1991', en: '1991', fact: 'World\'s first offshore wind farm (Vindeby) built off Lolland' },
-      { type: 'date', da: '2015', en: '2015', fact: 'Paris Agreement signed on reducing global emissions' },
-      { type: 'date', da: '2019', en: '2019', fact: 'Danish Climate Act: 70% reduction by 2030, climate neutrality by 2050' },
-      { type: 'concept', da: '50% vedvarende energi', en: '50% renewable energy', fact: 'Share of Denmark\'s energy from renewables in 2023 (up from 6% in 1990)' },
-      { type: 'concept', da: 'Energi-øer', en: 'Energy islands', fact: 'Two artificial islands planned for 2030s (Bornholm and North Sea)' },
-      { type: 'concept', da: 'CO2-afgift på landbrug', en: 'CO2 tax on agriculture', fact: 'Denmark first in the world to introduce a direct CO2 tax on farming (2024 agreement)' },
-      { type: 'concept', da: '15% omlægning', en: '15% land conversion', fact: 'Share of farmland to be converted to nature (larger than Funen and Bornholm combined)' }
+      { type: 'date', da: '1991', en: '1991', fact: 'Verdens første havvindmøllepark (Vindeby) opført ud for Lolland' },
+      { type: 'date', da: '2015', en: '2015', fact: 'Paris-aftalen underskrives om reduktion af globale udledninger' },
+      { type: 'date', da: '2019', en: '2019', fact: 'Dansk klimalov: 70 % reduktion inden 2030, klimaneutralitet inden 2050' },
+      { type: 'concept', da: '50% vedvarende energi', en: '50% renewable energy', fact: 'Andel af Danmarks energi fra vedvarende kilder i 2023 (op fra 6 % i 1990)' },
+      { type: 'concept', da: 'Energi-øer', en: 'Energy islands', fact: 'To kunstige øer planlagt til 2030\'erne (Bornholm og Nordsøen)' },
+      { type: 'concept', da: 'CO2-afgift på landbrug', en: 'CO2 tax on agriculture', fact: 'Danmark er det første land til at indføre en direkte CO2-afgift på landbrug (aftale i 2024)' },
+      { type: 'concept', da: '15% omlægning', en: '15% land conversion', fact: 'Andel af landbrugsjord, der skal omlægges til natur (større end Fyn og Bornholm tilsammen)' }
     ]
   }
 };

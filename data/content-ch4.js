@@ -7,7 +7,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s1': {
     titleDa: 'Indledning',
     titleEn: 'Introduction',
-    summary: 'Denmark participates extensively in international cooperation, especially within the EU, UN, NATO, and the Council of Europe. The Nordic countries also cooperate through the Nordic Council and the Nordic Council of Ministers.',
+    summary: 'Danmark deltager i vid udstrækning i internationalt samarbejde, især inden for EU, FN, NATO og Europarådet. De nordiske lande samarbejder også gennem Nordisk Råd og Nordisk Ministerråd.',
     paragraphs: [
       {
         textDa: 'Omfanget af det internationale samarbejde er vokset siden afslutningen på 2. Verdenskrig. Ikke mindst ud fra et stærkt ønske om at undgå nye krige. Fremtidige konflikter mellem landene skulle forebygges. Der skulle i stedet samarbejdes og findes fredelige løsninger. Danmark deltager i vidt omfang i dette samarbejde.',
@@ -31,10 +31,10 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'concept', da: 'Internationalt samarbejde', en: 'International cooperation', fact: 'Grew significantly after WWII to prevent future conflicts' },
-      { type: 'concept', da: 'EU', en: 'EU', fact: 'The most extensive and important European cooperation for Denmark' },
-      { type: 'concept', da: 'Nordisk Råd', en: 'Nordic Council', fact: 'Forum for Nordic parliamentary cooperation between Denmark, Sweden, Norway, Finland, and Iceland' },
-      { type: 'concept', da: 'Nordisk Ministerråd', en: 'Nordic Council of Ministers', fact: 'Forum for Nordic governmental cooperation' }
+      { type: 'concept', da: 'Internationalt samarbejde', en: 'International cooperation', fact: 'Voksede betydeligt efter Anden Verdenskrig for at forhindre fremtidige konflikter' },
+      { type: 'concept', da: 'EU', en: 'EU', fact: 'Det mest omfattende og vigtigste europæiske samarbejde for Danmark' },
+      { type: 'concept', da: 'Nordisk Råd', en: 'Nordic Council', fact: 'Forum for nordisk parlamentarisk samarbejde mellem Danmark, Sverige, Norge, Finland og Island' },
+      { type: 'concept', da: 'Nordisk Ministerråd', en: 'Nordic Council of Ministers', fact: 'Forum for nordisk regeringssamarbejde' }
     ]
   },
 
@@ -43,7 +43,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s2-ss1': {
     titleDa: 'Den Europæiske Union',
     titleEn: 'The European Union',
-    summary: 'The EU evolved from the European Coal and Steel Community (1952) to a union of 27 member states with ~450 million inhabitants. Denmark joined in 1973 and has negotiated several opt-outs, including on the euro and certain judicial matters. Key EU institutions include the European Commission, European Parliament, European Council, Council of the EU, and the EU Court of Justice.',
+    summary: 'EU udviklede sig fra Det Europæiske Kul- og Stålfællesskab (1952) til en union med 27 medlemslande og ca. 450 millioner indbyggere. Danmark blev medlem i 1973 og har forhandlet sig til flere forbehold, bl.a. vedrørende euroen og visse retslige anliggender. Vigtige EU-institutioner omfatter Europa-Kommissionen, Europa-Parlamentet, Det Europæiske Råd, Rådet for Den Europæiske Union og EU-Domstolen.',
     paragraphs: [
       {
         textDa: 'De første skridt i Den Europæiske Unions historie var Det Europæiske Kul- og Stålfællesskab, som blev oprettet i 1952 af seks europæiske lande. Ud over ønsket om at understøtte fred og samarbejde mellem landene var et formål også at genrejse Europa økonomisk og socialt efter krigens ødelæggelser.',
@@ -87,14 +87,14 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1952', en: '1952', fact: 'European Coal and Steel Community established by six countries' },
-      { type: 'date', da: '1973', en: '1973', fact: 'Denmark, Ireland and the UK join the European Community' },
-      { type: 'date', da: '1993', en: '1993', fact: 'EU\'s internal market takes effect; EF renamed to EU' },
-      { type: 'date', da: '1992', en: '1992', fact: 'Danish voters reject the Maastricht Treaty' },
-      { type: 'date', da: '2022', en: '2022', fact: 'Denmark votes to abolish its EU defense opt-out (66.9% yes)' },
-      { type: 'person', da: 'Dan Jørgensen', en: 'Dan Jørgensen', fact: 'Danish EU Commissioner since 2024, responsible for energy and housing' },
-      { type: 'person', da: 'Margrethe Vestager', en: 'Margrethe Vestager', fact: 'Danish EU Commissioner 2014-24, Vice-President of the Commission for competition policy' },
-      { type: 'concept', da: 'GDPR', en: 'GDPR', fact: 'EU data protection regulation that took effect in 2018' }
+      { type: 'date', da: '1952', en: '1952', fact: 'Det Europæiske Kul- og Stålfællesskab oprettes af seks lande' },
+      { type: 'date', da: '1973', en: '1973', fact: 'Danmark, Irland og Storbritannien indtræder i Det Europæiske Fællesskab' },
+      { type: 'date', da: '1993', en: '1993', fact: 'EU\'s indre marked træder i kraft; EF omdøbes til EU' },
+      { type: 'date', da: '1992', en: '1992', fact: 'Danske vælgere afviser Maastricht-traktaten' },
+      { type: 'date', da: '2022', en: '2022', fact: 'Danmark stemmer for at afskaffe forsvarsforbeholdet i EU (66,9 % ja)' },
+      { type: 'person', da: 'Dan Jørgensen', en: 'Dan Jørgensen', fact: 'Dansk EU-kommissær siden 2024, ansvarlig for energi og boliger' },
+      { type: 'person', da: 'Margrethe Vestager', en: 'Margrethe Vestager', fact: 'Dansk EU-kommissær 2014-24, næstformand i Kommissionen for konkurrencepolitik' },
+      { type: 'concept', da: 'GDPR', en: 'GDPR', fact: 'EU-databeskyttelsesforordning, der trådte i kraft i 2018' }
     ]
   },
 
@@ -102,7 +102,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s2-ss2': {
     titleDa: 'Europarådet',
     titleEn: 'The Council of Europe',
-    summary: 'The Council of Europe, established in 1949, is a separate organization from the EU with 47 member states. It created the European Convention on Human Rights (1950) and the European Court of Human Rights. Denmark has been a member since its founding. Russia was suspended after its attack on Ukraine in 2022.',
+    summary: 'Europarådet, oprettet i 1949, er en selvstændig organisation adskilt fra EU med 47 medlemsstater. Det stod bag Den Europæiske Menneskerettighedskonvention (1950) og Den Europæiske Menneskerettighedsdomstol. Danmark har været medlem siden grundlæggelsen. Rusland blev suspenderet efter angrebet på Ukraine i 2022.',
     paragraphs: [
       {
         textDa: 'Danmark har været medlem af Europarådet, siden det blev oprettet i 1949. Europarådet bestod i 1949 af ti vesteuropæiske demokratier. I dag er 47 europæiske stater medlemmer. Europarådet er ikke en EU-institution. Det er en selvstændig organisation i Europa.',
@@ -126,11 +126,11 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1949', en: '1949', fact: 'Council of Europe established with 10 Western European democracies' },
-      { type: 'date', da: '1950', en: '1950', fact: 'European Convention on Human Rights drafted' },
-      { type: 'date', da: '1992', en: '1992', fact: 'Convention formally incorporated into Danish law' },
-      { type: 'concept', da: 'Den Europæiske Menneskerettighedskonvention', en: 'European Convention on Human Rights', fact: 'Ensures freedom of expression, assembly, and religion' },
-      { type: 'concept', da: 'Den Europæiske Menneskerettighedsdomstol', en: 'European Court of Human Rights', fact: 'Court that ensures the Convention is upheld' }
+      { type: 'date', da: '1949', en: '1949', fact: 'Europarådet oprettes med 10 vesteuropæiske demokratier' },
+      { type: 'date', da: '1950', en: '1950', fact: 'Den Europæiske Menneskerettighedskonvention udarbejdes' },
+      { type: 'date', da: '1992', en: '1992', fact: 'Konventionen indarbejdes formelt i dansk lovgivning' },
+      { type: 'concept', da: 'Den Europæiske Menneskerettighedskonvention', en: 'European Convention on Human Rights', fact: 'Sikrer ytringsfrihed, forsamlingsfrihed og religionsfrihed' },
+      { type: 'concept', da: 'Den Europæiske Menneskerettighedsdomstol', en: 'European Court of Human Rights', fact: 'Domstol der sikrer, at konventionen overholdes' }
     ]
   },
 
@@ -139,7 +139,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s3-ss1': {
     titleDa: 'FN (De Forenede Nationer)',
     titleEn: 'The United Nations',
-    summary: 'The UN was founded in 1945 with 51 states and now has 193 members. Denmark has been a member since its founding. The UN\'s main tasks include peace and security, human rights, development, and humanitarian efforts. The Security Council has five permanent members with veto power. Denmark is a member of the Security Council in 2025-26. The UN City in Copenhagen houses 11 UN organizations.',
+    summary: 'FN blev grundlagt i 1945 med 51 stater og har i dag 193 medlemmer. Danmark har været medlem siden grundlæggelsen. FN\'s vigtigste opgaver omfatter fred og sikkerhed, menneskerettigheder, udvikling og humanitære indsatser. Sikkerhedsrådet har fem faste medlemmer med vetoret. Danmark er medlem af Sikkerhedsrådet i 2025-26. FN-byen i København huser 11 FN-organisationer.',
     paragraphs: [
       {
         textDa: 'FN (De Forenede Nationer) er en verdensomspændende organisation, som består af selvstændige stater. FN blev grundlagt i 1945 kort efter afslutningen af 2. Verdenskrig. FN fik fra begyndelsen tilslutning fra 51 stater. I dag er medlemstallet 193. Danmark har været medlem af FN siden stiftelsen i 1945.',
@@ -173,12 +173,12 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1945', en: '1945', fact: 'UN founded with 51 states; Denmark a founding member' },
-      { type: 'date', da: '2015', en: '2015', fact: 'UN adopts 17 Sustainable Development Goals (SDGs)' },
-      { type: 'date', da: '2025-26', en: '2025-26', fact: 'Denmark serves on the UN Security Council' },
-      { type: 'place', da: 'FN-byen i København', en: 'UN City in Copenhagen', fact: 'Houses 11 UN organizations with 1,500+ staff from 100+ nationalities' },
-      { type: 'place', da: 'New York', en: 'New York', fact: 'Location of UN headquarters' },
-      { type: 'concept', da: 'Vetoret', en: 'Veto power', fact: 'Held by the 5 permanent Security Council members; used 325 times since 1946' }
+      { type: 'date', da: '1945', en: '1945', fact: 'FN grundlagt med 51 stater; Danmark er stiftende medlem' },
+      { type: 'date', da: '2015', en: '2015', fact: 'FN vedtager 17 verdensmål for bæredygtig udvikling' },
+      { type: 'date', da: '2025-26', en: '2025-26', fact: 'Danmark sidder i FN\'s Sikkerhedsråd' },
+      { type: 'place', da: 'FN-byen i København', en: 'UN City in Copenhagen', fact: 'Huser 11 FN-organisationer med over 1.500 ansatte fra mere end 100 nationaliteter' },
+      { type: 'place', da: 'New York', en: 'New York', fact: 'Hjemsted for FN\'s hovedkvarter' },
+      { type: 'concept', da: 'Vetoret', en: 'Veto power', fact: 'Indehaves af de 5 faste medlemmer af Sikkerhedsrådet; brugt 325 gange siden 1946' }
     ]
   },
 
@@ -186,7 +186,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s3-ss2': {
     titleDa: 'Internationalt samarbejde om udvikling',
     titleEn: 'International Development Cooperation',
-    summary: 'Denmark is one of few countries meeting the UN target of giving 0.7% of GNI in development aid (~22 billion DKK in 2025). Danida has managed Danish development policy since 1971. Africa is the primary focus, and Denmark released a new Africa strategy in 2024 focusing on equal partnerships, peace, climate, and trade.',
+    summary: 'Danmark er et af de få lande, der opfylder FN\'s mål om at give 0,7 % af BNI i udviklingsbistand (ca. 22 mia. kr. i 2025). Danida har styret dansk udviklingspolitik siden 1971. Afrika er det primære fokusområde, og Danmark fremlagde i 2024 en ny Afrika-strategi med fokus på ligeværdige partnerskaber, fred, klima og handel.',
     paragraphs: [
       {
         textDa: 'Danmark yder økonomisk støtte til mange af verdens fattigste lande. Denne støtte kaldes internationalt udviklingssamarbejde. Danmark er et ud af få lande i verden, som opfylder FN\'s målsætning om, at lande skal give 0,7 procent af bruttonationalindkomsten (BNI) i udviklingsbistand. I 2025 svarer det til cirka 22 milliarder kroner.',
@@ -210,11 +210,11 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1971', en: '1971', fact: 'Danida established to manage Danish development policy' },
-      { type: 'date', da: '2024', en: '2024', fact: 'New Danish strategy for engagement with African countries' },
-      { type: 'concept', da: 'Danida', en: 'Danida', fact: 'Independent department under the Ministry of Foreign Affairs managing development aid' },
-      { type: 'concept', da: '0,7 procent af BNI', en: '0.7% of GNI', fact: 'UN target for development aid that Denmark meets (~22 billion DKK in 2025)' },
-      { type: 'place', da: 'Afrika', en: 'Africa', fact: 'Historical primary focus of Danish development policy; population expected to reach 2.5 billion by 2050' }
+      { type: 'date', da: '1971', en: '1971', fact: 'Danida oprettes til at forvalte dansk udviklingspolitik' },
+      { type: 'date', da: '2024', en: '2024', fact: 'Ny dansk strategi for engagement med afrikanske lande' },
+      { type: 'concept', da: 'Danida', en: 'Danida', fact: 'Selvstændig afdeling under Udenrigsministeriet, der forvalter udviklingsbistand' },
+      { type: 'concept', da: '0,7 procent af BNI', en: '0.7% of GNI', fact: 'FN\'s mål for udviklingsbistand, som Danmark opfylder (ca. 22 mia. kr. i 2025)' },
+      { type: 'place', da: 'Afrika', en: 'Africa', fact: 'Historisk hovedfokus for dansk udviklingspolitik; befolkningen forventes at nå 2,5 mia. i 2050' }
     ]
   },
 
@@ -223,7 +223,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s4-ss1': {
     titleDa: 'Udenrigspolitisk aktivisme efter Den Kolde Krig (1990-2014)',
     titleEn: 'Foreign Policy Activism After the Cold War (1990-2014)',
-    summary: 'After joining NATO in 1949 Denmark maintained a low military profile until the end of the Cold War around 1990. Denmark then developed an activist foreign policy, participating in military actions in Kuwait (1990-91), Bosnia (1994), Kosovo (1999), and Libya (2011).',
+    summary: 'Efter at være indtrådt i NATO i 1949 holdt Danmark en lav militær profil frem til Den Kolde Krigs afslutning omkring 1990. Derefter udviklede Danmark en aktivistisk udenrigspolitik med deltagelse i militære aktioner i Kuwait (1990-91), Bosnien (1994), Kosovo (1999) og Libyen (2011).',
     paragraphs: [
       {
         textDa: 'Selv om Danmark med sin indtræden i NATO i 1949 opgav sin traditionelle neutralitet, holdt Danmark relativt lav militær profil frem til Den Kolde Krigs afslutning omkring 1990. Danmark deltog dog i mange af FN\'s fredsbevarende missioner.',
@@ -247,12 +247,12 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1949', en: '1949', fact: 'Denmark joins NATO, abandoning traditional neutrality' },
-      { type: 'date', da: '1990-91', en: '1990-91', fact: 'Denmark sends warship to the Gulf War (Kuwait liberation)' },
-      { type: 'date', da: '1994', en: '1994', fact: 'Danish soldiers engaged in combat in Bosnia' },
-      { type: 'date', da: '1999', en: '1999', fact: 'Danish fighter jets participate in NATO actions in Kosovo' },
-      { type: 'date', da: '2011', en: '2011', fact: 'Denmark participates in NATO military intervention in Libya' },
-      { type: 'concept', da: 'Aktivistisk udenrigspolitik', en: 'Activist foreign policy', fact: 'Denmark\'s shift to more active military participation in international conflicts after the Cold War' }
+      { type: 'date', da: '1949', en: '1949', fact: 'Danmark indtræder i NATO og opgiver traditionel neutralitet' },
+      { type: 'date', da: '1990-91', en: '1990-91', fact: 'Danmark sender krigsskib til Golfkrigen (befrielsen af Kuwait)' },
+      { type: 'date', da: '1994', en: '1994', fact: 'Danske soldater deltager i kamphandlinger i Bosnien' },
+      { type: 'date', da: '1999', en: '1999', fact: 'Danske kampfly deltager i NATO-aktioner i Kosovo' },
+      { type: 'date', da: '2011', en: '2011', fact: 'Danmark deltager i NATO\'s militære intervention i Libyen' },
+      { type: 'concept', da: 'Aktivistisk udenrigspolitik', en: 'Activist foreign policy', fact: 'Danmarks skifte til mere aktiv militær deltagelse i internationale konflikter efter Den Kolde Krig' }
     ]
   },
 
@@ -260,7 +260,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s4-ss2': {
     titleDa: 'Indsatser efter terrorangrebet på USA i 2001',
     titleEn: 'Operations After the 9/11 Terror Attack',
-    summary: 'The 9/11 attacks in 2001 marked a turning point in NATO security policy. Denmark sent soldiers to Afghanistan (2002-2021, 44 soldiers killed) and participated in the Iraq War from 2003 (8 soldiers killed). The Taliban retook Afghanistan in August 2021.',
+    summary: 'Terrorangrebet den 11. september 2001 markerede et vendepunkt i NATO\'s sikkerhedspolitik. Danmark sendte soldater til Afghanistan (2002-2021, 44 soldater dræbt) og deltog i Irakkrigen fra 2003 (8 soldater dræbt). Taliban generobrede Afghanistan i august 2021.',
     paragraphs: [
       {
         textDa: 'Et vendepunkt for sikkerhedspolitikken i NATO-alliancen og herunder Danmark var terrorangrebet på USA 11. september 2001. Her slog terrorister omkring 3.000 mennesker ihjel ved at kapre passagerfly og flyve dem ind i blandt andet "World Trade Center" i New York.',
@@ -284,12 +284,12 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '11. september 2001', en: 'September 11, 2001', fact: 'Terrorist attack on the USA killing ~3,000 people' },
-      { type: 'date', da: '2002', en: '2002', fact: 'Danish parliament votes to send soldiers to Afghanistan' },
-      { type: 'date', da: '2003', en: '2003', fact: 'Denmark joins the US-led Iraq War (narrow parliamentary majority)' },
-      { type: 'date', da: 'August 2021', en: 'August 2021', fact: 'Taliban recaptures Kabul; Western forces evacuate' },
-      { type: 'concept', da: '44 faldne i Afghanistan', en: '44 killed in Afghanistan', fact: 'Number of Danish soldiers who died in Afghanistan' },
-      { type: 'concept', da: '8 faldne i Irak', en: '8 killed in Iraq', fact: 'Number of Danish soldiers who died in Iraq' }
+      { type: 'date', da: '11. september 2001', en: 'September 11, 2001', fact: 'Terrorangrebet på USA dræber ca. 3.000 mennesker' },
+      { type: 'date', da: '2002', en: '2002', fact: 'Folketinget stemmer for at sende soldater til Afghanistan' },
+      { type: 'date', da: '2003', en: '2003', fact: 'Danmark deltager i den USA-ledede Irakkrig (snævert flertal i Folketinget)' },
+      { type: 'date', da: 'August 2021', en: 'August 2021', fact: 'Taliban generobrer Kabul; vestlige styrker evakuerer' },
+      { type: 'concept', da: '44 faldne i Afghanistan', en: '44 killed in Afghanistan', fact: 'Antal danske soldater, der døde i Afghanistan' },
+      { type: 'concept', da: '8 faldne i Irak', en: '8 killed in Iraq', fact: 'Antal danske soldater, der døde i Irak' }
     ]
   },
 
@@ -297,7 +297,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s4-ss3': {
     titleDa: 'Nyt fokus på dansk territorialforsvar (2014-)',
     titleEn: 'New Focus on Danish Territorial Defense (2014-)',
-    summary: 'Since Russia\'s annexation of Crimea in 2014 and invasion of Ukraine in 2022, Denmark has shifted focus back to territorial defense. Denmark has donated F-16 jets to Ukraine and increased defense spending to over 2% of GDP in 2024, with plans to reach 3% by 2025 and a NATO target of 5%.',
+    summary: 'Siden Ruslands annektering af Krim i 2014 og invasionen af Ukraine i 2022 har Danmark igen rettet fokus mod territorialforsvaret. Danmark har doneret F-16-kampfly til Ukraine og øget forsvarsudgifterne til over 2 % af BNP i 2024 med planer om at nå 3 % i 2025 og et NATO-mål på 5 %.',
     paragraphs: [
       {
         textDa: 'I de seneste år har USA og dets allierede igen vendt blikket væk fra at fremme fred og demokrati via militære aktioner. Det skyldes blandt andet den begrænsede succes med operationerne i for eksempel Irak, Afghanistan og Libyen. Og ikke mindre væsentligt er der igen meget større fokus på et solidt og effektivt territorialforsvar.',
@@ -326,12 +326,12 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '2014', en: '2014', fact: 'Russia annexes Crimea; NATO agrees on 2% GDP defense spending target' },
-      { type: 'date', da: 'Februar 2022', en: 'February 2022', fact: 'Russia launches full-scale invasion of Ukraine' },
-      { type: 'date', da: '2023', en: '2023', fact: 'Denmark decides to donate 19 F-16 fighter jets to Ukraine' },
-      { type: 'date', da: '2024', en: '2024', fact: 'Danish defense spending exceeds 2% of GDP; conscription increased to 7,500' },
-      { type: 'concept', da: 'Fem procent', en: 'Five percent', fact: 'NATO\'s new defense spending target as of June 2025' },
-      { type: 'concept', da: 'Værnepligt', en: 'Conscription', fact: 'Service time extended from 4 to 11 months; numbers increased from ~5,200 to 7,500' }
+      { type: 'date', da: '2014', en: '2014', fact: 'Rusland annekterer Krim; NATO aftaler mål om 2 % af BNP til forsvar' },
+      { type: 'date', da: 'Februar 2022', en: 'February 2022', fact: 'Rusland indleder en fuldskala invasion af Ukraine' },
+      { type: 'date', da: '2023', en: '2023', fact: 'Danmark beslutter at donere 19 F-16-kampfly til Ukraine' },
+      { type: 'date', da: '2024', en: '2024', fact: 'Danmarks forsvarsudgifter overstiger 2 % af BNP; værnepligten øges til 7.500' },
+      { type: 'concept', da: 'Fem procent', en: 'Five percent', fact: 'NATO\'s nye mål for forsvarsudgifter fra juni 2025' },
+      { type: 'concept', da: 'Værnepligt', en: 'Conscription', fact: 'Tjenestetiden forlænges fra 4 til 11 måneder; antallet øges fra ca. 5.200 til 7.500' }
     ]
   },
 
@@ -339,7 +339,7 @@ window.DANSK_CONTENT_CH4 = {
   'ch4-s4-ss4': {
     titleDa: 'Rigsfællesskabet, Grønland og Arktis i dansk udenrigspolitik',
     titleEn: 'The Commonwealth, Greenland, and the Arctic in Danish Foreign Policy',
-    summary: 'Greenland has great strategic significance due to its location between the US and Russia. The US maintains Pituffik Space Base (formerly Thule Air Base) in northern Greenland. Climate change is increasing the Arctic\'s strategic importance through new shipping routes and natural resources. The Arctic Council was established in 1996.',
+    summary: 'Grønland har stor strategisk betydning på grund af sin beliggenhed mellem USA og Rusland. USA driver Pituffik Space Base (tidligere Thule Air Base) i det nordlige Grønland. Klimaforandringer øger Arktis\' strategiske betydning gennem nye sejlruter og naturressourcer. Arktisk Råd blev oprettet i 1996.',
     paragraphs: [
       {
         textDa: 'Grønland, som er en del af det danske Rigsfællesskab, havde en særlig betydning under Den Kolde Krig. Grønland ligger tæt på både USA og det daværende Sovjetunionen. I 1951 underskrev Danmark og USA en aftale om USA\'s militære aktiviteter i Grønland.',
@@ -368,12 +368,12 @@ window.DANSK_CONTENT_CH4 = {
       }
     ],
     keyFacts: [
-      { type: 'date', da: '1951', en: '1951', fact: 'Denmark and USA sign agreement on US military activities in Greenland' },
-      { type: 'date', da: '1996', en: '1996', fact: 'Arctic Council established for sustainable development in Arctic regions' },
-      { type: 'date', da: '2008', en: '2008', fact: 'Ilulissat Declaration: five Arctic states agree on peaceful Arctic cooperation' },
-      { type: 'place', da: 'Pituffik Space Base', en: 'Pituffik Space Base', fact: 'US military base in northern Greenland (formerly Thule Air Base)' },
-      { type: 'concept', da: 'Arktisk Råd', en: 'Arctic Council', fact: 'Includes USA, Canada, Russia, and the five Nordic countries; cooperation suspended after Russia\'s 2022 invasion' },
-      { type: 'concept', da: '15 mia. kroner', en: '15 billion DKK', fact: 'Allocated in 2025 to strengthen defense around Greenland' }
+      { type: 'date', da: '1951', en: '1951', fact: 'Danmark og USA underskriver aftale om amerikanske militære aktiviteter i Grønland' },
+      { type: 'date', da: '1996', en: '1996', fact: 'Arktisk Råd oprettes for bæredygtig udvikling i de arktiske områder' },
+      { type: 'date', da: '2008', en: '2008', fact: 'Ilulissat-erklæringen: fem arktiske stater enes om fredeligt samarbejde i Arktis' },
+      { type: 'place', da: 'Pituffik Space Base', en: 'Pituffik Space Base', fact: 'Amerikansk militærbase i det nordlige Grønland (tidligere Thule Air Base)' },
+      { type: 'concept', da: 'Arktisk Råd', en: 'Arctic Council', fact: 'Omfatter USA, Canada, Rusland og de fem nordiske lande; samarbejdet suspenderet efter Ruslands invasion i 2022' },
+      { type: 'concept', da: '15 mia. kroner', en: '15 billion DKK', fact: 'Bevilget i 2025 til at styrke forsvaret omkring Grønland' }
     ]
   }
 };
