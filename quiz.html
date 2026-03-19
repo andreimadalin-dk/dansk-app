@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz — Indfødsretsprøven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css?v=4">
+  <link rel="stylesheet" href="css/app.css?v=4">
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <a href="index.html" class="icon-btn" aria-label="Back to home">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <span class="top-nav__title" id="quizTitle">Quiz</span>
+    </div>
+    <div class="top-nav__right">
+      <span style="font-size:11px; color:var(--gray-50); letter-spacing:0.16px;" id="quizCounter"></span>
+      <div class="lang-toggle">
+        <button class="lang-toggle__btn active" data-lang="da">DA</button>
+        <button class="lang-toggle__btn" data-lang="en">EN</button>
+      </div>
+      <div id="authWidget"></div>
+    </div>
+  </nav>
+
+  <!-- Config Modal -->
+  <div class="modal-overlay" id="configModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modalTitle">Quiz Settings</h2>
+        <button class="icon-btn" id="closeModal" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <div class="form-group">
+          <label class="form-label">Chapter</label>
+          <select class="form-select" id="chapterSelect"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Number of questions</label>
+          <div class="pill-group" id="countGroup">
+            <button class="pill-toggle active" data-count="10">10</button>
+            <button class="pill-toggle" data-count="20">20</button>
+            <button class="pill-toggle" data-count="0">All</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mode</label>
+          <div class="pill-group" id="modeGroup">
+            <button class="pill-toggle active" data-mode="all">All questions</button>
+            <button class="pill-toggle" data-mode="wrong">Review wrong answers</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--primary" id="startQuiz">Start Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Area -->
+  <div class="quiz-container" id="quizArea" style="display:none;">
+    <!-- Progress bar -->
+    <div style="margin-bottom:20px;">
+      <div class="progress-bar progress-bar--lg"><div class="progress-bar__fill" id="quizProgressBar" style="width:0%"></div></div>
+    </div>
+
+    <div id="questionArea"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="quiz-container" id="resultsArea" style="display:none;">
+    <div class="quiz-results">
+      <div class="quiz-results__score" id="resultScore"></div>
+      <div class="quiz-results__label" id="resultLabel"></div>
+      <div style="margin-bottom:24px;">
+        <div class="progress-bar progress-bar--lg" style="max-width:300px; margin:0 auto;">
+          <div class="progress-bar__fill" id="resultBar" style="width:0%; background:var(--success);"></div>
+        </div>
+      </div>
+      <div class="quiz-results__actions">
+        <button class="btn btn--outlined" id="reviewBtn">Review Wrong</button>
+        <button class="btn btn--primary" id="retryBtn">Try Again</button>
+        <a href="index.html" class="btn btn--outlined">Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script src="data/chapters.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    (function() {
+      DanskApp.initLangToggle();
+      var chapterId = DanskApp.getParam('chapter') || 'ch1';
+      var questions = [];
+      var currentIdx = 0;
+      var answers = []; // { questionId, selectedId, isCorrect }
+      var quizQuestions = [];
+      var questionCount = 10;
+      var mode = 'all';
+
+      // Populate chapter select
+      var sel = document.getElementById('chapterSelect');
+      DANSK_CHAPTERS.forEach(function(ch) {
+        var opt = document.createElement('option');
+        opt.value = ch.id;
+        opt.textContent = ch.number + '. ' + ch.titleDa + ' (' + ch.titleEn + ')';
+        if (ch.id === chapterId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+
+      // Count pills
+      document.querySelectorAll('#countGroup .pill-toggle').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('#countGroup .pill-toggle').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          questionCount = parseInt(btn.getAttribute('data-count'));
+        });
+      });
+
+      // Mode pills
+      document.querySelectorAll('#modeGroup .pill-toggle').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('#modeGroup .pill-toggle').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          mode = btn.getAttribute('data-mode');
+        });
+      });
+
+      // Close modal
+      document.getElementById('closeModal').addEventListener('click', function() {
+        window.location.href = 'index.html';
+      });
+      document.getElementById('configModal').addEventListener('click', function(e) {
+        if (e.target === this) window.location.href = 'index.html';
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !document.getElementById('configModal').classList.contains('hidden')) {
+          window.location.href = 'index.html';
+        }
+      });
+
+      // Start quiz
+      document.getElementById('startQuiz').addEventListener('click', function() {
+        chapterId = sel.value;
+        var chNum = chapterId.replace('ch', '');
+
+        // Load quiz data dynamically
+        var script = document.createElement('script');
+        script.src = 'data/quiz-' + chapterId + '.js';
+        script.onload = function() {
+          var allQ = DanskApp.getQuizArr(chapterId);
+          if (allQ.length === 0) {
+            alert('No quiz questions available for this chapter yet.');
+            return;
+          }
+
+          // Filter by mode
+          if (mode === 'wrong') {
+            var wrongIds = DanskProgress.getWrongQuestionIds(allQ.map(function(q) { return q.id; }));
+            quizQuestions = allQ.filter(function(q) { return wrongIds.indexOf(q.id) !== -1; });
+            if (quizQuestions.length === 0) {
+              quizQuestions = allQ; // fallback to all
+            }
+          } else {
+            quizQuestions = allQ;
+          }
+
+          // Shuffle and limit
+          quizQuestions = DanskApp.shuffle(quizQuestions);
+          if (questionCount > 0 && quizQuestions.length > questionCount) {
+            quizQuestions = quizQuestions.slice(0, questionCount);
+          }
+
+          currentIdx = 0;
+          answers = [];
+          startQuizUI();
+        };
+        script.onerror = function() {
+          alert('Quiz data for this chapter is not yet available.');
+        };
+        document.head.appendChild(script);
+      });
+
+      function startQuizUI() {
+        var ch = DanskApp.getChapter(chapterId);
+        document.getElementById('quizTitle').textContent = 'Quiz: ' + (ch ? ch.titleDa : '');
+        document.getElementById('configModal').classList.add('hidden');
+        document.getElementById('quizArea').style.display = 'block';
+        document.getElementById('resultsArea').style.display = 'none';
+        renderQuestion();
+      }
+
+      function renderQuestion() {
+        if (currentIdx >= quizQuestions.length) {
+          showResults();
+          return;
+        }
+
+        var q = quizQuestions[currentIdx];
+        var pct = Math.round(((currentIdx) / quizQuestions.length) * 100);
+        document.getElementById('quizProgressBar').style.width = pct + '%';
+        document.getElementById('quizCounter').textContent = (currentIdx + 1) + ' / ' + quizQuestions.length;
+
+        var html = '';
+        html += '<div class="card" style="padding:24px;">';
+        html += '<div class="quiz-question-wrap">';
+        html += '<div class="quiz-question">' + DanskApp.escapeHtml(q.questionDa) + '</div>';
+        html += '<div class="quiz-question-en">' + DanskApp.escapeHtml(q.questionEn) + '</div>';
+        html += '</div>';
+        html += '<div class="quiz-options">';
+
+        var letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach(function(opt, i) {
+          html += '<button class="quiz-option" data-id="' + opt.id + '">' +
+            '<span class="quiz-option__letter">' + letters[i] + '</span>' +
+            '<div class="quiz-option__texts">' +
+              '<div class="quiz-option__text-da">' + DanskApp.escapeHtml(opt.textDa) + '</div>' +
+              '<div class="quiz-option__text-en">' + DanskApp.escapeHtml(opt.textEn) + '</div>' +
+            '</div>' +
+          '</button>';
+        });
+
+        html += '</div>';
+        html += '<div id="explanationArea"></div>';
+        html += '<div id="nextArea" style="text-align:right;"></div>';
+        html += '</div>';
+
+        document.getElementById('questionArea').innerHTML = html;
+
+        // Answer handlers
+        document.querySelectorAll('.quiz-option').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            handleAnswer(btn.getAttribute('data-id'));
+          });
+        });
+      }
+
+      function handleAnswer(selectedId) {
+        var q = quizQuestions[currentIdx];
+        var isCorrect = selectedId === q.correctId;
+
+        // Record
+        DanskProgress.recordQuizAnswer(q.id, isCorrect);
+        answers.push({ questionId: q.id, selectedId: selectedId, isCorrect: isCorrect });
+
+        // Highlight options
+        document.querySelectorAll('.quiz-option').forEach(function(btn) {
+          var id = btn.getAttribute('data-id');
+          btn.classList.add('disabled');
+          if (id === q.correctId) btn.classList.add('correct');
+          if (id === selectedId && !isCorrect) btn.classList.add('wrong');
+        });
+
+        // Show explanation
+        var expHtml = '<div class="quiz-explanation">' +
+          '<div class="quiz-explanation__da">' + DanskApp.escapeHtml(q.explanationDa) + '</div>' +
+          '<div class="quiz-explanation__en">' + DanskApp.escapeHtml(q.explanationEn) + '</div>' +
+        '</div>';
+        document.getElementById('explanationArea').innerHTML = expHtml;
+
+        // Next button
+        var isLast = currentIdx >= quizQuestions.length - 1;
+        document.getElementById('nextArea').innerHTML =
+          '<button class="btn btn--primary" id="nextQuestionBtn">' +
+            (isLast ? 'See Results' : 'Next Question') +
+          '</button>';
+        document.getElementById('nextQuestionBtn').addEventListener('click', function() {
+          currentIdx++;
+          renderQuestion();
+        });
+      }
+
+      function showResults() {
+        document.getElementById('quizArea').style.display = 'none';
+        document.getElementById('resultsArea').style.display = 'block';
+
+        var correct = answers.filter(function(a) { return a.isCorrect; }).length;
+        var total = answers.length;
+        var pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+        document.getElementById('resultScore').textContent = correct + '/' + total;
+        document.getElementById('resultLabel').textContent = pct + '% correct';
+        document.getElementById('resultBar').style.width = pct + '%';
+
+        // Review wrong
+        document.getElementById('reviewBtn').addEventListener('click', function() {
+          var wrongQ = answers.filter(function(a) { return !a.isCorrect; });
+          if (wrongQ.length === 0) { alert('No wrong answers to review!'); return; }
+          quizQuestions = wrongQ.map(function(a) {
+            return quizQuestions.find(function(q) { return q.id === a.questionId; }) ||
+              answers.find(function(ans) { return ans.questionId === a.questionId; });
+          }).filter(Boolean);
+          // Re-fetch the actual question objects
+          var chNum = chapterId.replace('ch', '');
+          var allQ = window['DANSK_QUIZ_CH' + chNum] || [];
+          quizQuestions = allQ.filter(function(q) {
+            return wrongQ.some(function(w) { return w.questionId === q.id; });
+          });
+          currentIdx = 0;
+          answers = [];
+          startQuizUI();
+        });
+
+        // Retry
+        document.getElementById('retryBtn').addEventListener('click', function() {
+          quizQuestions = DanskApp.shuffle(quizQuestions);
+          currentIdx = 0;
+          answers = [];
+          startQuizUI();
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>

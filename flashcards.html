@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards — Indfødsretsprøven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css?v=4">
+  <link rel="stylesheet" href="css/app.css?v=4">
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <a href="index.html" class="icon-btn" aria-label="Back to home">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <span class="top-nav__title">Flashcards</span>
+    </div>
+    <div class="top-nav__right">
+      <span style="font-size:11px; color:var(--gray-50); letter-spacing:0.16px;" id="fcCounter"></span>
+      <div class="lang-toggle">
+        <button class="lang-toggle__btn active" data-lang="da">DA</button>
+        <button class="lang-toggle__btn" data-lang="en">EN</button>
+      </div>
+      <div id="authWidget"></div>
+    </div>
+  </nav>
+
+  <div class="flashcard-container">
+
+    <!-- Filters -->
+    <div class="flashcard-filters" id="chapterFilters"></div>
+    <div class="flashcard-filters" id="categoryFilters">
+      <button class="pill-toggle active" data-cat="all">All</button>
+      <button class="pill-toggle" data-cat="date">Dates</button>
+      <button class="pill-toggle" data-cat="person">People</button>
+      <button class="pill-toggle" data-cat="place">Places</button>
+      <button class="pill-toggle" data-cat="vocab">Vocabulary</button>
+      <button class="pill-toggle" data-cat="concept">Concepts</button>
+    </div>
+
+    <!-- Progress -->
+    <div class="flashcard-progress" id="fcProgress"></div>
+
+    <!-- Card Scene -->
+    <div class="flashcard-scene" id="fcScene">
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard__face flashcard__front" id="fcFront">
+          <div class="flashcard__front-content">
+            <div class="flashcard__question-da" id="fcQuestionDa"></div>
+            <div class="flashcard__question-en" id="fcQuestionEn"></div>
+          </div>
+          <div class="flashcard__hint">Click to reveal answer</div>
+        </div>
+        <div class="flashcard__face flashcard__back" id="fcBack">
+          <div class="flashcard__back-content">
+            <div class="flashcard__answer-da" id="fcAnswerDa"></div>
+            <div class="flashcard__answer-en" id="fcAnswerEn"></div>
+          </div>
+          <div class="flashcard__detail" id="fcDetail"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating Buttons (hidden until flipped) -->
+    <div class="flashcard-actions" id="fcActions" style="display:none;">
+      <button class="btn btn--hard" id="rateHard">Hard</button>
+      <button class="btn btn--good" id="rateGood">Good</button>
+      <button class="btn btn--easy" id="rateEasy">Easy</button>
+    </div>
+
+    <!-- Empty State -->
+    <div id="fcEmpty" style="display:none; text-align:center; padding:64px 24px; color:var(--gray-50);">
+      <p style="font-size:16px; margin-bottom:8px;">No flashcards available</p>
+      <p>Try selecting a different chapter or category.</p>
+    </div>
+
+    <!-- Summary (shown after completing a set) -->
+    <div id="fcSummary" style="display:none;">
+      <div class="fc-summary">
+        <div class="fc-summary__title">Session Complete!</div>
+        <div class="fc-summary__stats">
+          <div class="stat-card">
+            <div class="stat-card__label">Reviewed</div>
+            <div class="stat-card__value" id="sumReviewed">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">Got Right</div>
+            <div class="stat-card__value" id="sumRight">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">Mastered</div>
+            <div class="stat-card__value" id="sumMastered">0</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; justify-content:center;">
+          <button class="btn btn--primary" id="continueBtn">Continue</button>
+          <a href="index.html" class="btn btn--outlined">Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script src="data/chapters.js"></script>
+  <script src="data/flashcard-facts.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    (function() {
+      DanskApp.initLangToggle();
+      var selectedChapter = DanskApp.getParam('chapter') || 'all';
+      var selectedCategory = 'all';
+      var deck = [];
+      var currentIdx = 0;
+      var isFlipped = false;
+      var sessionStats = { reviewed: 0, right: 0 };
+
+      // Render chapter filter pills
+      var cfHtml = '<button class="pill-toggle' + (selectedChapter === 'all' ? ' active' : '') + '" data-ch="all">All</button>';
+      DANSK_CHAPTERS.forEach(function(ch) {
+        cfHtml += '<button class="pill-toggle' + (selectedChapter === ch.id ? ' active' : '') + '" data-ch="' + ch.id + '">' +
+          'Ch ' + ch.number + '</button>';
+      });
+      document.getElementById('chapterFilters').innerHTML = cfHtml;
+
+      // Chapter filter clicks
+      document.getElementById('chapterFilters').addEventListener('click', function(e) {
+        var btn = e.target.closest('.pill-toggle');
+        if (!btn) return;
+        document.querySelectorAll('#chapterFilters .pill-toggle').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        selectedChapter = btn.getAttribute('data-ch');
+        rebuildDeck();
+      });
+
+      // Category filter clicks
+      document.getElementById('categoryFilters').addEventListener('click', function(e) {
+        var btn = e.target.closest('.pill-toggle');
+        if (!btn) return;
+        document.querySelectorAll('#categoryFilters .pill-toggle').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        selectedCategory = btn.getAttribute('data-cat');
+        rebuildDeck();
+      });
+
+      function rebuildDeck() {
+        if (!window.DANSK_FLASHCARDS) {
+          showEmpty();
+          return;
+        }
+
+        var all = window.DANSK_FLASHCARDS;
+
+        // Filter by chapter
+        if (selectedChapter !== 'all') {
+          all = all.filter(function(c) { return c.chapterId === selectedChapter; });
+        }
+
+        // Filter by category
+        if (selectedCategory !== 'all') {
+          all = all.filter(function(c) { return c.category === selectedCategory; });
+        }
+
+        // Prioritize due cards, then new cards
+        var due = DanskProgress.getDueFlashcards(all);
+        deck = DanskApp.shuffle(due);
+
+        if (deck.length === 0) {
+          // Show all cards shuffled if none due
+          deck = DanskApp.shuffle(all);
+        }
+
+        currentIdx = 0;
+        sessionStats = { reviewed: 0, right: 0 };
+
+        if (deck.length === 0) {
+          showEmpty();
+        } else {
+          hideEmpty();
+          showCard();
+        }
+      }
+
+      function showEmpty() {
+        document.getElementById('fcScene').style.display = 'none';
+        document.getElementById('fcActions').style.display = 'none';
+        document.getElementById('fcProgress').style.display = 'none';
+        document.getElementById('fcSummary').style.display = 'none';
+        document.getElementById('fcEmpty').style.display = 'block';
+        document.getElementById('fcCounter').textContent = '';
+      }
+
+      function hideEmpty() {
+        document.getElementById('fcScene').style.display = 'block';
+        document.getElementById('fcProgress').style.display = 'block';
+        document.getElementById('fcEmpty').style.display = 'none';
+        document.getElementById('fcSummary').style.display = 'none';
+      }
+
+      function showCard() {
+        if (currentIdx >= deck.length) {
+          showSummary();
+          return;
+        }
+
+        var card = deck[currentIdx];
+        document.getElementById('fcQuestionDa').textContent = card.frontDa;
+        document.getElementById('fcQuestionEn').textContent = card.frontEn;
+        document.getElementById('fcAnswerDa').textContent = card.backDa;
+        document.getElementById('fcAnswerEn').textContent = card.backEn;
+        document.getElementById('fcDetail').textContent = card.detail || '';
+
+        document.getElementById('fcCounter').textContent = (currentIdx + 1) + ' / ' + deck.length;
+        document.getElementById('fcProgress').textContent = 'Card ' + (currentIdx + 1) + ' of ' + deck.length;
+
+        // Reset flip
+        isFlipped = false;
+        document.getElementById('flashcard').classList.remove('flipped');
+        document.getElementById('fcActions').style.display = 'none';
+      }
+
+      // Flip card
+      document.getElementById('flashcard').addEventListener('click', function() {
+        if (!isFlipped) {
+          isFlipped = true;
+          this.classList.add('flipped');
+          document.getElementById('fcActions').style.display = 'flex';
+        }
+      });
+
+      // Keyboard: Space to flip, 1/2/3 to rate
+      document.addEventListener('keydown', function(e) {
+        if (document.getElementById('fcSummary').style.display !== 'none') return;
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          if (!isFlipped) {
+            isFlipped = true;
+            document.getElementById('flashcard').classList.add('flipped');
+            document.getElementById('fcActions').style.display = 'flex';
+          }
+        }
+        if (isFlipped) {
+          if (e.key === '1') rateCard(0);
+          if (e.key === '2') rateCard(1);
+          if (e.key === '3') rateCard(2);
+        }
+      });
+
+      // Rating buttons
+      document.getElementById('rateHard').addEventListener('click', function() { rateCard(0); });
+      document.getElementById('rateGood').addEventListener('click', function() { rateCard(1); });
+      document.getElementById('rateEasy').addEventListener('click', function() { rateCard(2); });
+
+      function rateCard(quality) {
+        var card = deck[currentIdx];
+        DanskProgress.updateFlashcardState(card.id, quality);
+        DanskProgress.recordStudySession();
+        sessionStats.reviewed++;
+        if (quality >= 1) sessionStats.right++;
+        currentIdx++;
+        showCard();
+      }
+
+      function showSummary() {
+        document.getElementById('fcScene').style.display = 'none';
+        document.getElementById('fcActions').style.display = 'none';
+        document.getElementById('fcProgress').style.display = 'none';
+        document.getElementById('fcSummary').style.display = 'block';
+        document.getElementById('fcCounter').textContent = 'Done!';
+
+        document.getElementById('sumReviewed').textContent = sessionStats.reviewed;
+        document.getElementById('sumRight').textContent = sessionStats.right;
+
+        var allIds = (window.DANSK_FLASHCARDS || []).map(function(c) { return c.id; });
+        document.getElementById('sumMastered').textContent = DanskProgress.getMasteredCount(allIds);
+      }
+
+      // Continue button
+      document.getElementById('continueBtn').addEventListener('click', function() {
+        rebuildDeck();
+      });
+
+      // Initial deck build
+      rebuildDeck();
+    })();
+  </script>
+
+</body>
+</html>

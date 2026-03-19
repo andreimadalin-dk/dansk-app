@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indfødsretsprøven — Danish Citizenship Test Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css?v=5">
+  <link rel="stylesheet" href="css/app.css?v=5">
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a href="index.html" class="top-nav__title">Indfødsretsprøven</a>
+    <div class="top-nav__right">
+      <div class="lang-toggle">
+        <button class="lang-toggle__btn active" data-lang="da">DA</button>
+        <button class="lang-toggle__btn" data-lang="en">EN</button>
+      </div>
+      <div id="authWidget"></div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1 class="hero__title">Danish Citizenship Test</h1>
+    <p class="hero__subtitle">Study Guide</p>
+    <a href="#chapters" class="btn btn--coral" id="startBtn">Start Learning</a>
+  </div>
+
+  <div class="page-container">
+
+    <!-- Stats Row -->
+    <div class="section-header">Your Progress</div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="stat-card__label">Sections Read</div>
+        <div class="stat-card__value" id="statSections">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Quiz Score</div>
+        <div class="stat-card__value" id="statQuiz">0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Cards Mastered</div>
+        <div class="stat-card__value" id="statCards">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">Study Streak</div>
+        <div class="stat-card__value" id="statStreak">0</div>
+      </div>
+    </div>
+
+    <!-- Chapter Grid -->
+    <div class="section-header" id="chapters" style="margin-top: 32px;">Chapters</div>
+    <div class="chapter-grid" id="chapterGrid"></div>
+
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script src="data/chapters.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    (function() {
+      // Update stats
+      var stats = DanskProgress.getOverallStats();
+      document.getElementById('statSections').textContent = stats.sectionsRead + '/' + stats.sectionsTotal;
+      document.getElementById('statQuiz').textContent = stats.quizAttempted > 0
+        ? Math.round((stats.quizCorrect / stats.quizAttempted) * 100) + '%'
+        : '—';
+      document.getElementById('statCards').textContent = stats.flashcardsMastered;
+      document.getElementById('statStreak').textContent = stats.streak + 'd';
+
+      // Render chapter cards
+      var grid = document.getElementById('chapterGrid');
+      var html = '';
+
+      DANSK_CHAPTERS.forEach(function(ch) {
+        var prog = DanskProgress.getChapterProgress(ch.id);
+        var pct = prog.total > 0 ? Math.round((prog.read / prog.total) * 100) : 0;
+
+        html += '<div class="card">' +
+          '<div class="card__body" style="padding: 16px;">' +
+            '<div class="chapter-card__number">Chapter ' + ch.number + '</div>' +
+            '<div class="chapter-card__title-da">' + DanskApp.escapeHtml(ch.titleDa) + '</div>' +
+            '<div class="chapter-card__title-en">' + DanskApp.escapeHtml(ch.titleEn) + '</div>' +
+            '<div class="chapter-card__progress">' +
+              '<div class="progress-bar"><div class="progress-bar__fill" style="width:' + pct + '%"></div></div>' +
+              '<span>' + prog.read + '/' + prog.total + '</span>' +
+            '</div>' +
+            '<div class="chapter-card__actions">' +
+              '<a href="study.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Study</a>' +
+              '<a href="quiz.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Quiz</a>' +
+              '<a href="flashcards.html?chapter=' + ch.id + '" class="btn btn--outlined btn--sm">Flashcards</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      });
+
+      grid.innerHTML = html;
+
+      // Language toggle
+      DanskApp.initLangToggle();
+
+      // Start Learning button -> first unfinished chapter
+      document.getElementById('startBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        for (var i = 0; i < DANSK_CHAPTERS.length; i++) {
+          var prog = DanskProgress.getChapterProgress(DANSK_CHAPTERS[i].id);
+          if (prog.read < prog.total) {
+            window.location.href = 'study.html?chapter=' + DANSK_CHAPTERS[i].id;
+            return;
+          }
+        }
+        window.location.href = 'study.html?chapter=ch1';
+      });
+    })();
+  </script>
+
+</body>
+</html>

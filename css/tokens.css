@@ -1,0 +1,40 @@
+:root {
+  /* ── Dark backgrounds ── */
+  --bg-dark:       #23002b;   /* Deep purple — hero, nav, primary sections */
+  --bg-dark-alt:   #0d1f22;   /* Dark teal — alternate dark sections */
+  --bg-surface:    #2e0e38;   /* Slightly lighter purple — cards on dark */
+  --bg-light:      #fbfbfb;   /* Near-white — content/reading areas */
+  --white:         #ffffff;
+
+  /* ── Accent colors ── */
+  --accent-mint:   #94ffe5;   /* Mint/turquoise — primary CTA, highlights */
+  --accent-purple: #e894ff;   /* Light purple — secondary accent, headings */
+  --accent-orange: #f0a830;   /* Warm amber — progress, stats */
+  --accent-pink:   #ff68a8;   /* Pink — signal/error states */
+
+  /* ── Text ── */
+  --text-on-dark:  #eae7eb;   /* Light text on dark backgrounds */
+  --text-muted:    rgba(255,255,255,0.45);  /* Dimmed text on dark */
+  --text-dark:     #231c24;   /* Dark text on light backgrounds */
+  --text-body:     #333333;   /* Body text on light */
+
+  /* ── Borders ── */
+  --border-dark:   rgba(255,255,255,0.10);  /* Subtle border on dark */
+  --border-light:  rgba(0,0,0,0.08);        /* Subtle border on light */
+
+  /* ── Legacy aliases (keep old references working) ── */
+  --cream:         #23002b;
+  --black:         #eae7eb;
+  --gray-50:       rgba(255,255,255,0.45);
+  --gray-30:       rgba(255,255,255,0.25);
+  --dark-red:      #94ffe5;
+  --darkest-red:   #23002b;
+  --coral:         #94ffe5;
+  --border:        rgba(255,255,255,0.10);
+
+  /* ── Feedback ── */
+  --success:       #4caf50;
+  --success-bg:    rgba(76,175,80,0.15);
+  --error-bg:      rgba(255,104,168,0.15);
+  --progress-track: rgba(255,255,255,0.08);
+}

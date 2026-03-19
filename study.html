@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study — Indfødsretsprøven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css?v=4">
+  <link rel="stylesheet" href="css/app.css?v=4">
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a href="index.html" class="top-nav__title">Indfødsretsprøven</a>
+    <div class="top-nav__right">
+      <div class="lang-toggle">
+        <button class="lang-toggle__btn active" data-lang="da">DA</button>
+        <button class="lang-toggle__btn" data-lang="en">EN</button>
+      </div>
+      <div id="authWidget"></div>
+    </div>
+  </nav>
+
+  <div class="two-panel">
+    <!-- Sidebar -->
+    <aside class="panel-left">
+      <div class="toc-header">
+        <a href="index.html" style="display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--gray-50); margin-bottom:8px; text-decoration:none;">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          All Chapters
+        </a>
+        <div class="toc-header__chapter" id="tocChapterLabel"></div>
+        <div class="toc-header__title" id="tocChapterTitle"></div>
+      </div>
+      <ul class="toc-list" id="tocList"></ul>
+      <div style="padding:12px 16px; border-top:1px solid var(--border);">
+        <div style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--gray-50);">
+          <div class="progress-bar" style="flex:1;"><div class="progress-bar__fill" id="sidebarProgress" style="width:0%"></div></div>
+          <span id="sidebarProgressLabel">0/0</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="panel-right" id="contentPanel">
+      <div class="study-content" id="studyContent">
+        <div style="text-align:center; padding:64px 24px; color:var(--gray-50);">
+          <p>Select a section from the sidebar to start studying.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script src="data/chapters.js"></script>
+  <script src="data/vocabulary.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    (function() {
+      var chapterId = DanskApp.getParam('chapter') || 'ch1';
+      var sectionId = DanskApp.getParam('section');
+      var chapter = DanskApp.getChapter(chapterId);
+      if (!chapter) { window.location.href = 'index.html'; return; }
+
+      var showEnglish = false;
+      var leaves = DanskApp.getLeafSections(chapterId);
+
+      // Set sidebar header
+      function updateSidebarHeader() {
+        var en = DanskApp.isEn();
+        document.getElementById('tocChapterLabel').textContent = 'Chapter ' + chapter.number;
+        document.getElementById('tocChapterTitle').textContent = en ? chapter.titleEn : chapter.titleDa;
+        document.title = (en ? chapter.titleEn : chapter.titleDa) + ' — Study';
+      }
+      updateSidebarHeader();
+
+      // Render TOC
+      function renderToc() {
+        updateSidebarHeader();
+        var en = DanskApp.isEn();
+        var prog = DanskProgress.getChapterProgress(chapterId);
+        var pct = prog.total > 0 ? Math.round((prog.read / prog.total) * 100) : 0;
+        document.getElementById('sidebarProgress').style.width = pct + '%';
+        document.getElementById('sidebarProgressLabel').textContent = prog.read + '/' + prog.total;
+
+        var html = '';
+        chapter.sections.forEach(function(s) {
+          var sTitle = en ? (s.titleEn || s.titleDa) : s.titleDa;
+          if (s.subsections && s.subsections.length > 0) {
+            // Section header (not clickable directly)
+            html += '<li class="toc-item" style="font-weight:700; font-size:12px; color:var(--gray-50); cursor:default; text-transform:uppercase; letter-spacing:0.16px;">' +
+              '<span class="toc-item__number">' + s.number + '</span>' +
+              DanskApp.escapeHtml(sTitle) +
+            '</li>';
+            s.subsections.forEach(function(ss) {
+              var ssTitle = en ? (ss.titleEn || ss.titleDa) : ss.titleDa;
+              var isRead = DanskProgress.isSectionRead(ss.id);
+              var isActive = sectionId === ss.id;
+              html += '<li class="toc-item toc-subsection' + (isActive ? ' active' : '') + '" data-section="' + ss.id + '">' +
+                '<span class="toc-item__number">' + ss.number + '</span>' +
+                '<span>' + DanskApp.escapeHtml(ssTitle) + '</span>' +
+                (isRead ? '<span class="toc-item__check" style="color:var(--success);">' + DanskApp.checkSvg(12) + '</span>' : '') +
+              '</li>';
+            });
+          } else {
+            var isRead = DanskProgress.isSectionRead(s.id);
+            var isActive = sectionId === s.id;
+            html += '<li class="toc-item' + (isActive ? ' active' : '') + '" data-section="' + s.id + '">' +
+              '<span class="toc-item__number">' + s.number + '</span>' +
+              '<span>' + DanskApp.escapeHtml(en ? (s.titleEn || s.titleDa) : s.titleDa) + '</span>' +
+              (isRead ? '<span class="toc-item__check" style="color:var(--success);">' + DanskApp.checkSvg(12) + '</span>' : '') +
+            '</li>';
+          }
+        });
+        document.getElementById('tocList').innerHTML = html;
+
+        // TOC click handlers
+        document.querySelectorAll('.toc-item[data-section]').forEach(function(item) {
+          item.addEventListener('click', function() {
+            loadSection(item.getAttribute('data-section'));
+          });
+        });
+      }
+
+      // Load content for a section
+      function loadSection(id) {
+        sectionId = id;
+        var url = new URL(window.location);
+        url.searchParams.set('section', id);
+        history.replaceState(null, '', url);
+        renderToc();
+        renderContent();
+        document.getElementById('contentPanel').scrollTop = 0;
+      }
+
+      // Render content
+      function renderContent() {
+        var contentObj = DanskApp.getContentObj(chapterId);
+        var entry = contentObj[sectionId];
+        if (!entry) {
+          document.getElementById('studyContent').innerHTML =
+            '<div style="text-align:center; padding:64px 24px; color:var(--gray-50);">' +
+            '<p>Content for this section is not yet available.</p>' +
+            '<p style="margin-top:8px;">Select another section from the sidebar.</p></div>';
+          return;
+        }
+
+        var leaf = leaves.find(function(l) { return l.id === sectionId; });
+        var leafIdx = leaves.findIndex(function(l) { return l.id === sectionId; });
+
+        var html = '';
+        html += '<div class="study-content__title-wrap">';
+        html += '<div class="study-content__title">' + DanskApp.escapeHtml(entry.titleDa) + '</div>';
+        html += '<div class="study-content__title-en">' + DanskApp.escapeHtml(entry.titleEn) + '</div>';
+        html += '</div>';
+
+        if (entry.summary) {
+          html += '<div class="study-content__summary">' + DanskApp.escapeHtml(entry.summary) + '</div>';
+        }
+
+        // Paragraphs (DA + EN, toggled by CSS)
+        entry.paragraphs.forEach(function(p) {
+          var textDa = highlightVocab(p.textDa, p.vocabRefs || []);
+          html += '<p class="study-paragraph study-paragraph-da">' + textDa + '</p>';
+          if (p.textEn) {
+            html += '<p class="study-paragraph study-paragraph-en">' + DanskApp.escapeHtml(p.textEn) + '</p>';
+          }
+        });
+
+        // Key Facts
+        if (entry.keyFacts && entry.keyFacts.length > 0) {
+          html += '<div class="key-facts">';
+          html += '<div class="key-facts__title">Key Facts</div>';
+          entry.keyFacts.forEach(function(f) {
+            html += '<div class="key-fact">' +
+              '<div class="key-fact__icon">' + DanskApp.factIcon(f.type) + '</div>' +
+              '<div>' +
+                '<div class="key-fact__da">' + DanskApp.escapeHtml(f.da) + '</div>' +
+                '<div class="key-fact__en">' + DanskApp.escapeHtml(f.en || f.da) + '</div>' +
+                '<div class="key-fact__fact">' + DanskApp.escapeHtml(f.fact) + '</div>' +
+              '</div>' +
+            '</div>';
+          });
+          html += '</div>';
+        }
+
+        // Mark as read button
+        var isRead = DanskProgress.isSectionRead(sectionId);
+        html += '<div style="text-align:center; margin:24px 0 8px;">' +
+          '<button class="btn ' + (isRead ? 'btn--primary' : 'btn--outlined') + '" id="markReadBtn">' +
+            (isRead ? DanskApp.checkSvg(12) + ' Read' : 'Mark as Read') +
+          '</button>' +
+        '</div>';
+
+        // Nav
+        html += '<div class="study-nav">';
+        if (leafIdx > 0) {
+          html += '<button class="btn btn--outlined" id="prevBtn">' + DanskApp.backArrowSvg() + ' Previous</button>';
+        } else {
+          html += '<div></div>';
+        }
+        if (leafIdx < leaves.length - 1) {
+          html += '<button class="btn btn--primary" id="nextBtn">Next ' + DanskApp.checkSvg(12) + '</button>';
+        } else {
+          html += '<a href="quiz.html?chapter=' + chapterId + '" class="btn btn--coral">Take Quiz</a>';
+        }
+        html += '</div>';
+
+        document.getElementById('studyContent').innerHTML = html;
+
+        // Mark as read handler
+        document.getElementById('markReadBtn').addEventListener('click', function() {
+          DanskProgress.markSectionRead(sectionId);
+          renderToc();
+          renderContent();
+        });
+
+        // Nav handlers
+        var prevBtn = document.getElementById('prevBtn');
+        var nextBtn = document.getElementById('nextBtn');
+        if (prevBtn) {
+          prevBtn.addEventListener('click', function() { loadSection(leaves[leafIdx - 1].id); });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener('click', function() {
+            if (!DanskProgress.isSectionRead(sectionId)) {
+              DanskProgress.markSectionRead(sectionId);
+            }
+            loadSection(leaves[leafIdx + 1].id);
+          });
+        }
+
+        // Vocab tooltips
+        setupVocabTooltips();
+      }
+
+      // Highlight vocab terms in text
+      function highlightVocab(text, refs) {
+        if (!refs || refs.length === 0 || !window.DANSK_VOCAB) return DanskApp.escapeHtml(text);
+
+        var escaped = DanskApp.escapeHtml(text);
+        refs.forEach(function(ref) {
+          var entry = window.DANSK_VOCAB[ref];
+          if (!entry) return;
+          // Try to find the Danish term in the text (case-insensitive)
+          var regex = new RegExp('(' + escapeRegex(entry.da) + ')', 'gi');
+          escaped = escaped.replace(regex, '<span class="vocab-term" data-vocab="' + ref + '">$1</span>');
+        });
+        return escaped;
+      }
+
+      function escapeRegex(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      // Vocab tooltips
+      function setupVocabTooltips() {
+        var activeTooltip = null;
+
+        document.querySelectorAll('.vocab-term').forEach(function(el) {
+          el.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (activeTooltip) { activeTooltip.remove(); activeTooltip = null; }
+
+            var ref = el.getAttribute('data-vocab');
+            var entry = window.DANSK_VOCAB ? window.DANSK_VOCAB[ref] : null;
+            if (!entry) return;
+
+            var tip = document.createElement('div');
+            tip.className = 'vocab-tooltip';
+            tip.innerHTML = '<div class="vocab-tooltip__da">' + DanskApp.escapeHtml(entry.da) + '</div>' +
+              '<div class="vocab-tooltip__en">' + DanskApp.escapeHtml(entry.en) + '</div>';
+            el.style.position = 'relative';
+            el.appendChild(tip);
+            activeTooltip = tip;
+          });
+        });
+
+        document.addEventListener('click', function() {
+          if (activeTooltip) { activeTooltip.remove(); activeTooltip = null; }
+        });
+      }
+
+      // Language toggle — re-render TOC and content on switch
+      DanskApp.initLangToggle(function() {
+        renderToc();
+        if (sectionId) renderContent();
+      });
+
+      // Dynamic content script loading
+      var chNum = chapterId.replace('ch', '');
+      var script = document.createElement('script');
+      script.src = 'data/content-ch' + chNum + '.js';
+      script.onload = function() {
+        renderToc();
+        // Auto-select first section if none specified
+        if (!sectionId && leaves.length > 0) {
+          // Find first unread section
+          var first = leaves.find(function(l) { return !DanskProgress.isSectionRead(l.id); });
+          if (!first) first = leaves[0];
+          loadSection(first.id);
+        } else if (sectionId) {
+          renderContent();
+        }
+      };
+      script.onerror = function() {
+        renderToc();
+        document.getElementById('studyContent').innerHTML =
+          '<div style="text-align:center; padding:64px 24px; color:var(--gray-50);">' +
+          '<p>Content for this chapter is not yet available.</p></div>';
+      };
+      document.head.appendChild(script);
+    })();
+  </script>
+
+</body>
+</html>
