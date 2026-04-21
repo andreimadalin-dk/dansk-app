@@ -1469,21 +1469,16 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
 }
 
-/* Pin the stats sidebar while the chapter list scrolls. align-self:start is
-   required so the grid cell doesn't stretch to the full column height —
-   sticky only works when the element is shorter than its scrolling ancestor. */
+/* Pin the stats sidebar in place. align-self:start is required so the grid
+   cell doesn't stretch to the full column height — sticky only works when
+   the element is shorter than its scrolling ancestor. The sidebar itself
+   does NOT scroll; it simply stays put while the chapter list scrolls. */
 .home-col--progress {
   position: sticky;
   /* Sits just below the sticky header (header height ≈ 50px + 19+16 padding). */
   top: 104px;
   align-self: start;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  /* Hide scrollbar chrome; content should rarely overflow on desktop. */
-  scrollbar-width: thin;
 }
-.home-col--progress::-webkit-scrollbar { width: 6px; }
-.home-col--progress::-webkit-scrollbar-thumb { background: var(--cream-deep); border-radius: 3px; }
 
 .home-header__right {
   display: flex;
@@ -1702,8 +1697,6 @@ a { color: inherit; text-decoration: none; }
      doesn't hog the viewport above the chapter list. */
   .home-col--progress {
     position: static;
-    max-height: none;
-    overflow: visible;
   }
 }
 @media (max-width: 900px) {
