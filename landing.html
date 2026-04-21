@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danish Citizenship Test — Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- PP Acma (self-hosted) ---------- */
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 100;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Thin.otf') format('opentype'),
+           url('fonts/PPAcma-Thin.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Light.otf') format('opentype'),
+           url('fonts/PPAcma-Light.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Book.otf') format('opentype'),
+           url('fonts/PPAcma-Book.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Medium.otf') format('opentype'),
+           url('fonts/PPAcma-Medium.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Semibold.otf') format('opentype'),
+           url('fonts/PPAcma-Semibold.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Bold.otf') format('opentype'),
+           url('fonts/PPAcma-Bold.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Black.otf') format('opentype'),
+           url('fonts/PPAcma-Black.ttf') format('truetype');
+    }
+
+    :root {
+      --bg: #fffaf5;
+      --fg: #2d2a22;
+      --red: #ed4f3e;
+      --mint: #e2fffe;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .landing {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      padding: 19px 24px 19px 24px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    /* ---------- Header ---------- */
+    .landing__header {
+      display: grid;
+      grid-template-columns: 1fr minmax(0, 497px) 1fr;
+      align-items: start;
+      gap: 24px;
+      padding: 0 0 0 0;
+    }
+
+    /* Logo cluster */
+    .logo {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding-left: 0;
+    }
+
+    .logo__text {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 65.123px;
+      line-height: 0.81;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--fg);
+      white-space: nowrap;
+    }
+
+    .logo__stack {
+      position: relative;
+      width: 14px;
+      height: 51px; /* total stack height from Figma (17 → 68) */
+      padding-top: 0;
+      flex: 0 0 14px;
+    }
+
+    .logo__stack svg { display: block; }
+
+    .logo__globe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 14px;
+      height: 14px;
+    }
+
+    .logo__halves {
+      position: absolute;
+      top: 17.11px; /* 34.11 - 17 offset in Figma */
+      left: 0;
+      width: 14px;
+      height: 14px;
+    }
+
+    .logo__dk {
+      position: absolute;
+      top: 37px; /* 54 - 17 offset in Figma */
+      left: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo__dk svg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .logo__dk-text {
+      position: relative;
+      font-family: 'PP Acma', sans-serif;
+      font-weight: 900;
+      font-size: 6.5px;
+      line-height: 1;
+      color: var(--fg);
+      letter-spacing: -0.02em;
+      /* Optical centering: fonts sit above the baseline, nudge down slightly */
+      transform: translateY(0.25px);
+    }
+
+    /* Tagline */
+    .tagline {
+      max-width: 497px;
+      margin: 0 auto;
+      text-align: center;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--fg);
+      padding-top: 2px;
+    }
+
+    /* Menu button */
+    .menu-btn {
+      justify-self: end;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--fg);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-btn svg {
+      display: block;
+    }
+
+    /* ---------- Main (wheel) ---------- */
+    .landing__main {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 820px;
+    }
+
+    .wheel {
+      position: relative;
+      width: 744px;   /* Figma: 743.454 */
+      height: 744px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wheel__ring {
+      position: absolute;
+      inset: 0;
+      animation: wheel-spin 60s linear infinite;
+      will-change: transform;
+    }
+
+    .wheel__ring--inner {
+      animation-duration: 45s;
+      animation-direction: reverse;
+    }
+
+    @keyframes wheel-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wheel__ring {
+        animation: none;
+      }
+    }
+
+    .wheel__char {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      line-height: 0.81;
+      color: var(--fg);
+      text-transform: uppercase;
+      user-select: none;
+      /* The inline style sets the --angle and --radius; we compose here */
+      transform:
+        translate(-50%, -50%)
+        rotate(var(--angle))
+        translateY(calc(-1 * var(--radius)));
+      transform-origin: 50% 50%;
+      font-size: var(--size, 64px);
+      letter-spacing: var(--spacing, 0);
+    }
+
+    /* Red START button — sits at the center of the wheel */
+    .start-btn {
+      position: relative;
+      z-index: 3;
+      width: 204px;
+      height: 204px;
+      border-radius: 50%;
+      background: var(--red);
+      color: var(--mint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 50.847px;
+      line-height: 0.81;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    /* 2026 label below the START button, near the outer ring bottom */
+    .wheel__year {
+      position: absolute;
+      left: 50%;
+      /* Figma: year centre y = 728 in a 743.45 container → 97.9% of wheel height */
+      top: calc(50% + 216px);
+      transform: translateX(-50%);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--fg);
+      z-index: 2;
+    }
+
+    /* ---------- Footer ---------- */
+    .landing__footer {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: 24px;
+      padding: 0 0 0 0;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--fg);
+    }
+
+    .landing__footer span:nth-child(1) { text-align: left; }
+    .landing__footer span:nth-child(2) { text-align: center; }
+    .landing__footer span:nth-child(3) { text-align: right; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .landing {
+        padding: 16px 16px;
+      }
+      .landing__header {
+        grid-template-columns: auto 1fr auto;
+        gap: 12px;
+      }
+      .logo__text { font-size: 44px; }
+      .tagline { font-size: 15px; }
+      .menu-btn { width: 40px; height: 40px; }
+      .wheel {
+        width: 92vw;
+        height: 92vw;
+        max-width: 560px;
+        max-height: 560px;
+      }
+      .start-btn {
+        width: 150px;
+        height: 150px;
+        font-size: 36px;
+      }
+      .wheel__year {
+        top: calc(50% + 160px);
+        font-size: 16px;
+      }
+      .landing__footer { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="landing">
+
+    <!-- Header -->
+    <header class="landing__header">
+      <div class="logo">
+        <div class="logo__text">DCT</div>
+        <div class="logo__stack" aria-hidden="true">
+          <!-- Globe icon (top) -->
+          <svg class="logo__globe" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#globeClip)">
+              <circle cx="7" cy="7" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+              <path d="M7 0.328125C7.31428 0.328125 7.63942 0.472462 7.96387 0.786133C8.2899 1.10133 8.59896 1.57301 8.86523 2.18164C9.39736 3.39794 9.73438 5.10132 9.73438 7C9.73438 8.89868 9.39736 10.6021 8.86523 11.8184C8.59896 12.427 8.2899 12.8987 7.96387 13.2139C7.63942 13.5275 7.31428 13.6719 7 13.6719C6.68572 13.6719 6.36058 13.5275 6.03613 13.2139C5.7101 12.8987 5.40104 12.427 5.13477 11.8184C4.60264 10.6021 4.26562 8.89868 4.26562 7C4.26562 5.10132 4.60264 3.39794 5.13477 2.18164C5.40104 1.57301 5.7101 1.10133 6.03613 0.786133C6.36058 0.472462 6.68572 0.328125 7 0.328125Z" stroke="#2D2A22" stroke-width="0.65625"/>
+              <path d="M0.21875 7H13.5625" stroke="#2D2A22" stroke-width="0.65625"/>
+              <circle cx="7" cy="17.0625" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+              <circle cx="7" cy="-3.0625" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+            </g>
+            <defs>
+              <clipPath id="globeClip">
+                <rect width="14" height="14" rx="7" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+
+          <!-- Two-half composition: outlined dome (top) + filled dome flipped (bottom) -->
+          <svg class="logo__halves" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 0.388672C10.5207 0.388672 13.3974 3.14106 13.5986 6.61133H0.401367C0.602589 3.14106 3.47928 0.388672 7 0.388672Z" stroke="#2D2A22" stroke-width="0.777778"/>
+            <path d="M7 14C3.13401 14 0 10.866 0 7H14C14 10.866 10.866 14 7 14Z" fill="#2D2A22"/>
+          </svg>
+
+          <!-- DK circle (bottom) -->
+          <div class="logo__dk">
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+              <circle cx="7" cy="7" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+            </svg>
+            <span class="logo__dk-text">DK</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="tagline">
+        Practice for the Danish citizenship test at your own pace. Build your knowledge, grow your confidence — one step at a time.
+      </p>
+
+      <button class="menu-btn" aria-label="Open menu" type="button">
+        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="0" y1="7" x2="20" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="0" y1="13" x2="20" y2="13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main: rotating wheel + START -->
+    <main class="landing__main">
+      <div class="wheel" id="wheel">
+        <div class="wheel__ring" id="outerRing" aria-hidden="true"></div>
+        <div class="wheel__ring wheel__ring--inner" id="innerRing" aria-hidden="true"></div>
+
+        <a class="start-btn" href="index.html" aria-label="Start the Danish Citizenship Test experience">START</a>
+
+        <div class="wheel__year" aria-hidden="true">2026</div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="landing__footer">
+      <span>LIttle Studio</span>
+      <span>Danish Citizenship test</span>
+      <span>©2026</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      // Outer ring: 28 letters — Danish uppercase alphabet minus W, plus Æ Ø Å.
+      // Matches the Figma text-path: "abcdefghijklmnopqrstuvxyzæøå" (UPPER case).
+      var outerLetters = 'ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ'.split('');
+      // Inner ring: 12 stylised glyphs, matching Figma's inner text-path look.
+      var innerChars = ['#', '$', '?', '&', '{', '}', ':', '.', '*', '@', '¿', '!'];
+
+      function placeRing(containerId, chars, radius, size, spacing) {
+        var container = document.getElementById(containerId);
+        if (!container) return;
+        var count = chars.length;
+        for (var i = 0; i < count; i++) {
+          var angle = (i / count) * 360;
+          var span = document.createElement('span');
+          span.className = 'wheel__char';
+          span.textContent = chars[i];
+          span.style.setProperty('--angle', angle + 'deg');
+          span.style.setProperty('--radius', radius + 'px');
+          span.style.setProperty('--size', size + 'px');
+          if (spacing) span.style.setProperty('--spacing', spacing + 'px');
+          container.appendChild(span);
+        }
+      }
+
+      // Figma: outer text baseline at r=246.5, font 110.67px PP Acma Semibold.
+      // CSS positions each glyph by its centre, so we shift radius outward
+      // to place the glyph's visual centre where the baseline would sit.
+      placeRing('outerRing', outerLetters, 275, 110, 1.7);
+      // Figma: inner text baseline at r=148.7, same 110.67 font size.
+      placeRing('innerRing', innerChars, 180, 96, 0);
+    })();
+  </script>
+</body>
+</html>

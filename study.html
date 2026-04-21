@@ -6,15 +6,19 @@
   <title>Læs — Indfødsretsprøven</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/tokens.css?v=6">
-  <link rel="stylesheet" href="css/app.css?v=6">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css?v=4">
+  <link rel="stylesheet" href="css/app.css?v=4">
 </head>
 <body>
 
   <nav class="top-nav">
     <a href="index.html" class="top-nav__title">Indfødsretsprøven</a>
     <div class="top-nav__right">
+      <a id="reelsLink" href="reels.html" class="btn btn--outlined btn--sm" style="font-size:12px; padding:4px 12px; display:inline-flex; align-items:center; gap:5px;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 2l8 6-8 6V2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reels
+      </a>
       <div id="authWidget"></div>
     </div>
   </nav>
@@ -68,6 +72,9 @@
       if (!chapter) { window.location.href = 'index.html'; return; }
 
       var leaves = DanskApp.getLeafSections(chapterId);
+
+      // Update reels link with chapter
+      document.getElementById('reelsLink').href = 'reels.html?chapter=' + chapterId;
 
       // Set sidebar header
       function updateSidebarHeader() {
@@ -132,6 +139,74 @@
         document.getElementById('contentPanel').scrollTop = 0;
       }
 
+      // Chapter hero images (from unsplash.com — all verified)
+      var HERO_IMAGES = {
+        'ch1': 'https://images.unsplash.com/photo-1567108077905-f8a10e69a5a6?w=1200&h=500&fit=crop',  // Viking ship, Norway
+        'ch2': 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=1200&h=500&fit=crop',  // Nyhavn, Copenhagen
+        'ch3': 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=1200&h=500&fit=crop',      // Nyhavn daytime
+        'ch4': 'https://images.unsplash.com/photo-1649281014163-4df345e37cd6?w=1200&h=500&fit=crop',   // Danish church on hill
+        'ch5': 'https://images.unsplash.com/photo-1759675739458-6e5a4a60a117?w=1200&h=500&fit=crop',   // Aurora borealis
+        'ch6': 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=1200&h=500&fit=crop'    // Rolling green hills
+      };
+
+      // Section-specific images for inline figures (from unsplash.com — all verified)
+      var SECTION_IMAGES = {
+        // Intro
+        'ch1-s1':     { src: 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=800&h=400&fit=crop', caption: 'Danmark — over tusind år som selvstændig stat' },
+        // Viking Age
+        'ch1-s2-ss1': { src: 'https://images.unsplash.com/photo-1741309485091-0edd5aceab8d?w=800&h=400&fit=crop', caption: 'Vikingeskibet — symbolet på den nordiske ekspansion' },
+        'ch1-s2-ss2': { src: 'https://images.unsplash.com/photo-1772950399275-81eea958d92b?w=800&h=400&fit=crop', caption: 'Havet — vikingernes vej til omverdenen' },
+        'ch1-s2-ss3': { src: 'https://images.unsplash.com/photo-1759675739458-6e5a4a60a117?w=800&h=400&fit=crop', caption: 'Nordlys — naturens magi i den nordiske verden' },
+        // Middle Ages
+        'ch1-s3-ss1': { src: 'https://images.unsplash.com/photo-1580513860129-dee8825dfe44?w=800&h=400&fit=crop', caption: 'Middelalderens fæstninger vidner om magtkampe' },
+        'ch1-s3-ss2': { src: 'https://images.unsplash.com/photo-1649281014163-4df345e37cd6?w=800&h=400&fit=crop', caption: 'Den danske kirke — centrum for middelalderens samfund' },
+        // Reformation & Swedish Wars
+        'ch1-s4-ss1': { src: 'https://images.unsplash.com/photo-1746714164463-b6fd498dd1cb?w=800&h=400&fit=crop', caption: 'Bindingsværk — europæisk arkitektur fra reformationens tid' },
+        'ch1-s4-ss2': { src: 'https://images.unsplash.com/photo-1761816484796-728b83cc56c6?w=800&h=400&fit=crop', caption: 'Fæstningsværker — vidne til svenskekrigenes tid' },
+        'ch1-s4-ss3': { src: 'https://images.unsplash.com/photo-1732475972128-9d2d1437866f?w=800&h=400&fit=crop', caption: 'Kanoner — magt og militær i enevældens Danmark' },
+        // Seafaring
+        'ch1-s5':     { src: 'https://images.unsplash.com/photo-1717252654577-74b6963f163f?w=800&h=400&fit=crop', caption: 'Sejlskibe — Danmarks forbindelse til verdenshavene' },
+        // Enlightenment & Democracy
+        'ch1-s6-ss1': { src: 'https://images.unsplash.com/photo-1566977881883-50c9a3c98af2?w=800&h=400&fit=crop', caption: 'Det danske landskab — forandret af landboreformerne' },
+        'ch1-s6-ss2': { src: 'https://images.unsplash.com/photo-1671707606091-7093027c63ee?w=800&h=400&fit=crop', caption: 'Søfart og handel — den florissante periodes rigdom' },
+        'ch1-s6-ss3': { src: 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=800&h=400&fit=crop', caption: 'Nyhavn — symbolet på vejen til demokrati og frihed' },
+        // Schleswig Wars
+        'ch1-s7-ss1': { src: 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=800&h=400&fit=crop', caption: 'Dannebrog — Danmarks flag i kamp for Slesvig' },
+        'ch1-s7-ss2': { src: 'https://images.unsplash.com/photo-1674074471770-215788e1097c?w=800&h=400&fit=crop', caption: 'Kanoner på slagmarken — nederlaget i 1864' },
+        // Industrialization
+        'ch1-s8-ss1': { src: 'https://images.unsplash.com/reserve/0Ad9yHP8QdCYBUqKxoiw_Stockholmsnow.jpg?w=800&h=400&fit=crop', caption: 'Industrien forandrede byerne og samfundet' },
+        'ch1-s8-ss2': { src: 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=800&h=400&fit=crop', caption: 'Landbruget — grundlaget for andelsbevægelsen' },
+        'ch1-s8-ss3': { src: 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=800&h=400&fit=crop', caption: 'København — centrum for demokratisk forandring' },
+        'ch1-s8-ss4': { src: 'https://images.unsplash.com/photo-1581952449676-b59f9fc1b746?w=800&h=400&fit=crop', caption: 'Stemmerettens kamp — kvindebevægelsens mærke' },
+        // WWI & Interwar
+        'ch1-s9-ss1': { src: 'https://images.unsplash.com/photo-1572966901946-e5c9ac18c283?w=800&h=400&fit=crop', caption: 'Skyttegrave — Første Verdenskrigs gru' },
+        'ch1-s9-ss2': { src: 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=800&h=400&fit=crop', caption: 'Sundhedskrisen — den spanske syges hærgen' },
+        'ch1-s9-ss3': { src: 'https://images.unsplash.com/photo-1743004964641-770e1a528526?w=800&h=400&fit=crop', caption: 'Danmark genforenet — Sønderjylland vender hjem' },
+        'ch1-s9-ss4': { src: 'https://images.unsplash.com/photo-1563195416-6fa1b3187194?w=800&h=400&fit=crop', caption: 'Krisetider — fra økonomisk krise til socialreformer' },
+        // WWII
+        'ch1-s10-ss1': { src: 'https://images.unsplash.com/photo-1683480678669-6a603f08d345?w=800&h=400&fit=crop', caption: 'Soldater i krig — besættelsens mørke tid' },
+        'ch1-s10-ss2': { src: 'https://images.unsplash.com/photo-1772950399275-81eea958d92b?w=800&h=400&fit=crop', caption: 'Havet til Sverige — flugtruten for danske jøder' },
+        'ch1-s10-ss3': { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop', caption: 'Island — fra dansk til selvstændig nation' },
+        'ch1-s10-ss4': { src: 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=800&h=400&fit=crop', caption: 'Dannebrog — befrielsens symbol den 5. maj 1945' },
+        // Cold War & Welfare
+        'ch1-s11-ss1': { src: 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=800&h=400&fit=crop', caption: 'Europa delt — den kolde krigs alliancer' },
+        'ch1-s11-ss2': { src: 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=800&h=400&fit=crop', caption: 'Velfærdsstatens Danmark tager form' },
+        'ch1-s11-ss3': { src: 'https://images.unsplash.com/photo-1581952449676-b59f9fc1b746?w=800&h=400&fit=crop', caption: 'Ungdomsoprør — nye stemmer i samfundsdebatten' },
+        // Modern Denmark
+        'ch1-s12-ss1': { src: 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=800&h=400&fit=crop', caption: 'EU-flaget — Danmark i det europæiske fællesskab' },
+        'ch1-s12-ss2': { src: 'https://images.unsplash.com/reserve/0Ad9yHP8QdCYBUqKxoiw_Stockholmsnow.jpg?w=800&h=400&fit=crop', caption: 'Energikrisen forandrede det danske samfund' },
+        'ch1-s12-ss3': { src: 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=800&h=400&fit=crop', caption: 'København — en by i politisk forandring' },
+        'ch1-s12-ss4': { src: 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=800&h=400&fit=crop', caption: 'Miljøbevægelsen — ny bevidsthed om naturen' },
+        // Contemporary
+        'ch1-s13-ss1': { src: 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=800&h=400&fit=crop', caption: 'Det nye Europa — Berlinmurens fald åbnede nye muligheder' },
+        'ch1-s13-ss2': { src: 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=800&h=400&fit=crop', caption: 'Danmark i en globaliseret verden' },
+        'ch1-s13-ss3': { src: 'https://images.unsplash.com/photo-1683480678669-6a603f08d345?w=800&h=400&fit=crop', caption: 'Danmark i internationale konflikter' },
+        'ch1-s13-ss4': { src: 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=800&h=400&fit=crop', caption: 'København — fra krise til økonomisk opsving' },
+        'ch1-s13-ss5': { src: 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=800&h=400&fit=crop', caption: 'Velfærdsstatens udfordringer i det 21. århundrede' },
+        'ch1-s13-ss6': { src: 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=800&h=400&fit=crop', caption: 'Sundhedskrise — pandemien ramte hele verden' },
+        'ch1-s13-ss7': { src: 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=800&h=400&fit=crop', caption: 'Dannebrog — Danmarks demokrati i en ny tid' }
+      };
+
       // Render content
       function renderContent() {
         var contentObj = DanskApp.getContentObj(chapterId);
@@ -146,26 +221,69 @@
 
         var leaf = leaves.find(function(l) { return l.id === sectionId; });
         var leafIdx = leaves.findIndex(function(l) { return l.id === sectionId; });
+        var heroImg = HERO_IMAGES[chapterId] || HERO_IMAGES['ch1'];
+        var parentTitle = leaf && leaf.parentSection ? leaf.parentSection.titleDa : chapter.titleDa;
 
         var html = '';
-        html += '<div class="study-content__title-wrap">';
-        html += '<div class="study-content__title">' + DanskApp.escapeHtml(entry.titleDa) + '</div>';
+
+        // === Hero Banner ===
+        html += '<div class="article-hero">';
+        html += '<img class="article-hero__img" src="' + heroImg + '" alt="" loading="eager">';
+        html += '<div class="article-hero__overlay"></div>';
+        html += '<div class="article-hero__content">';
+        html += '<div class="article-hero__kicker">Kapitel ' + chapter.number + ' — ' + DanskApp.escapeHtml(parentTitle) + '</div>';
+        html += '<h1 class="article-hero__title">' + DanskApp.escapeHtml(entry.titleDa) + '</h1>';
+        html += '</div>';
         html += '</div>';
 
+        // === Article Body ===
+        html += '<div class="article-body">';
+
+        // Pull quote (summary)
         if (entry.summary) {
-          html += '<div class="study-content__summary">' + DanskApp.escapeHtml(entry.summary) + '</div>';
+          html += '<blockquote class="article-pullquote">' + DanskApp.escapeHtml(entry.summary) + '</blockquote>';
         }
 
-        // Paragraphs
-        entry.paragraphs.forEach(function(p) {
+        // Paragraphs with drop cap on first
+        var figureInserted = false;
+        var sectionFigure = SECTION_IMAGES[sectionId];
+
+        entry.paragraphs.forEach(function(p, idx) {
           var textDa = highlightVocab(p.textDa, p.vocabRefs || []);
-          html += '<p class="study-paragraph">' + textDa + '</p>';
+          if (idx === 0) {
+            html += '<p class="study-paragraph study-paragraph--dropcap">' + textDa + '</p>';
+          } else {
+            html += '<p class="study-paragraph">' + textDa + '</p>';
+          }
+
+          // Insert inline figure after 2nd paragraph if available
+          if (idx === 1 && sectionFigure && !figureInserted) {
+            html += '<figure class="article-figure">';
+            html += '<img src="' + sectionFigure.src + '" alt="" loading="lazy">';
+            if (sectionFigure.caption) {
+              html += '<figcaption class="article-figure__caption">' + sectionFigure.caption + '</figcaption>';
+            }
+            html += '</figure>';
+            figureInserted = true;
+          }
         });
 
-        // Key Facts
+        // Decorative divider before key facts
+        if (entry.keyFacts && entry.keyFacts.length > 0) {
+          html += '<div class="article-divider">';
+          html += '<div class="article-divider__line"></div>';
+          html += '<div class="article-divider__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1l2.2 4.4L15 6l-3.5 3.4.8 4.6L8 11.8 3.7 14l.8-4.6L1 6l4.8-.6L8 1z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+          html += '<div class="article-divider__line"></div>';
+          html += '</div>';
+        }
+
+        html += '</div>'; // close .article-body
+
+        // Key Facts (full-width section)
         if (entry.keyFacts && entry.keyFacts.length > 0) {
           html += '<div class="key-facts">';
-          html += '<div class="key-facts__title">Vigtige fakta</div>';
+          html += '<div class="key-facts__title" style="max-width:660px; margin:0 auto 18px;">Vigtige fakta</div>';
+          html += '<div class="key-facts__grid" style="max-width:660px; margin:0 auto;">';
           entry.keyFacts.forEach(function(f) {
             html += '<div class="key-fact">' +
               '<div class="key-fact__icon">' + DanskApp.factIcon(f.type) + '</div>' +
@@ -176,11 +294,12 @@
             '</div>';
           });
           html += '</div>';
+          html += '</div>';
         }
 
         // Mark as read button
         var isRead = DanskProgress.isSectionRead(sectionId);
-        html += '<div style="text-align:center; margin:24px 0 8px;">' +
+        html += '<div style="text-align:center; margin:32px 0 8px;">' +
           '<button class="btn ' + (isRead ? 'btn--primary' : 'btn--outlined') + '" id="markReadBtn">' +
             (isRead ? DanskApp.checkSvg(12) + ' Læst' : 'Markér som læst') +
           '</button>' +

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Reels — Indfødsretsprøven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css?v=5">
+  <link rel="stylesheet" href="css/app.css?v=5">
+  <style>
+    /* === Reels — TikTok-style vertical snap scroll === */
+    body.reels-body {
+      overflow: hidden;
+      background: #000;
+      height: 100dvh;
+    }
+    .reels-body .top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+      border-bottom: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .reels-container {
+      height: 100dvh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .reel {
+      height: 100dvh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .reel__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .reel__bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.45) saturate(1.2);
+      transition: filter 0.4s;
+    }
+    .reel:hover .reel__bg img,
+    .reel.active .reel__bg img {
+      filter: brightness(0.35) saturate(1.3);
+    }
+    .reel__gradient {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.92) 0%,
+        rgba(0,0,0,0.6) 30%,
+        rgba(0,0,0,0.15) 55%,
+        transparent 100%
+      );
+    }
+    .reel__content {
+      position: relative;
+      z-index: 2;
+      padding: 0 24px 100px;
+      max-width: 600px;
+      animation: reelSlideUp 0.5s ease-out both;
+    }
+    @keyframes reelSlideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reel__kicker {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-mint);
+      margin-bottom: 8px;
+    }
+    .reel__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 8vw, 64px);
+      line-height: 0.95;
+      color: #fff;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .reel__summary {
+      font-size: 15px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 20px;
+      max-width: 440px;
+    }
+    .reel__facts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .reel__fact {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 12px 14px;
+      animation: factPop 0.4s ease-out both;
+    }
+    .reel__fact:nth-child(1) { animation-delay: 0.15s; }
+    .reel__fact:nth-child(2) { animation-delay: 0.3s; }
+    .reel__fact:nth-child(3) { animation-delay: 0.45s; }
+    @keyframes factPop {
+      from { opacity: 0; transform: translateX(-16px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .reel__fact-icon {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      margin-top: 1px;
+    }
+    .reel__fact-icon--date { background: rgba(99,102,241,0.25); color: #a5b4fc; }
+    .reel__fact-icon--person { background: rgba(244,114,182,0.25); color: #f9a8d4; }
+    .reel__fact-icon--concept { background: rgba(52,211,153,0.25); color: #6ee7b7; }
+    .reel__fact-icon--place { background: rgba(251,191,36,0.25); color: #fcd34d; }
+    .reel__fact-text {
+      font-size: 13px;
+      line-height: 1.4;
+      color: rgba(255,255,255,0.9);
+    }
+    .reel__fact-label {
+      font-weight: 700;
+      color: #fff;
+      display: block;
+      margin-bottom: 1px;
+    }
+    .reel__actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .reel__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .reel__btn--primary {
+      background: var(--accent-mint);
+      color: #0f172a;
+    }
+    .reel__btn--primary:hover { background: #5cffc8; transform: scale(1.04); }
+    .reel__btn--ghost {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .reel__btn--ghost:hover { background: rgba(255,255,255,0.18); }
+
+    /* Side progress dots */
+    .reels-progress {
+      position: fixed;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+    }
+    .reels-progress__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .reels-progress__dot.active {
+      background: var(--accent-mint);
+      width: 8px;
+      height: 8px;
+      box-shadow: 0 0 8px var(--accent-mint);
+    }
+    .reels-counter {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 1px;
+    }
+
+    /* Swipe hint animation */
+    .reels-hint {
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+      animation: hintBounce 2s ease-in-out infinite;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+    .reels-hint.hidden { opacity: 0; }
+    @keyframes hintBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
+    }
+
+    /* Chapter picker overlay */
+    .reels-picker {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .reels-picker.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .reels-picker__inner {
+      text-align: center;
+      max-width: 420px;
+      padding: 32px;
+    }
+    .reels-picker__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .reels-picker__subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 28px;
+    }
+    .reels-picker__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .reels-picker__card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: block;
+    }
+    .reels-picker__card:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: var(--accent-mint);
+      transform: translateY(-2px);
+    }
+    .reels-picker__card-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--accent-mint);
+    }
+    .reels-picker__card-title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      .reel__content { padding: 0 18px 90px; }
+      .reel__title { font-size: clamp(30px, 9vw, 48px); }
+      .reel__summary { font-size: 14px; }
+      .reels-progress { right: 8px; gap: 4px; }
+      .reels-progress__dot { width: 4px; height: 4px; }
+      .reels-progress__dot.active { width: 6px; height: 6px; }
+    }
+  </style>
+</head>
+<body class="reels-body">
+
+  <nav class="top-nav">
+    <a href="index.html" class="top-nav__title">Indfødsretsprøven</a>
+    <div class="top-nav__right" style="display:flex; gap:12px; align-items:center;">
+      <button id="chapterPickerBtn" class="reel__btn reel__btn--ghost" style="padding:6px 14px; font-size:12px;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="10" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="10" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+        Kapitler
+      </button>
+      <a href="study.html" class="reel__btn reel__btn--ghost" style="padding:6px 14px; font-size:12px;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2h5v12H2zM9 2h5v12H9z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Artikel
+      </a>
+    </div>
+  </nav>
+
+  <div class="reels-container" id="reelsContainer"></div>
+  <div class="reels-progress" id="reelsProgress"></div>
+  <div class="reels-counter" id="reelsCounter"></div>
+  <div class="reels-hint" id="reelsHint">
+    <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Swipe op
+  </div>
+
+  <!-- Chapter Picker -->
+  <div class="reels-picker" id="chapterPicker">
+    <div class="reels-picker__inner">
+      <div class="reels-picker__title">Vælg kapitel</div>
+      <div class="reels-picker__subtitle">Swipe gennem historien i bid-størrelse kort</div>
+      <div class="reels-picker__grid" id="pickerGrid"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="data/chapters.js"></script>
+  <script src="data/vocabulary.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js?v=4"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    (function() {
+      var chapterId = DanskApp.getParam('chapter') || 'ch1';
+      var chapter = DanskApp.getChapter(chapterId);
+      if (!chapter) { window.location.href = 'index.html'; return; }
+
+      // Background images per section (reuse from study.html)
+      var REEL_IMAGES = {
+        'ch1-s1':      'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=900&h=1600&fit=crop',
+        'ch1-s2-ss1':  'https://images.unsplash.com/photo-1741309485091-0edd5aceab8d?w=900&h=1600&fit=crop',
+        'ch1-s2-ss2':  'https://images.unsplash.com/photo-1772950399275-81eea958d92b?w=900&h=1600&fit=crop',
+        'ch1-s2-ss3':  'https://images.unsplash.com/photo-1759675739458-6e5a4a60a117?w=900&h=1600&fit=crop',
+        'ch1-s3-ss1':  'https://images.unsplash.com/photo-1580513860129-dee8825dfe44?w=900&h=1600&fit=crop',
+        'ch1-s3-ss2':  'https://images.unsplash.com/photo-1649281014163-4df345e37cd6?w=900&h=1600&fit=crop',
+        'ch1-s4-ss1':  'https://images.unsplash.com/photo-1746714164463-b6fd498dd1cb?w=900&h=1600&fit=crop',
+        'ch1-s4-ss2':  'https://images.unsplash.com/photo-1761816484796-728b83cc56c6?w=900&h=1600&fit=crop',
+        'ch1-s4-ss3':  'https://images.unsplash.com/photo-1732475972128-9d2d1437866f?w=900&h=1600&fit=crop',
+        'ch1-s5':      'https://images.unsplash.com/photo-1717252654577-74b6963f163f?w=900&h=1600&fit=crop',
+        'ch1-s6-ss1':  'https://images.unsplash.com/photo-1566977881883-50c9a3c98af2?w=900&h=1600&fit=crop',
+        'ch1-s6-ss2':  'https://images.unsplash.com/photo-1671707606091-7093027c63ee?w=900&h=1600&fit=crop',
+        'ch1-s6-ss3':  'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=900&h=1600&fit=crop',
+        'ch1-s7-ss1':  'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=900&h=1600&fit=crop',
+        'ch1-s7-ss2':  'https://images.unsplash.com/photo-1674074471770-215788e1097c?w=900&h=1600&fit=crop',
+        'ch1-s8-ss1':  'https://images.unsplash.com/reserve/0Ad9yHP8QdCYBUqKxoiw_Stockholmsnow.jpg?w=900&h=1600&fit=crop',
+        'ch1-s8-ss2':  'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=900&h=1600&fit=crop',
+        'ch1-s8-ss3':  'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=900&h=1600&fit=crop',
+        'ch1-s8-ss4':  'https://images.unsplash.com/photo-1581952449676-b59f9fc1b746?w=900&h=1600&fit=crop',
+        'ch1-s9-ss1':  'https://images.unsplash.com/photo-1572966901946-e5c9ac18c283?w=900&h=1600&fit=crop',
+        'ch1-s9-ss2':  'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=900&h=1600&fit=crop',
+        'ch1-s9-ss3':  'https://images.unsplash.com/photo-1743004964641-770e1a528526?w=900&h=1600&fit=crop',
+        'ch1-s9-ss4':  'https://images.unsplash.com/photo-1563195416-6fa1b3187194?w=900&h=1600&fit=crop',
+        'ch1-s10-ss1': 'https://images.unsplash.com/photo-1683480678669-6a603f08d345?w=900&h=1600&fit=crop',
+        'ch1-s10-ss2': 'https://images.unsplash.com/photo-1772950399275-81eea958d92b?w=900&h=1600&fit=crop',
+        'ch1-s10-ss3': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&h=1600&fit=crop',
+        'ch1-s10-ss4': 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=900&h=1600&fit=crop',
+        'ch1-s11-ss1': 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=900&h=1600&fit=crop',
+        'ch1-s11-ss2': 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=900&h=1600&fit=crop',
+        'ch1-s11-ss3': 'https://images.unsplash.com/photo-1581952449676-b59f9fc1b746?w=900&h=1600&fit=crop',
+        'ch1-s12-ss1': 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=900&h=1600&fit=crop',
+        'ch1-s12-ss2': 'https://images.unsplash.com/reserve/0Ad9yHP8QdCYBUqKxoiw_Stockholmsnow.jpg?w=900&h=1600&fit=crop',
+        'ch1-s12-ss3': 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=900&h=1600&fit=crop',
+        'ch1-s12-ss4': 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=900&h=1600&fit=crop',
+        'ch1-s13-ss1': 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=900&h=1600&fit=crop',
+        'ch1-s13-ss2': 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=900&h=1600&fit=crop',
+        'ch1-s13-ss3': 'https://images.unsplash.com/photo-1683480678669-6a603f08d345?w=900&h=1600&fit=crop',
+        'ch1-s13-ss4': 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=900&h=1600&fit=crop',
+        'ch1-s13-ss5': 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=900&h=1600&fit=crop',
+        'ch1-s13-ss6': 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=900&h=1600&fit=crop',
+        'ch1-s13-ss7': 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=900&h=1600&fit=crop'
+      };
+
+      // Fallback image
+      var FALLBACK_IMG = 'https://images.unsplash.com/photo-1567108077905-f8a10e69a5a6?w=900&h=1600&fit=crop';
+
+      var FACT_ICONS = {
+        date:    '📅',
+        person:  '👤',
+        concept: '💡',
+        place:   '📍'
+      };
+
+      var leaves = DanskApp.getLeafSections(chapterId);
+      var currentIndex = 0;
+
+      // Chapter picker
+      function renderPicker() {
+        var grid = document.getElementById('pickerGrid');
+        var html = '';
+        window.DANSK_CHAPTERS.forEach(function(ch) {
+          var active = ch.id === chapterId ? ' style="border-color:var(--accent-mint);"' : '';
+          html += '<a class="reels-picker__card" href="reels.html?chapter=' + ch.id + '"' + active + '>' +
+            '<div class="reels-picker__card-num">' + ch.number + '</div>' +
+            '<div class="reels-picker__card-title">' + DanskApp.escapeHtml(ch.titleDa) + '</div>' +
+          '</a>';
+        });
+        grid.innerHTML = html;
+      }
+      renderPicker();
+
+      document.getElementById('chapterPickerBtn').addEventListener('click', function() {
+        document.getElementById('chapterPicker').classList.toggle('open');
+      });
+      document.getElementById('chapterPicker').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('open');
+      });
+
+      // Build reels from content
+      function buildReels(content) {
+        var container = document.getElementById('reelsContainer');
+        var progressEl = document.getElementById('reelsProgress');
+        var html = '';
+        var dots = '';
+
+        leaves.forEach(function(leaf, idx) {
+          var entry = content[leaf.id];
+          if (!entry) return;
+
+          var img = REEL_IMAGES[leaf.id] || FALLBACK_IMG;
+          var parentTitle = leaf.parentSection ? leaf.parentSection.titleDa : chapter.titleDa;
+
+          // Limit to 3 key facts max for the card
+          var facts = (entry.keyFacts || []).slice(0, 3);
+
+          html += '<div class="reel" data-index="' + idx + '" data-section="' + leaf.id + '">';
+          html += '  <div class="reel__bg"><img src="' + img + '" alt="" loading="' + (idx < 3 ? 'eager' : 'lazy') + '"></div>';
+          html += '  <div class="reel__gradient"></div>';
+          html += '  <div class="reel__content">';
+          html += '    <div class="reel__kicker">' + DanskApp.escapeHtml(parentTitle) + '</div>';
+          html += '    <h2 class="reel__title">' + DanskApp.escapeHtml(entry.titleDa) + '</h2>';
+
+          if (entry.summary) {
+            html += '  <div class="reel__summary">' + DanskApp.escapeHtml(entry.summary) + '</div>';
+          }
+
+          if (facts.length > 0) {
+            html += '  <div class="reel__facts">';
+            facts.forEach(function(f) {
+              var icon = FACT_ICONS[f.type] || '💡';
+              var iconClass = 'reel__fact-icon reel__fact-icon--' + (f.type || 'concept');
+              html += '<div class="reel__fact">';
+              html += '  <div class="' + iconClass + '">' + icon + '</div>';
+              html += '  <div class="reel__fact-text"><span class="reel__fact-label">' + DanskApp.escapeHtml(f.da) + '</span>' + DanskApp.escapeHtml(f.fact) + '</div>';
+              html += '</div>';
+            });
+            html += '  </div>';
+          }
+
+          html += '    <div class="reel__actions">';
+          html += '      <a href="study.html?chapter=' + chapterId + '&section=' + leaf.id + '" class="reel__btn reel__btn--primary">';
+          html += '        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 2h5v12H2zM9 2h5v12H9z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          html += '        Læs artiklen';
+          html += '      </a>';
+          html += '      <button class="reel__btn reel__btn--ghost reel-mark-read" data-section="' + leaf.id + '">';
+          html += (DanskProgress.isSectionRead(leaf.id) ? '✓ Læst' : 'Markér læst');
+          html += '      </button>';
+          html += '    </div>';
+
+          html += '  </div>';
+          html += '</div>';
+
+          dots += '<div class="reels-progress__dot' + (idx === 0 ? ' active' : '') + '" data-index="' + idx + '"></div>';
+        });
+
+        container.innerHTML = html;
+        progressEl.innerHTML = dots;
+        updateCounter(0);
+
+        // Mark read handlers
+        container.querySelectorAll('.reel-mark-read').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var sid = btn.getAttribute('data-section');
+            DanskProgress.markSectionRead(sid);
+            btn.textContent = '✓ Læst';
+            btn.style.borderColor = 'var(--accent-mint)';
+            btn.style.color = 'var(--accent-mint)';
+          });
+        });
+
+        // Progress dot click handlers
+        progressEl.querySelectorAll('.reels-progress__dot').forEach(function(dot) {
+          dot.addEventListener('click', function() {
+            var idx = parseInt(dot.getAttribute('data-index'));
+            var reels = container.querySelectorAll('.reel');
+            if (reels[idx]) reels[idx].scrollIntoView({ behavior: 'smooth' });
+          });
+        });
+
+        // Scroll tracking
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting && e.intersectionRatio > 0.6) {
+              var idx = parseInt(e.target.getAttribute('data-index'));
+              currentIndex = idx;
+              updateCounter(idx);
+              updateDots(idx);
+              // Hide swipe hint after first scroll
+              document.getElementById('reelsHint').classList.add('hidden');
+            }
+          });
+        }, { root: container, threshold: 0.6 });
+
+        container.querySelectorAll('.reel').forEach(function(reel) {
+          observer.observe(reel);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            navigateReel(1);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            navigateReel(-1);
+          }
+        });
+      }
+
+      function navigateReel(dir) {
+        var next = currentIndex + dir;
+        var reels = document.querySelectorAll('.reel');
+        if (next >= 0 && next < reels.length) {
+          reels[next].scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+
+      function updateCounter(idx) {
+        document.getElementById('reelsCounter').textContent = (idx + 1) + ' / ' + leaves.length;
+      }
+
+      function updateDots(idx) {
+        document.querySelectorAll('.reels-progress__dot').forEach(function(d, i) {
+          d.classList.toggle('active', i === idx);
+        });
+      }
+
+      // Load content
+      var chNum = chapterId.replace('ch', '');
+      var script = document.createElement('script');
+      script.src = 'data/content-ch' + chNum + '.js';
+      script.onload = function() {
+        var content = DanskApp.getContentObj(chapterId);
+        buildReels(content);
+
+        // Jump to section if specified in URL
+        var targetSection = DanskApp.getParam('section');
+        if (targetSection) {
+          var idx = leaves.findIndex(function(l) { return l.id === targetSection; });
+          if (idx > 0) {
+            setTimeout(function() {
+              document.querySelectorAll('.reel')[idx].scrollIntoView();
+            }, 100);
+          }
+        }
+      };
+      document.head.appendChild(script);
+    })();
+  </script>
+
+</body>
+</html>

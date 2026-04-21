@@ -1,57 +1,40 @@
 :root {
-  /* ── Backgrounds ── */
-  --bg-page:       #ffffff;
-  --bg-surface:    #f5f5f5;
-  --bg-card:       #f5f5f5;
-  --bg-input:      #ffffff;
+  /* ── Dark backgrounds ── */
+  --bg-dark:       #23002b;   /* Deep purple — hero, nav, primary sections */
+  --bg-dark-alt:   #0d1f22;   /* Dark teal — alternate dark sections */
+  --bg-surface:    #2e0e38;   /* Slightly lighter purple — cards on dark */
+  --bg-light:      #fbfbfb;   /* Near-white — content/reading areas */
+  --white:         #ffffff;
 
-  /* ── Accent ── */
-  --accent-green:  #b4f472;
-  --accent-green-hover: #a3e35f;
-  --accent-green-dark: #8fd44e;
+  /* ── Accent colors ── */
+  --accent-mint:   #94ffe5;   /* Mint/turquoise — primary CTA, highlights */
+  --accent-purple: #e894ff;   /* Light purple — secondary accent, headings */
+  --accent-orange: #f0a830;   /* Warm amber — progress, stats */
+  --accent-pink:   #ff68a8;   /* Pink — signal/error states */
 
   /* ── Text ── */
-  --text-primary:  #111111;
-  --text-secondary: #555555;
-  --text-muted:    #888888;
-  --text-on-green: #111111;
+  --text-on-dark:  #eae7eb;   /* Light text on dark backgrounds */
+  --text-muted:    rgba(255,255,255,0.45);  /* Dimmed text on dark */
+  --text-dark:     #231c24;   /* Dark text on light backgrounds */
+  --text-body:     #333333;   /* Body text on light */
 
   /* ── Borders ── */
-  --border:        #222222;
-  --border-light:  #dddddd;
-  --border-width:  1.5px;
+  --border-dark:   rgba(255,255,255,0.10);  /* Subtle border on dark */
+  --border-light:  rgba(0,0,0,0.08);        /* Subtle border on light */
+
+  /* ── Legacy aliases (keep old references working) ── */
+  --cream:         #23002b;
+  --black:         #eae7eb;
+  --gray-50:       rgba(255,255,255,0.45);
+  --gray-30:       rgba(255,255,255,0.25);
+  --dark-red:      #94ffe5;
+  --darkest-red:   #23002b;
+  --coral:         #94ffe5;
+  --border:        rgba(255,255,255,0.10);
 
   /* ── Feedback ── */
   --success:       #4caf50;
-  --success-bg:    rgba(76,175,80,0.12);
-  --error:         #e53935;
-  --error-bg:      rgba(229,57,53,0.08);
-
-  /* ── Misc ── */
-  --radius-card:   24px;
-  --radius-btn:    9999px;
-  --radius-input:  12px;
-  --radius-sm:     10px;
-
-  /* ── Legacy aliases ── */
-  --bg-dark:       #ffffff;
-  --bg-dark-alt:   #f5f5f5;
-  --cream:         #ffffff;
-  --black:         #111111;
-  --gray-50:       #888888;
-  --gray-30:       #bbbbbb;
-  --dark-red:      #111111;
-  --darkest-red:   #ffffff;
-  --coral:         #b4f472;
-  --border-dark:   #222222;
-  --accent-mint:   #b4f472;
-  --accent-purple: #111111;
-  --accent-pink:   #e53935;
-  --accent-orange: #f0a830;
-  --text-on-dark:  #111111;
-  --text-dark:     #111111;
-  --text-body:     #333333;
-  --border-light-alias: #dddddd;
-  --progress-track: #e0e0e0;
-  --white:         #ffffff;
+  --success-bg:    rgba(76,175,80,0.15);
+  --error-bg:      rgba(255,104,168,0.15);
+  --progress-track: rgba(255,255,255,0.08);
 }
