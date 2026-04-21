@@ -110,6 +110,80 @@
       padding: 0 0 0 0;
     }
 
+    /* Logo cluster */
+    .logo {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding-left: 0;
+    }
+
+    .logo__text {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 65.123px;
+      line-height: 0.81;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--fg);
+      white-space: nowrap;
+    }
+
+    .logo__stack {
+      position: relative;
+      width: 14px;
+      height: 51px; /* total stack height from Figma (17 → 68) */
+      padding-top: 0;
+      flex: 0 0 14px;
+    }
+
+    .logo__stack svg { display: block; }
+
+    .logo__globe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 14px;
+      height: 14px;
+    }
+
+    .logo__halves {
+      position: absolute;
+      top: 17.11px; /* 34.11 - 17 offset in Figma */
+      left: 0;
+      width: 14px;
+      height: 14px;
+    }
+
+    .logo__dk {
+      position: absolute;
+      top: 37px; /* 54 - 17 offset in Figma */
+      left: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo__dk svg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .logo__dk-text {
+      position: relative;
+      font-family: 'PP Acma', sans-serif;
+      font-weight: 900;
+      font-size: 6.5px;
+      line-height: 1;
+      color: var(--fg);
+      letter-spacing: -0.02em;
+      /* Optical centering: fonts sit above the baseline, nudge down slightly */
+      transform: translateY(0.25px);
+    }
+
     /* Tagline */
     .tagline {
       max-width: 497px;
