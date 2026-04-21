@@ -1,40 +1,50 @@
 :root {
-  /* ── Dark backgrounds ── */
-  --bg-dark:       #23002b;   /* Deep purple — hero, nav, primary sections */
-  --bg-dark-alt:   #0d1f22;   /* Dark teal — alternate dark sections */
-  --bg-surface:    #2e0e38;   /* Slightly lighter purple — cards on dark */
-  --bg-light:      #fbfbfb;   /* Near-white — content/reading areas */
+  /* ── Landing-page palette (source of truth) ── */
+  --bg:            #fffaf5;   /* Cream — body and large surfaces */
+  --fg:            #2d2a22;   /* Near-black — headings, body text, logo */
+  --red:           #ed4f3e;   /* Coral red — primary CTA, accents */
+  --red-hover:     #d8402f;   /* Slightly darker red for hover */
+  --mint:          #e2fffe;   /* Pale mint — CTA text on red, highlights */
+  --cream-alt:     #f6efe4;   /* Subtle warm surface for cards/sections */
+  --cream-deep:    #ece4d6;   /* Deeper cream for subtle dividers/hover */
+
+  /* ── Backgrounds (token names kept for legacy references) ── */
+  --bg-dark:       var(--bg);          /* Repurposed: page background */
+  --bg-dark-alt:   var(--cream-alt);   /* Alternate cream surface */
+  --bg-surface:    #ffffff;            /* White cards on cream */
+  --bg-light:      #ffffff;            /* Pure white for reading areas */
   --white:         #ffffff;
 
-  /* ── Accent colors ── */
-  --accent-mint:   #94ffe5;   /* Mint/turquoise — primary CTA, highlights */
-  --accent-purple: #e894ff;   /* Light purple — secondary accent, headings */
-  --accent-orange: #f0a830;   /* Warm amber — progress, stats */
-  --accent-pink:   #ff68a8;   /* Pink — signal/error states */
+  /* ── Accents ── */
+  --accent-mint:    var(--red);    /* Primary CTA colour → red now */
+  --accent-purple:  var(--fg);     /* Heading accent → dark */
+  --accent-orange:  var(--red);    /* Progress/stats → red */
+  --accent-pink:    var(--red);    /* Signal/error → red */
 
   /* ── Text ── */
-  --text-on-dark:  #eae7eb;   /* Light text on dark backgrounds */
-  --text-muted:    rgba(255,255,255,0.45);  /* Dimmed text on dark */
-  --text-dark:     #231c24;   /* Dark text on light backgrounds */
-  --text-body:     #333333;   /* Body text on light */
+  --text-on-dark:   var(--fg);                  /* text on cream = dark */
+  --text-muted:     rgba(45, 42, 34, 0.55);     /* Dimmed dark text */
+  --text-dark:      var(--fg);
+  --text-body:      var(--fg);
 
   /* ── Borders ── */
-  --border-dark:   rgba(255,255,255,0.10);  /* Subtle border on dark */
-  --border-light:  rgba(0,0,0,0.08);        /* Subtle border on light */
+  --border-dark:    rgba(45, 42, 34, 0.12);     /* Subtle dark border on cream */
+  --border-light:   rgba(45, 42, 34, 0.12);
 
   /* ── Legacy aliases (keep old references working) ── */
-  --cream:         #23002b;
-  --black:         #eae7eb;
-  --gray-50:       rgba(255,255,255,0.45);
-  --gray-30:       rgba(255,255,255,0.25);
-  --dark-red:      #94ffe5;
-  --darkest-red:   #23002b;
-  --coral:         #94ffe5;
-  --border:        rgba(255,255,255,0.10);
+  --cream:          var(--bg);
+  --black:          var(--fg);
+  --gray-50:        rgba(45, 42, 34, 0.55);
+  --gray-30:        rgba(45, 42, 34, 0.30);
+  --dark-red:       var(--red);
+  --darkest-red:    var(--red-hover);
+  --coral:          var(--red);
+  --border:         rgba(45, 42, 34, 0.12);
 
   /* ── Feedback ── */
-  --success:       #4caf50;
-  --success-bg:    rgba(76,175,80,0.15);
-  --error-bg:      rgba(255,104,168,0.15);
-  --progress-track: rgba(255,255,255,0.08);
+  --success:        #2f7a3a;
+  --success-bg:     rgba(47, 122, 58, 0.10);
+  --error:          var(--red);
+  --error-bg:       rgba(237, 79, 62, 0.10);
+  --progress-track: rgba(45, 42, 34, 0.10);
 }
