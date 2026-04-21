@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/tokens.css?v=7">
-  <link rel="stylesheet" href="css/app.css?v=7">
+  <link rel="stylesheet" href="css/tokens.css?v=8">
+  <link rel="stylesheet" href="css/app.css?v=8">
   <style>
     /* Keep top-nav hidden on the dashboard — header lives inside .home-shell */
     body { background: var(--bg); }
@@ -19,13 +19,35 @@
 
   <div class="home-shell">
     <header class="home-header">
-      <a href="landing.html" class="home-logo" aria-label="Indfødsretsprøven — forside">
-        <span class="home-logo__text">DCT</span>
-        <svg class="home-logo__mark" width="16" height="22" viewBox="0 0 16 22" fill="none" aria-hidden="true">
-          <circle cx="8" cy="14" r="6" fill="#ed4f3e"/>
-          <path d="M8 2 V 7" stroke="#2d2a22" stroke-width="1.4" stroke-linecap="round"/>
-          <circle cx="8" cy="2" r="1.2" fill="#2d2a22"/>
-        </svg>
+      <a href="landing.html" class="logo" aria-label="Indfødsretsprøven — forside">
+        <span class="logo__text">DCT</span>
+        <span class="logo__stack" aria-hidden="true">
+          <!-- Globe icon (top) -->
+          <svg class="logo__globe" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#logoGlobeClip)">
+              <circle cx="7" cy="7" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+              <path d="M7 0.328125V13.6719" stroke="#2D2A22" stroke-width="0.65625"/>
+              <path d="M0.328125 7H13.6719" stroke="#2D2A22" stroke-width="0.65625"/>
+              <path d="M7 0.328125C8.66927 2.12348 9.60938 4.50991 9.60938 7C9.60938 9.49009 8.66927 11.8765 7 13.6719" stroke="#2D2A22" stroke-width="0.65625"/>
+              <path d="M7 0.328125C5.33073 2.12348 4.39062 4.50991 4.39062 7C4.39062 9.49009 5.33073 11.8765 7 13.6719" stroke="#2D2A22" stroke-width="0.65625"/>
+            </g>
+            <defs>
+              <clipPath id="logoGlobeClip"><rect width="14" height="14"/></clipPath>
+            </defs>
+          </svg>
+          <!-- Two-half composition: outlined dome (top) + filled dome flipped (bottom) -->
+          <svg class="logo__halves" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 0.388672C10.5207 0.388672 13.3974 3.14106 13.5986 6.61133H0.401367C0.602589 3.14106 3.47928 0.388672 7 0.388672Z" stroke="#2D2A22" stroke-width="0.777778"/>
+            <path d="M7 14C3.13401 14 0 10.866 0 7H14C14 10.866 10.866 14 7 14Z" fill="#2D2A22"/>
+          </svg>
+          <!-- DK circle (bottom) -->
+          <span class="logo__dk">
+            <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+              <circle cx="7" cy="7" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+            </svg>
+            <span class="logo__dk-text">DK</span>
+          </span>
+        </span>
       </a>
       <div class="home-header__right">
         <div id="authWidget"></div>
