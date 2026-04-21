@@ -1351,13 +1351,274 @@ a { color: inherit; text-decoration: none; }
   color: var(--accent-mint);
 }
 
+/* === Home dashboard (index.html) — Figma match === */
+.home-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 40px 96px;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 80px;
+}
+
+.home-logo {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 4px;
+  color: var(--fg);
+  text-decoration: none;
+}
+.home-logo__text {
+  font-family: 'PP Acma', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 58px;
+  line-height: 0.81;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.home-logo__mark {
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.home-header__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-menu {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 0;
+  color: var(--mint);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  text-decoration: none;
+  padding: 0;
+}
+.home-menu:hover { background: var(--red-hover); transform: scale(1.04); }
+.home-menu svg { display: block; }
+
+.home-layout {
+  display: grid;
+  grid-template-columns: 343px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.home-sectionLabel {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--fg);
+  margin: 0 0 24px 0;
+  line-height: 1.1;
+  text-transform: none;
+}
+
+/* Stat tiles (left column) */
+.stat-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.stat-tile {
+  background: var(--cream-alt);
+  border-radius: 12px;
+  padding: 20px 22px;
+  min-height: 134px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.stat-tile:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(45, 42, 34, 0.06);
+}
+.stat-tile__label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0;
+}
+.stat-tile__value {
+  font-family: 'PP Acma', 'Inter', sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--fg);
+}
+
+/* Chapter rows (right column) */
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.chapter-row {
+  background: var(--cream-alt);
+  border-radius: 16px;
+  padding: 26px 28px 28px 24px;
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  gap: 24px;
+  align-items: start;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.chapter-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(45, 42, 34, 0.06);
+}
+.chapter-row__num {
+  font-family: 'PP Acma', 'Inter', sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--fg);
+  line-height: 1;
+  padding-top: 4px;
+}
+.chapter-row__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.chapter-row__title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--fg);
+  line-height: 1.15;
+  margin: 0;
+}
+.chapter-row__desc {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--fg);
+  max-width: 560px;
+  margin: 0 0 18px 0;
+}
+.chapter-row__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.chapter-row__progress {
+  flex: 1 1 260px;
+  max-width: 340px;
+  min-width: 220px;
+}
+.chapter-row__progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 10px;
+}
+.chapter-row__progress .progress-bar {
+  height: 6px;
+  border-radius: 3px;
+}
+.chapter-row__progress .progress-bar__fill {
+  background: var(--red);
+  border-radius: 3px;
+}
+.chapter-row__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.chapter-row__links {
+  display: flex;
+  gap: 14px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.chapter-row__links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.chapter-row__links a:hover { color: var(--red); }
+
+/* Pill button (used in chapter rows) */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 42, 34, 0.25);
+  background: transparent;
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.15s;
+  cursor: pointer;
+  min-width: 92px;
+  text-align: center;
+}
+.btn-pill:hover { border-color: var(--red); color: var(--red); }
+.btn-pill--primary {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--mint);
+}
+.btn-pill--primary:hover {
+  background: var(--red-hover);
+  border-color: var(--red-hover);
+  color: var(--mint);
+  transform: translateY(-1px);
+}
+
 /* === Responsive === */
+@media (max-width: 980px) {
+  .home-layout { grid-template-columns: 1fr; gap: 32px; }
+  .home-shell { padding: 28px 24px 64px; }
+  .home-header { margin-bottom: 40px; }
+}
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .chapter-grid { grid-template-columns: 1fr; }
   .hero__title { font-size: 48px; }
   .two-panel { flex-direction: column; }
   .panel-left { width: 100%; min-width: auto; max-height: 40vh; }
+
+  .home-logo__text { font-size: 44px; }
+  .chapter-row { grid-template-columns: 48px 1fr; padding: 20px; gap: 16px; }
+  .chapter-row__title { font-size: 22px; }
+  .chapter-row__num { font-size: 24px; }
+  .chapter-row__foot { flex-direction: column; align-items: stretch; }
+  .chapter-row__actions { flex-direction: row; justify-content: space-between; align-items: center; }
 
   .article-hero { min-height: 260px; }
   .article-hero__content { padding: 24px 20px; }
