@@ -1443,14 +1443,21 @@ a { color: inherit; text-decoration: none; }
 .home-shell {
   /* Matches landing.html .landing padding so the logo sits at the same
      top/left coordinates when navigating between pages. */
-  padding: 19px 24px 96px;
+  padding: 0 24px 96px;
 }
 
 .home-header {
+  /* Pin the logo + hamburger to the top on scroll. Padding is inside the
+     sticky container so the cream background covers content sliding under. */
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 64px;
+  padding: 19px 0 16px;
+  margin-bottom: 48px;
 }
 
 .home-layout {
@@ -1461,6 +1468,22 @@ a { color: inherit; text-decoration: none; }
   max-width: 1400px;
   margin: 0 auto;
 }
+
+/* Pin the stats sidebar while the chapter list scrolls. align-self:start is
+   required so the grid cell doesn't stretch to the full column height —
+   sticky only works when the element is shorter than its scrolling ancestor. */
+.home-col--progress {
+  position: sticky;
+  /* Sits just below the sticky header (header height ≈ 50px + 19+16 padding). */
+  top: 104px;
+  align-self: start;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  /* Hide scrollbar chrome; content should rarely overflow on desktop. */
+  scrollbar-width: thin;
+}
+.home-col--progress::-webkit-scrollbar { width: 6px; }
+.home-col--progress::-webkit-scrollbar-thumb { background: var(--cream-deep); border-radius: 3px; }
 
 .home-header__right {
   display: flex;
@@ -1675,9 +1698,17 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 980px) {
   .home-layout { grid-template-columns: 1fr; gap: 32px; }
   .home-header { margin-bottom: 40px; }
+  /* On narrow screens the layout is one column — unpin the sidebar so it
+     doesn't hog the viewport above the chapter list. */
+  .home-col--progress {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
 }
 @media (max-width: 900px) {
-  .home-shell { padding: 16px 16px 64px; }
+  .home-shell { padding: 0 16px 64px; }
+  .home-header { padding: 16px 0 12px; }
 }
 @media (max-width: 900px) {
   .logo__text { font-size: 44px; }
