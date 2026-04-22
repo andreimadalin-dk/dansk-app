@@ -196,9 +196,16 @@
       padding-top: 2px;
     }
 
+    /* Right-side action cluster: auth widget + menu button */
+    .landing__actions {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     /* Menu button */
     .menu-btn {
-      justify-self: end;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -209,10 +216,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .menu-btn svg {
       display: block;
+    }
+
+    /* Auth widget overrides — make the logged-out "Log ind" pill feel at
+       home next to the solid dark menu button. The logged-in avatar keeps
+       its default app.css styling (32px circle). */
+    .landing #authWidget .btn--outlined.btn--sm {
+      height: 38px;
+      padding: 0 18px;
+      font-size: 12px;
+      border-width: 1.5px;
+      border-color: var(--fg);
+      color: var(--fg);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .landing #authWidget .btn--outlined.btn--sm:hover {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
     }
 
     /* ---------- Main (wheel) ---------- */
@@ -342,6 +369,12 @@
       .logo__text { font-size: 44px; }
       .tagline { font-size: 15px; }
       .menu-btn { width: 40px; height: 40px; }
+      .landing__actions { gap: 8px; }
+      .landing #authWidget .btn--outlined.btn--sm {
+        height: 32px;
+        padding: 0 14px;
+        font-size: 11px;
+      }
       .wheel {
         width: 92vw;
         height: 92vw;
@@ -360,6 +393,11 @@
       .landing__footer { font-size: 12px; }
     }
   </style>
+  <!-- Loaded AFTER inline styles so app.css can provide btn/modal/auth-widget
+       classes, but all landing-specific layout (.landing, .menu-btn, .tagline,
+       .logo, wheel) is defined above and not overridden. -->
+  <link rel="stylesheet" href="css/tokens.css?v=12">
+  <link rel="stylesheet" href="css/app.css?v=12">
 </head>
 <body>
   <div class="landing">
@@ -405,13 +443,18 @@
         Practice for the Danish citizenship test at your own pace. Build your knowledge, grow your confidence — one step at a time.
       </p>
 
-      <button class="menu-btn" aria-label="Open menu" type="button">
-        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <line x1="0" y1="7" x2="20" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <line x1="0" y1="13" x2="20" y2="13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </button>
+      <div class="landing__actions">
+        <!-- auth.js injects either a "Log ind" pill or the avatar dropdown here -->
+        <div id="authWidget"></div>
+
+        <button class="menu-btn" aria-label="Open menu" type="button">
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="0" y1="7" x2="20" y2="7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="0" y1="13" x2="20" y2="13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
     </header>
 
     <!-- Main: rotating wheel + START -->
@@ -467,5 +510,15 @@
       placeRing('innerRing', innerChars, 180, 96, 0);
     })();
   </script>
+
+  <!-- Auth: Firebase SDK + project config + progress + auth widget. Loaded
+       here (not in the head) so the wheel paints first; auth.js attaches
+       to #authWidget once onAuthStateChanged fires. -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/progress.js?v=2"></script>
+  <script src="js/auth.js?v=4"></script>
 </body>
 </html>

@@ -1,11 +1,27 @@
 // Progress tracking with localStorage + Firestore cloud sync + SM-2 spaced repetition
 // Exposes: window.DanskProgress
+//
+// Storage policy (v2): Progress is ONLY persisted while the user is logged in.
+//   • Logged-out writes are no-ops — progress vanishes on reload.
+//   • On login, localStorage is populated from Firestore.
+//   • On logout, localStorage is wiped (clearLocal) so stats reset.
+// This makes the account the single source of truth; browsing without an
+// account is effectively read-only / ephemeral.
 
 (function() {
   var KEY = 'dansk-app-progress';
   var saveTimer = null;
 
+  function isLoggedIn() {
+    return !!(window.DanskAuth && DanskAuth.isLoggedIn());
+  }
+
   function getStore() {
+    // Without a login, nothing is persisted — always return a fresh default.
+    // (getStore() is called on every read; mutations to the returned object
+    // only stick if save() actually writes, which it won't when logged out.)
+    if (!isLoggedIn()) return defaultStore();
+
     try {
       var raw = localStorage.getItem(KEY);
       return raw ? JSON.parse(raw) : defaultStore();
@@ -15,15 +31,15 @@
   }
 
   function save(store) {
-    // Always write to localStorage (fast, offline-capable)
+    // Guard: only persist progress for authenticated users. Logged-out
+    // users see ephemeral state that resets on reload.
+    if (!isLoggedIn()) return;
+
     try {
       localStorage.setItem(KEY, JSON.stringify(store));
     } catch (e) { /* storage full or unavailable */ }
 
-    // If logged in, also write to Firestore (debounced)
-    if (window.DanskAuth && DanskAuth.isLoggedIn()) {
-      debouncedFirestoreSave(store);
-    }
+    debouncedFirestoreSave(store);
   }
 
   function debouncedFirestoreSave(store) {
@@ -360,6 +376,14 @@
         flashcardsMastered: mastered,
         streak: this.getStreak()
       };
+    },
+
+    // === Local cache ===
+    // Called by auth.js on sign-out to wipe the cached progress blob so
+    // any stats rendered from it (streaks, progress bars, etc.) reset.
+    // Cloud data is preserved — a later sign-in restores it via syncOnLogin.
+    clearLocal: function() {
+      localStorage.removeItem(KEY);
     },
 
     // === Reset ===

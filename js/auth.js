@@ -40,11 +40,24 @@
 
   // === Auth state ===
   auth.onAuthStateChanged(function(user) {
-    var justLoggedIn = !currentUser && !!user;
+    var justLoggedIn  = !currentUser && !!user;
+    var justLoggedOut = !!currentUser && !user;
     currentUser = user;
 
     if (justLoggedIn && window.DanskProgress && DanskProgress.syncOnLogin) {
       DanskProgress.syncOnLogin(user.uid);
+    }
+
+    // On sign-out, wipe cached progress and reload so every stats widget
+    // redraws from the empty default store. (Cloud data stays intact and
+    // is restored on the next sign-in.)
+    if (justLoggedOut) {
+      if (window.DanskProgress && DanskProgress.clearLocal) {
+        DanskProgress.clearLocal();
+      }
+      // Defer reload so Firebase can finish its state flush.
+      setTimeout(function() { window.location.reload(); }, 50);
+      return;
     }
 
     renderAuthUI();
