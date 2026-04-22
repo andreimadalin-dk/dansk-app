@@ -5,20 +5,14 @@
 
 (function() {
   var firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyC0HOnySIeRpQAhWCy7CIT8VHdqnjmHBLU",
+    authDomain: "danish-citizenship-test.firebaseapp.com",
+    projectId: "danish-citizenship-test",
+    storageBucket: "danish-citizenship-test.firebasestorage.app",
+    messagingSenderId: "270493644003",
+    appId: "1:270493644003:web:cc89a2c17198b94142c1d6",
+    measurementId: "G-TS39B76JE4"
   };
-
-  // Guard: if placeholder config, skip Firebase init entirely
-  if (firebaseConfig.apiKey === "YOUR_API_KEY") {
-    console.info('Firebase: Using placeholder config — auth disabled. Replace config in js/firebase-config.js to enable.');
-    window.DanskFirebase = null;
-    return;
-  }
 
   try {
     firebase.initializeApp(firebaseConfig);
