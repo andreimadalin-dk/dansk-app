@@ -34,8 +34,7 @@
 
     window.DanskFirebase = {
       auth: firebase.auth(),
-      db: firebase.firestore(),
-      googleProvider: new firebase.auth.GoogleAuthProvider()
+      db: firebase.firestore()
     };
   } catch (e) {
     console.warn('Firebase init failed:', e);
