@@ -96,22 +96,11 @@
   <script src="js/firebase-config.js"></script>
 
   <script src="data/chapters.js"></script>
-  <script src="js/progress.js?v=2"></script>
+  <script src="js/progress.js?v=3"></script>
   <script src="js/app.js?v=5"></script>
   <script src="js/auth.js?v=4"></script>
   <script>
     (function() {
-      // === Stats ===
-      var stats = DanskProgress.getOverallStats();
-      document.getElementById('statSections').textContent =
-        stats.sectionsRead + '/' + stats.sectionsTotal;
-      document.getElementById('statQuiz').textContent = stats.quizAttempted > 0
-        ? Math.round((stats.quizCorrect / stats.quizAttempted) * 100) + '%'
-        : '—';
-      document.getElementById('statCards').textContent = stats.flashcardsMastered;
-      document.getElementById('statStreak').textContent = stats.streak + 'd';
-
-      // === Chapter rows ===
       var CHAPTER_BLURBS = {
         ch1: 'Danmarks historie strækker sig fra de første bosættelser efter istiden til vikingetid, middelalder og moderne demokrati — et samlet rige formet af krig, reformer og kultur.',
         ch2: 'Danmarks demokrati blev grundlagt med Grundloven i 1849, hvor enevælden blev afskaffet. Siden har demokratiet udviklet sig med flere rettigheder og større indflydelse til borgerne.',
@@ -121,45 +110,66 @@
         ch6: 'Tværgående temaopslag om ligestilling, bæredygtighed, medier og religion — bindeledet mellem historie, politik og nutid, som samler centrale emner til prøven.'
       };
 
-      var list = document.getElementById('chapterList');
-      var html = '';
+      // Reads progress state and repaints the dashboard. Called once on
+      // load and again whenever progress.js fires `dansk:progress-changed`
+      // (typically right after Firestore sync completes post-login).
+      function render() {
+        // === Stats ===
+        var stats = DanskProgress.getOverallStats();
+        document.getElementById('statSections').textContent =
+          stats.sectionsRead + '/' + stats.sectionsTotal;
+        document.getElementById('statQuiz').textContent = stats.quizAttempted > 0
+          ? Math.round((stats.quizCorrect / stats.quizAttempted) * 100) + '%'
+          : '—';
+        document.getElementById('statCards').textContent = stats.flashcardsMastered;
+        document.getElementById('statStreak').textContent = stats.streak + 'd';
 
-      DANSK_CHAPTERS.forEach(function(ch, idx) {
-        var prog = DanskProgress.getChapterProgress(ch.id);
-        var pct = prog.total > 0 ? Math.round((prog.read / prog.total) * 100) : 0;
-        var num = String(ch.number).padStart(2, '0');
-        var desc = CHAPTER_BLURBS[ch.id] || ch.summaryDa || '';
+        // === Chapter rows ===
+        var list = document.getElementById('chapterList');
+        var html = '';
 
-        html +=
-          '<article class="chapter-row">' +
-            '<div class="chapter-row__num">' + num + '</div>' +
-            '<div class="chapter-row__body">' +
-              '<h3 class="chapter-row__title">' + DanskApp.escapeHtml(ch.titleDa) + '</h3>' +
-              (desc
-                ? '<p class="chapter-row__desc">' + DanskApp.escapeHtml(desc) + '</p>'
-                : '') +
-              '<div class="chapter-row__foot">' +
-                '<div class="chapter-row__progress">' +
-                  '<div class="chapter-row__progress-labels">' +
-                    '<span>Progress</span>' +
-                    '<span>' + prog.read + '/' + prog.total + '</span>' +
+        DANSK_CHAPTERS.forEach(function(ch, idx) {
+          var prog = DanskProgress.getChapterProgress(ch.id);
+          var pct = prog.total > 0 ? Math.round((prog.read / prog.total) * 100) : 0;
+          var num = String(ch.number).padStart(2, '0');
+          var desc = CHAPTER_BLURBS[ch.id] || ch.summaryDa || '';
+
+          html +=
+            '<article class="chapter-row">' +
+              '<div class="chapter-row__num">' + num + '</div>' +
+              '<div class="chapter-row__body">' +
+                '<h3 class="chapter-row__title">' + DanskApp.escapeHtml(ch.titleDa) + '</h3>' +
+                (desc
+                  ? '<p class="chapter-row__desc">' + DanskApp.escapeHtml(desc) + '</p>'
+                  : '') +
+                '<div class="chapter-row__foot">' +
+                  '<div class="chapter-row__progress">' +
+                    '<div class="chapter-row__progress-labels">' +
+                      '<span>Progress</span>' +
+                      '<span>' + prog.read + '/' + prog.total + '</span>' +
+                    '</div>' +
+                    '<div class="progress-bar"><div class="progress-bar__fill" style="width:' + pct + '%"></div></div>' +
                   '</div>' +
-                  '<div class="progress-bar"><div class="progress-bar__fill" style="width:' + pct + '%"></div></div>' +
-                '</div>' +
-                '<div class="chapter-row__actions">' +
-                  '<a href="study.html?chapter=' + ch.id + '" class="btn-pill btn-pill--primary">Start</a>' +
-                  '<div class="chapter-row__links">' +
-                    '<a href="reels.html?chapter=' + ch.id + '">Reels</a>' +
-                    '<a href="quiz.html?chapter=' + ch.id + '">Quiz</a>' +
-                    '<a href="flashcards.html?chapter=' + ch.id + '">Flashkort</a>' +
+                  '<div class="chapter-row__actions">' +
+                    '<a href="study.html?chapter=' + ch.id + '" class="btn-pill btn-pill--primary">Start</a>' +
+                    '<div class="chapter-row__links">' +
+                      '<a href="reels.html?chapter=' + ch.id + '">Reels</a>' +
+                      '<a href="quiz.html?chapter=' + ch.id + '">Quiz</a>' +
+                      '<a href="flashcards.html?chapter=' + ch.id + '">Flashkort</a>' +
+                    '</div>' +
                   '</div>' +
                 '</div>' +
               '</div>' +
-            '</div>' +
-          '</article>';
-      });
+            '</article>';
+        });
 
-      list.innerHTML = html;
+        list.innerHTML = html;
+      }
+
+      render();
+      // Re-render once cloud progress has been synced (or whenever any
+      // other component signals the store changed).
+      window.addEventListener('dansk:progress-changed', render);
     })();
   </script>
 

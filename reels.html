@@ -361,7 +361,7 @@
   <script src="js/firebase-config.js"></script>
   <script src="data/chapters.js"></script>
   <script src="data/vocabulary.js"></script>
-  <script src="js/progress.js?v=2"></script>
+  <script src="js/progress.js?v=3"></script>
   <script src="js/app.js?v=4"></script>
   <script src="js/auth.js?v=4"></script>
   <script>
@@ -599,6 +599,24 @@
         }
       };
       document.head.appendChild(script);
+
+      // When progress.js signals the store changed (cloud sync after
+      // login, cross-tab update, etc.), refresh each reel's "Læst"
+      // button in place — no need to rebuild the whole feed.
+      window.addEventListener('dansk:progress-changed', function() {
+        document.querySelectorAll('.reel-mark-read').forEach(function(btn) {
+          var sid = btn.getAttribute('data-section');
+          var isRead = DanskProgress.isSectionRead(sid);
+          btn.textContent = isRead ? '✓ Læst' : 'Markér læst';
+          if (isRead) {
+            btn.style.borderColor = 'var(--accent-mint)';
+            btn.style.color = 'var(--accent-mint)';
+          } else {
+            btn.style.borderColor = '';
+            btn.style.color = '';
+          }
+        });
+      });
     })();
   </script>
 

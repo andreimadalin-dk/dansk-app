@@ -106,7 +106,7 @@
 
   <script src="data/chapters.js"></script>
   <script src="data/flashcard-facts.js"></script>
-  <script src="js/progress.js?v=2"></script>
+  <script src="js/progress.js?v=3"></script>
   <script src="js/app.js?v=4"></script>
   <script src="js/auth.js?v=4"></script>
   <script>
@@ -283,6 +283,12 @@
 
       // Initial deck build
       rebuildDeck();
+
+      // Rebuild once cloud progress arrives (post-login sync) so the
+      // deck reflects which cards the user already has learned elsewhere.
+      window.addEventListener('dansk:progress-changed', function() {
+        rebuildDeck();
+      });
     })();
   </script>
 

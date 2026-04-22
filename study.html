@@ -61,7 +61,7 @@
 
   <script src="data/chapters.js"></script>
   <script src="data/vocabulary.js"></script>
-  <script src="js/progress.js?v=2"></script>
+  <script src="js/progress.js?v=3"></script>
   <script src="js/app.js?v=4"></script>
   <script src="js/auth.js?v=4"></script>
   <script>
@@ -416,6 +416,15 @@
           '<p>Indhold for dette kapitel er endnu ikke tilgængeligt.</p></div>';
       };
       document.head.appendChild(script);
+
+      // Re-render sidebar + content whenever progress.js signals the
+      // backing store changed (e.g. Firestore finished syncing after login,
+      // or a background cloud reset). Keeps check marks and the sidebar
+      // progress bar in sync without forcing the user to refresh.
+      window.addEventListener('dansk:progress-changed', function() {
+        renderToc();
+        if (sectionId) renderContent();
+      });
     })();
   </script>
 

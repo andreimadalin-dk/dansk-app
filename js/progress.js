@@ -2,25 +2,44 @@
 // Exposes: window.DanskProgress
 //
 // Storage policy (v2): Progress is ONLY persisted while the user is logged in.
-//   • Logged-out writes are no-ops — progress vanishes on reload.
-//   • On login, localStorage is populated from Firestore.
+//   • Logged-out mutations live in an in-memory cache for the current tab
+//     so the UI still reacts to "mark as read" etc., but vanish on reload.
+//   • On login, localStorage is populated from Firestore and a
+//     `dansk:progress-changed` event fires so pages can re-render.
 //   • On logout, localStorage is wiped (clearLocal) so stats reset.
-// This makes the account the single source of truth; browsing without an
-// account is effectively read-only / ephemeral.
+// The account is the single source of truth; browsing without an account
+// is effectively read-only / ephemeral.
 
 (function() {
   var KEY = 'dansk-app-progress';
   var saveTimer = null;
+  // In-memory store used when there is no authenticated user — either
+  // the user is signed out, or auth hasn't finished restoring yet on a
+  // fresh page load. Mutations here are visible to the current session's
+  // UI but never written to localStorage or Firestore.
+  var memStore = null;
 
   function isLoggedIn() {
     return !!(window.DanskAuth && DanskAuth.isLoggedIn());
   }
 
+  function dispatchChanged() {
+    // Tell every page in this tab that the progress store has new data
+    // (cloud sync finished, remote wipe happened, etc.). Pages listen
+    // for this event and re-render their progress widgets.
+    try {
+      window.dispatchEvent(new Event('dansk:progress-changed'));
+    } catch (e) { /* ancient browser without Event() constructor */ }
+  }
+
   function getStore() {
-    // Without a login, nothing is persisted — always return a fresh default.
-    // (getStore() is called on every read; mutations to the returned object
-    // only stick if save() actually writes, which it won't when logged out.)
-    if (!isLoggedIn()) return defaultStore();
+    // No auth yet: use (and lazily initialize) the in-memory store so
+    // the UI can reflect mutations during the session. None of it lands
+    // on disk — the next reload starts clean.
+    if (!isLoggedIn()) {
+      if (!memStore) memStore = defaultStore();
+      return memStore;
+    }
 
     try {
       var raw = localStorage.getItem(KEY);
@@ -31,9 +50,11 @@
   }
 
   function save(store) {
-    // Guard: only persist progress for authenticated users. Logged-out
-    // users see ephemeral state that resets on reload.
-    if (!isLoggedIn()) return;
+    // No auth yet: keep mutations alive in memory only.
+    if (!isLoggedIn()) {
+      memStore = store;
+      return;
+    }
 
     try {
       localStorage.setItem(KEY, JSON.stringify(store));
@@ -171,7 +192,19 @@
     syncOnLogin: function(uid) {
       if (!window.DanskFirebase) return;
 
-      var localStore = getStore();
+      // At this point isLoggedIn() is true, so getStore() reads from
+      // localStorage (which may be empty/stale on first load). Also fold
+      // in anything the user mutated before auth finished restoring —
+      // those sit in memStore, not localStorage.
+      var diskStore = (function() {
+        try {
+          var raw = localStorage.getItem(KEY);
+          return raw ? JSON.parse(raw) : defaultStore();
+        } catch (e) { return defaultStore(); }
+      })();
+      var localStore = memStore ? mergeStores(memStore, diskStore) : diskStore;
+      memStore = null; // absorbed into the authenticated flow
+
       var docRef = DanskFirebase.db.collection('users').doc(uid)
                      .collection('progress').doc('data');
 
@@ -188,9 +221,13 @@
             save(localStore);
           }
         }
+        // Notify pages so they can re-render with the freshly-synced state.
+        dispatchChanged();
       }).catch(function(err) {
         console.warn('Firestore sync failed:', err);
-        // Continue with localStorage only
+        // Still notify — pages should render whatever we have locally
+        // rather than stay stuck on their pre-auth empty state.
+        dispatchChanged();
       });
     },
 
@@ -384,6 +421,7 @@
     // Cloud data is preserved — a later sign-in restores it via syncOnLogin.
     clearLocal: function() {
       localStorage.removeItem(KEY);
+      memStore = null;
     },
 
     // === Reset ===
