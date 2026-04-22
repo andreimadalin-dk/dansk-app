@@ -9,6 +9,7 @@
       signUpWithEmail: function() { return Promise.reject(new Error('Firebase not configured')); },
       signInWithEmail: function() { return Promise.reject(new Error('Firebase not configured')); },
       signInWithGoogle: function() { return Promise.reject(new Error('Firebase not configured')); },
+      sendPasswordReset: function() { return Promise.reject(new Error('Firebase not configured')); },
       signOut: function() { return Promise.resolve(); },
       getUser: function() { return null; },
       isLoggedIn: function() { return false; },
@@ -46,6 +47,10 @@
 
   function signOut() {
     return auth.signOut();
+  }
+
+  function sendPasswordReset(email) {
+    return auth.sendPasswordResetEmail(email);
   }
 
   function getUser() {
@@ -125,7 +130,11 @@
               '<div class="auth-widget__email">' + escHtml(currentUser.email || 'Google user') + '</div>' +
             '</div>' +
             '<div class="auth-widget__divider"></div>' +
-            '<button class="auth-widget__logout-btn" id="authLogoutBtn">' +
+            '<button class="auth-widget__menu-btn" id="authResetBtn">' +
+              '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1 1 1.757 4.243M2 13V9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+              ' Nulstil fremgang' +
+            '</button>' +
+            '<button class="auth-widget__menu-btn" id="authLogoutBtn">' +
               '<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 14H3.333A1.333 1.333 0 0 1 2 12.667V3.333A1.333 1.333 0 0 1 3.333 2H6M10.667 11.333L14 8l-3.333-3.333M14 8H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
               ' Log ud' +
             '</button>' +
@@ -142,6 +151,16 @@
       document.addEventListener('click', function() {
         var dd = document.getElementById('authDropdown');
         if (dd) dd.classList.add('hidden');
+      });
+
+      // Reset progress — confirm, wipe local + cloud, reload
+      document.getElementById('authResetBtn').addEventListener('click', function() {
+        if (!window.confirm('Er du sikker på, at du vil nulstille al din fremgang? Dette kan ikke fortrydes.')) return;
+        if (window.DanskProgress && DanskProgress.reset) {
+          DanskProgress.reset();
+        }
+        // Reload so every view re-reads the now-empty store
+        window.location.reload();
       });
 
       // Logout
@@ -227,6 +246,7 @@
         '</div>' +
         '<div class="modal__footer" style="flex-direction:column; gap:8px;">' +
           '<button class="btn btn--primary" id="authSubmitBtn" style="width:100%;">Log ind</button>' +
+          '<button class="btn btn--ghost" id="authForgotBtn" style="font-size:12px;">Glemt adgangskode?</button>' +
           '<button class="btn btn--ghost" id="authToggleBtn" style="font-size:12px;">Har du ikke en konto? Opret en</button>' +
         '</div>' +
       '</div>';
@@ -278,6 +298,30 @@
     // Email submit
     document.getElementById('authSubmitBtn').addEventListener('click', function() {
       handleEmailSubmit(isSignUp);
+    });
+
+    // Forgot password — send reset email to whatever's in the email field
+    document.getElementById('authForgotBtn').addEventListener('click', function() {
+      var email = document.getElementById('authEmail').value.trim();
+      if (!email) {
+        showError({ message: 'Indtast din e-mail først, så sender vi et link til nulstilling.' });
+        return;
+      }
+      var btn = this;
+      btn.disabled = true;
+      sendPasswordReset(email).then(function() {
+        clearError();
+        var el = document.getElementById('authError');
+        if (el) {
+          el.style.display = 'block';
+          el.style.background = 'var(--success-bg)';
+          el.style.color = 'var(--success)';
+          el.style.borderColor = 'rgba(47, 122, 58, 0.35)';
+          el.textContent = 'Vi har sendt et link til nulstilling af adgangskoden til ' + email + '.';
+        }
+      }).catch(function(err) {
+        showError(err);
+      }).then(function() { btn.disabled = false; });
     });
 
     // Enter key on password field
@@ -349,6 +393,7 @@
     signUpWithEmail: signUpWithEmail,
     signInWithEmail: signInWithEmail,
     signInWithGoogle: signInWithGoogle,
+    sendPasswordReset: sendPasswordReset,
     signOut: signOut,
     getUser: getUser,
     isLoggedIn: isLoggedIn,
