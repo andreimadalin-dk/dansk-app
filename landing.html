@@ -325,12 +325,12 @@
     }
 
     /* === Decorative cutouts ===
-       Scattered historical/cultural images placed around (and slightly
-       overlapping) the rotating letter ring. They are STATIC — they do
-       not rotate with the wheel — and use --x / --y / --r / --w / --h
-       custom properties so each instance can set its own offset, size,
-       and rotation inline. Hidden on smaller viewports because the
-       wheel itself shrinks below their natural pixel offsets. */
+       Historical/cultural images interleaved with the letters around
+       the ring. They live INSIDE #outerRing so they spin with the
+       wheel — every cutout stays locked between the same two
+       characters. --x / --y / --r / --w / --h are set inline per
+       instance: pixel offset from wheel center, intrinsic rotation,
+       and natural size. */
     .wheel__decoration {
       position: absolute;
       top: 50%;
@@ -371,13 +371,6 @@
     .landing__footer span:nth-child(3) { text-align: right; }
 
     /* ---------- Responsive ---------- */
-    /* Decorative cutouts use fixed pixel offsets calibrated to the
-       744px desktop wheel — once the wheel starts shrinking they no
-       longer line up, so we hide them. */
-    @media (max-width: 1180px) {
-      .wheel__decoration { display: none; }
-    }
-
     @media (max-width: 900px) {
       .landing {
         padding: 16px 16px;
@@ -473,57 +466,56 @@
       </div>
     </header>
 
-    <!-- Main: rotating wheel + START + scattered cutouts.
-         The decorations are direct children of .wheel so they share the
-         same coordinate system as the START button (centered) but live
-         OUTSIDE .wheel__ring so they don't spin with the letters.
+    <!-- Main: rotating ring of letters + cutouts + central START.
+         The cutouts live INSIDE #outerRing alongside the letters so
+         they share the same rotation — every cutout stays locked to
+         its slot between the same two characters as the ring spins.
          Each --x/--y is the pixel offset from wheel center as measured
-         in the Figma frame. --w/--h is the cutout's natural size. -->
+         in the Figma frame; --w/--h is the cutout's natural size. -->
     <main class="landing__main">
       <div class="wheel" id="wheel">
-        <div class="wheel__ring" id="outerRing" aria-hidden="true"></div>
+        <div class="wheel__ring" id="outerRing" aria-hidden="true">
+          <!-- Top arc -->
+          <div class="wheel__decoration" style="--x:23px;--y:-302px;--w:75px;--h:92px;--r:10.49deg;">
+            <img src="images/landing/image14.png" alt="">
+          </div>
+          <div class="wheel__decoration" style="--x:-152px;--y:-269px;--w:64px;--h:89px;--r:-30deg;">
+            <img src="images/landing/image10.png" alt="">
+          </div>
+          <div class="wheel__decoration wheel__decoration--circle" style="--x:177px;--y:-246px;--w:87px;--h:100px;--r:36.97deg;">
+            <img src="images/landing/image20.png" alt="">
+          </div>
 
-        <!-- Top arc -->
-        <div class="wheel__decoration" style="--x:23px;--y:-302px;--w:75px;--h:92px;--r:10.49deg;" aria-hidden="true">
-          <img src="images/landing/image14.png" alt="">
-        </div>
-        <div class="wheel__decoration" style="--x:-152px;--y:-269px;--w:64px;--h:89px;--r:-30deg;" aria-hidden="true">
-          <img src="images/landing/image10.png" alt="">
-        </div>
-        <div class="wheel__decoration wheel__decoration--circle" style="--x:177px;--y:-246px;--w:87px;--h:100px;--r:36.97deg;" aria-hidden="true">
-          <img src="images/landing/image20.png" alt="">
+          <!-- Sides -->
+          <div class="wheel__decoration wheel__decoration--circle" style="--x:-283px;--y:-136px;--w:80px;--h:91px;--r:-49.3deg;">
+            <img src="images/landing/image21.png" alt="">
+          </div>
+          <div class="wheel__decoration" style="--x:296px;--y:-103px;--w:91px;--h:91px;">
+            <img src="images/landing/image18.png" alt="">
+          </div>
+          <div class="wheel__decoration wheel__decoration--circle" style="--x:-302px;--y:55px;--w:91px;--h:133px;--r:-105deg;">
+            <img src="images/landing/image22.png" alt="">
+          </div>
+          <div class="wheel__decoration wheel__decoration--circle" style="--x:312px;--y:93px;--w:84px;--h:109px;--r:107.41deg;">
+            <img src="images/landing/image13.png" alt="">
+          </div>
+
+          <!-- Bottom arc -->
+          <div class="wheel__decoration" style="--x:-217px;--y:209px;--w:96px;--h:139px;--r:-135deg;">
+            <img src="images/landing/image23.png" alt="">
+          </div>
+          <div class="wheel__decoration" style="--x:222px;--y:222px;--w:121px;--h:46px;--r:45.63deg;">
+            <img src="images/landing/image24.png" alt="">
+          </div>
+          <div class="wheel__decoration wheel__decoration--circle" style="--x:-80px;--y:309px;--w:78px;--h:99px;--r:-150deg;">
+            <img src="images/landing/image11.png" alt="">
+          </div>
+          <div class="wheel__decoration" style="--x:95px;--y:307px;--w:89px;--h:111px;--r:163.11deg;">
+            <img src="images/landing/image15.png" alt="">
+          </div>
         </div>
 
-        <!-- Sides -->
-        <div class="wheel__decoration wheel__decoration--circle" style="--x:-283px;--y:-136px;--w:80px;--h:91px;--r:-49.3deg;" aria-hidden="true">
-          <img src="images/landing/image21.png" alt="">
-        </div>
-        <div class="wheel__decoration" style="--x:296px;--y:-103px;--w:91px;--h:91px;" aria-hidden="true">
-          <img src="images/landing/image18.png" alt="">
-        </div>
-        <div class="wheel__decoration wheel__decoration--circle" style="--x:-302px;--y:55px;--w:91px;--h:133px;--r:-105deg;" aria-hidden="true">
-          <img src="images/landing/image22.png" alt="">
-        </div>
-        <div class="wheel__decoration wheel__decoration--circle" style="--x:312px;--y:93px;--w:84px;--h:109px;--r:107.41deg;" aria-hidden="true">
-          <img src="images/landing/image13.png" alt="">
-        </div>
-
-        <!-- Center -->
         <a class="start-btn" href="index.html" aria-label="Start the Danish Citizenship Test experience">START</a>
-
-        <!-- Bottom arc -->
-        <div class="wheel__decoration" style="--x:-217px;--y:209px;--w:96px;--h:139px;--r:-135deg;" aria-hidden="true">
-          <img src="images/landing/image23.png" alt="">
-        </div>
-        <div class="wheel__decoration" style="--x:222px;--y:222px;--w:121px;--h:46px;--r:45.63deg;" aria-hidden="true">
-          <img src="images/landing/image24.png" alt="">
-        </div>
-        <div class="wheel__decoration wheel__decoration--circle" style="--x:-80px;--y:309px;--w:78px;--h:99px;--r:-150deg;" aria-hidden="true">
-          <img src="images/landing/image11.png" alt="">
-        </div>
-        <div class="wheel__decoration" style="--x:95px;--y:307px;--w:89px;--h:111px;--r:163.11deg;" aria-hidden="true">
-          <img src="images/landing/image15.png" alt="">
-        </div>
       </div>
     </main>
 
