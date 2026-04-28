@@ -270,8 +270,10 @@
 
     .wheel {
       position: relative;
-      width: 744px;   /* Figma: 743.454 */
-      height: 744px;
+      /* Figma group "Group 15383" bounding box: 799.45 × 799.45,
+         encompassing the letter ring and every cutout. */
+      width: 800px;
+      height: 800px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -584,11 +586,15 @@
         }
       }
 
-      // Figma: outer text baseline at r=274.5, font 110.67px PP Acma
-      // Semibold. CSS positions each glyph by its centre, so we shift
-      // radius outward to place the glyph's visual centre where the
-      // baseline would sit.
-      placeRing('outerRing', outerLetters, 275, 110, 1.7, START_OFFSET);
+      // Figma uses SVG text-on-path with the baseline at r=274.5 — i.e.
+      // the BOTTOM of every uppercase letter sits on that circle and the
+      // glyph extends OUTWARD from there. CSS positions each span by its
+      // CENTRE, so we add half the line-box (≈45px at 0.81 line-height ×
+      // 110px font) to put the visual bottom on Figma's baseline radius.
+      // Net result: letters span ~r270 → r364, exactly where Figma's do,
+      // which gives the cutouts (centered around r302) room to nest
+      // BETWEEN letters instead of overlapping their bodies.
+      placeRing('outerRing', outerLetters, 319, 110, 1.7, START_OFFSET);
     })();
   </script>
 
