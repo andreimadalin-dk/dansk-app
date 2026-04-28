@@ -277,22 +277,13 @@
       justify-content: center;
     }
 
+    /* Static ring — Figma is a fixed composition where specific
+       images sit over specific letters (HC Andersen on F, runic
+       compass between G and H, etc.). Any rotation breaks those
+       relationships, so the ring is locked to the Figma frame. */
     .wheel__ring {
       position: absolute;
       inset: 0;
-      animation: wheel-spin 60s linear infinite;
-      will-change: transform;
-    }
-
-    @keyframes wheel-spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .wheel__ring {
-        animation: none;
-      }
     }
 
     .wheel__char {
@@ -567,17 +558,21 @@
     (function () {
       // Outer ring: 28 letters — Danish uppercase alphabet minus W, plus Æ Ø Å.
       // Matches the Figma text-path: "abcdefghijklmnopqrstuvxyzæøå" (UPPER case).
-      // The latest design dropped the inner symbols ring; only the
-      // letter ring remains, with the START disc and decorative cutouts
-      // sitting on top of it.
       var outerLetters = 'ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ'.split('');
 
-      function placeRing(containerId, chars, radius, size, spacing) {
+      // Figma starts the alphabet so that F sits at 12 o'clock and
+      // letters proceed clockwise (F G H ... Æ Ø Å A B C D E). With 28
+      // letters spaced 360/28 ≈ 12.857° apart, putting F (index 5) at
+      // angle 0 means shifting every letter by -5 × 12.857°.
+      var STEP = 360 / outerLetters.length;
+      var START_OFFSET = -5 * STEP; // F at top
+
+      function placeRing(containerId, chars, radius, size, spacing, startAngle) {
         var container = document.getElementById(containerId);
         if (!container) return;
         var count = chars.length;
         for (var i = 0; i < count; i++) {
-          var angle = (i / count) * 360;
+          var angle = (i / count) * 360 + (startAngle || 0);
           var span = document.createElement('span');
           span.className = 'wheel__char';
           span.textContent = chars[i];
@@ -589,10 +584,11 @@
         }
       }
 
-      // Figma: outer text baseline at r=246.5, font 110.67px PP Acma Semibold.
-      // CSS positions each glyph by its centre, so we shift radius outward
-      // to place the glyph's visual centre where the baseline would sit.
-      placeRing('outerRing', outerLetters, 275, 110, 1.7);
+      // Figma: outer text baseline at r=274.5, font 110.67px PP Acma
+      // Semibold. CSS positions each glyph by its centre, so we shift
+      // radius outward to place the glyph's visual centre where the
+      // baseline would sit.
+      placeRing('outerRing', outerLetters, 275, 110, 1.7, START_OFFSET);
     })();
   </script>
 
