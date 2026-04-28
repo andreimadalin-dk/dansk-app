@@ -69,8 +69,9 @@
     :root {
       --bg: #fffaf5;
       --fg: #2d2a22;
-      --red: #ed4f3e;
-      --mint: #e2fffe;
+      /* Warm taupe used for the central START disc — sampled from the
+         Figma ellipse fill (#95785A). */
+      --brown: #95785a;
     }
 
     *, *::before, *::after {
@@ -190,8 +191,8 @@
       margin: 0 auto;
       text-align: center;
       font-weight: 600;
-      font-size: 22px;
-      line-height: 1;
+      font-size: 18px;
+      line-height: 1.18;
       color: var(--fg);
       padding-top: 2px;
     }
@@ -267,11 +268,6 @@
       will-change: transform;
     }
 
-    .wheel__ring--inner {
-      animation-duration: 45s;
-      animation-direction: reverse;
-    }
-
     @keyframes wheel-spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
@@ -303,15 +299,15 @@
       letter-spacing: var(--spacing, 0);
     }
 
-    /* Red START button — sits at the center of the wheel */
+    /* Brown START disc — sits at the center of the wheel */
     .start-btn {
       position: relative;
       z-index: 3;
       width: 204px;
       height: 204px;
       border-radius: 50%;
-      background: var(--red);
-      color: var(--mint);
+      background: var(--brown);
+      color: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -322,21 +318,38 @@
       line-height: 0.81;
       letter-spacing: 0;
       text-transform: uppercase;
+      transition: transform 0.2s ease;
+    }
+    .start-btn:hover {
+      transform: scale(1.04);
     }
 
-    /* 2026 label below the START button, near the outer ring bottom */
-    .wheel__year {
+    /* === Decorative cutouts ===
+       Scattered historical/cultural images placed around (and slightly
+       overlapping) the rotating letter ring. They are STATIC — they do
+       not rotate with the wheel — and use --x / --y / --r / --w / --h
+       custom properties so each instance can set its own offset, size,
+       and rotation inline. Hidden on smaller viewports because the
+       wheel itself shrinks below their natural pixel offsets. */
+    .wheel__decoration {
       position: absolute;
+      top: 50%;
       left: 50%;
-      /* Figma: year centre y = 728 in a 743.45 container → 97.9% of wheel height */
-      top: calc(50% + 216px);
-      transform: translateX(-50%);
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 22px;
-      line-height: 1;
-      color: var(--fg);
+      width: var(--w);
+      height: var(--h);
+      transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--r, 0deg));
+      pointer-events: none;
       z-index: 2;
+    }
+    .wheel__decoration img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* A handful of cutouts in the design are clipped to circles */
+    .wheel__decoration--circle img {
+      border-radius: 50%;
     }
 
     /* ---------- Footer ---------- */
@@ -348,7 +361,7 @@
       padding: 0 0 0 0;
       font-family: 'Inter', sans-serif;
       font-weight: 600;
-      font-size: 16px;
+      font-size: 12px;
       line-height: 1;
       color: var(--fg);
     }
@@ -358,6 +371,13 @@
     .landing__footer span:nth-child(3) { text-align: right; }
 
     /* ---------- Responsive ---------- */
+    /* Decorative cutouts use fixed pixel offsets calibrated to the
+       744px desktop wheel — once the wheel starts shrinking they no
+       longer line up, so we hide them. */
+    @media (max-width: 1180px) {
+      .wheel__decoration { display: none; }
+    }
+
     @media (max-width: 900px) {
       .landing {
         padding: 16px 16px;
@@ -367,7 +387,7 @@
         gap: 12px;
       }
       .logo__text { font-size: 44px; }
-      .tagline { font-size: 15px; }
+      .tagline { font-size: 13px; }
       .menu-btn { width: 40px; height: 40px; }
       .landing__actions { gap: 8px; }
       .landing #authWidget .btn--outlined.btn--sm {
@@ -386,11 +406,7 @@
         height: 150px;
         font-size: 36px;
       }
-      .wheel__year {
-        top: calc(50% + 160px);
-        font-size: 16px;
-      }
-      .landing__footer { font-size: 12px; }
+      .landing__footer { font-size: 11px; }
     }
   </style>
   <!-- Loaded AFTER inline styles so app.css can provide btn/modal/auth-widget
@@ -457,15 +473,57 @@
       </div>
     </header>
 
-    <!-- Main: rotating wheel + START -->
+    <!-- Main: rotating wheel + START + scattered cutouts.
+         The decorations are direct children of .wheel so they share the
+         same coordinate system as the START button (centered) but live
+         OUTSIDE .wheel__ring so they don't spin with the letters.
+         Each --x/--y is the pixel offset from wheel center as measured
+         in the Figma frame. --w/--h is the cutout's natural size. -->
     <main class="landing__main">
       <div class="wheel" id="wheel">
         <div class="wheel__ring" id="outerRing" aria-hidden="true"></div>
-        <div class="wheel__ring wheel__ring--inner" id="innerRing" aria-hidden="true"></div>
 
+        <!-- Top arc -->
+        <div class="wheel__decoration" style="--x:23px;--y:-302px;--w:75px;--h:92px;--r:10.49deg;" aria-hidden="true">
+          <img src="images/landing/image14.png" alt="">
+        </div>
+        <div class="wheel__decoration" style="--x:-152px;--y:-269px;--w:64px;--h:89px;--r:-30deg;" aria-hidden="true">
+          <img src="images/landing/image10.png" alt="">
+        </div>
+        <div class="wheel__decoration wheel__decoration--circle" style="--x:177px;--y:-246px;--w:87px;--h:100px;--r:36.97deg;" aria-hidden="true">
+          <img src="images/landing/image20.png" alt="">
+        </div>
+
+        <!-- Sides -->
+        <div class="wheel__decoration wheel__decoration--circle" style="--x:-283px;--y:-136px;--w:80px;--h:91px;--r:-49.3deg;" aria-hidden="true">
+          <img src="images/landing/image21.png" alt="">
+        </div>
+        <div class="wheel__decoration" style="--x:296px;--y:-103px;--w:91px;--h:91px;" aria-hidden="true">
+          <img src="images/landing/image18.png" alt="">
+        </div>
+        <div class="wheel__decoration wheel__decoration--circle" style="--x:-302px;--y:55px;--w:91px;--h:133px;--r:-105deg;" aria-hidden="true">
+          <img src="images/landing/image22.png" alt="">
+        </div>
+        <div class="wheel__decoration wheel__decoration--circle" style="--x:312px;--y:93px;--w:84px;--h:109px;--r:107.41deg;" aria-hidden="true">
+          <img src="images/landing/image13.png" alt="">
+        </div>
+
+        <!-- Center -->
         <a class="start-btn" href="index.html" aria-label="Start the Danish Citizenship Test experience">START</a>
 
-        <div class="wheel__year" aria-hidden="true">2026</div>
+        <!-- Bottom arc -->
+        <div class="wheel__decoration" style="--x:-217px;--y:209px;--w:96px;--h:139px;--r:-135deg;" aria-hidden="true">
+          <img src="images/landing/image23.png" alt="">
+        </div>
+        <div class="wheel__decoration" style="--x:222px;--y:222px;--w:121px;--h:46px;--r:45.63deg;" aria-hidden="true">
+          <img src="images/landing/image24.png" alt="">
+        </div>
+        <div class="wheel__decoration wheel__decoration--circle" style="--x:-80px;--y:309px;--w:78px;--h:99px;--r:-150deg;" aria-hidden="true">
+          <img src="images/landing/image11.png" alt="">
+        </div>
+        <div class="wheel__decoration" style="--x:95px;--y:307px;--w:89px;--h:111px;--r:163.11deg;" aria-hidden="true">
+          <img src="images/landing/image15.png" alt="">
+        </div>
       </div>
     </main>
 
@@ -481,9 +539,10 @@
     (function () {
       // Outer ring: 28 letters — Danish uppercase alphabet minus W, plus Æ Ø Å.
       // Matches the Figma text-path: "abcdefghijklmnopqrstuvxyzæøå" (UPPER case).
+      // The latest design dropped the inner symbols ring; only the
+      // letter ring remains, with the START disc and decorative cutouts
+      // sitting on top of it.
       var outerLetters = 'ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ'.split('');
-      // Inner ring: 12 stylised glyphs, matching Figma's inner text-path look.
-      var innerChars = ['#', '$', '?', '&', '{', '}', ':', '.', '*', '@', '¿', '!'];
 
       function placeRing(containerId, chars, radius, size, spacing) {
         var container = document.getElementById(containerId);
@@ -506,8 +565,6 @@
       // CSS positions each glyph by its centre, so we shift radius outward
       // to place the glyph's visual centre where the baseline would sit.
       placeRing('outerRing', outerLetters, 275, 110, 1.7);
-      // Figma: inner text baseline at r=148.7, same 110.67 font size.
-      placeRing('innerRing', innerChars, 180, 96, 0);
     })();
   </script>
 
