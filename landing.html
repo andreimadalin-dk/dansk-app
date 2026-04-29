@@ -277,17 +277,16 @@
       justify-content: center;
     }
 
-    /* The wheel is one self-contained SVG with viewBox 0 0 800 800,
-       so every coordinate inside is the Figma frame coordinate minus
-       the Figma group origin (355.5, 108.5). Sizing the SVG via CSS
-       (width 100%, max-width 800) makes the entire composition scale
-       perfectly at any viewport — letters, cutouts, and START disc
-       stay locked to each other and to Figma. */
+    /* The wheel is one self-contained SVG with viewBox 0 0 754 727 —
+       a 1:1 mirror of the Figma "Mid" frame at node 424:100. Every
+       child element is positioned in that local coordinate system,
+       and the SVG scales as one unit via CSS so letters, cutouts,
+       and the START disc stay locked to each other and to Figma. */
     .wheel-stage {
       position: relative;
       width: 100%;
-      max-width: 800px;
-      aspect-ratio: 1 / 1;
+      max-width: 754px;
+      aspect-ratio: 754 / 727;
       margin: 0 auto;
     }
 
@@ -297,21 +296,12 @@
       height: 100%;
     }
 
-    .wheel-svg .wheel-letters {
-      font-family: 'PP Acma', 'DM Serif Display', serif;
-      font-weight: 600;
-      font-size: 110.67px;
-      letter-spacing: 1.7px;
-      fill: var(--fg);
-      text-transform: uppercase;
-    }
-
     /* START disc lives inside the SVG so it scales with everything else.
        The <a> wraps a <circle> + <text>, both styled here. */
     .wheel-svg .start-disc {
       fill: var(--brown);
       transition: transform 0.2s ease;
-      transform-origin: 400px 400px;
+      transform-origin: 380px 335.85px;
     }
     .wheel-svg .start-link:hover .start-disc {
       transform: scale(1.04);
@@ -449,88 +439,84 @@
       </div>
     </header>
 
-    <!-- Main wheel: a single SVG with viewBox 0 0 800 800. Every
-         coordinate inside is the Figma frame coordinate translated by
-         (-355.5, -108.5) — i.e. the Figma "Group 15383" origin. The
-         SVG scales as one unit via CSS, so letters, cutouts, and the
-         START disc stay locked to each other and to Figma at every
-         viewport size. -->
+    <!-- Main wheel: rebuilt from Figma node 424:100 ("Mid" group).
+         viewBox 0 0 754 727 = the exact Mid frame size. Every child
+         uses Mid-relative coordinates, so this SVG is a 1:1 mirror of
+         the Figma group. The letter ring is a single SVG asset
+         exported from Figma (only 11 glyphs, not the full alphabet —
+         that's what the design has). Decoration cutouts and START
+         disc sit on top. -->
     <main class="landing__main">
       <div class="wheel-stage">
         <svg class="wheel-svg"
-             viewBox="0 0 800 800"
+             viewBox="0 0 754 727"
              preserveAspectRatio="xMidYMid meet"
              xmlns="http://www.w3.org/2000/svg"
              role="img"
              aria-label="Danish Citizenship Test — start">
           <defs>
-            <!-- Letter ring: circle r=274.5 centered at (400, 400),
-                 starting at the 10 o'clock position so that after 5
-                 letters of "ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ" the F lands
-                 exactly at 12 o'clock — matching Figma's text-path. -->
-            <path id="wheelLetterPath"
-                  d="M 152.6,280.9 A 274.5,274.5 0 1,1 647.4,519.1 A 274.5,274.5 0 1,1 152.6,280.9" />
-
             <!-- Pill/circle clip paths for cutouts whose Figma fill is
-                 rounded (corner radius >= min(w,h)/2). Each clipPath
-                 is in userSpaceOnUse so we can reuse it at the image
-                 element with its own transform. -->
-            <clipPath id="clip14"><rect x="-37.5" y="-46" width="75" height="92" rx="37.5" /></clipPath>
-            <clipPath id="clip20"><rect x="-43.5" y="-50" width="87" height="100" rx="43.5" /></clipPath>
-            <clipPath id="clip21"><rect x="-40" y="-45.5" width="80" height="91" rx="40" /></clipPath>
+                 rounded (corner radius >= min(w,h)/2). Defined around
+                 origin so each <g transform> places them correctly. -->
+            <clipPath id="clip14"><rect x="-37.5" y="-46"   width="75" height="92"  rx="37.5" /></clipPath>
+            <clipPath id="clip20"><rect x="-43.5" y="-50"   width="87" height="100" rx="43.5" /></clipPath>
+            <clipPath id="clip21"><rect x="-40"   y="-45.5" width="80" height="91"  rx="40"   /></clipPath>
             <clipPath id="clip22"><rect x="-45.5" y="-66.5" width="91" height="133" rx="45.5" /></clipPath>
-            <clipPath id="clip13"><rect x="-42" y="-54.5" width="84" height="109" rx="42" /></clipPath>
-            <clipPath id="clip11"><rect x="-39" y="-49.5" width="78" height="99" rx="39" /></clipPath>
+            <clipPath id="clip13"><rect x="-42"   y="-54.5" width="84" height="109" rx="42"   /></clipPath>
+            <clipPath id="clip11"><rect x="-39"   y="-49.5" width="78" height="99"  rx="39"   /></clipPath>
           </defs>
 
-          <!-- Decorative cutouts. Each <g> centers the image at its
-               Figma wrapper-center (Figma coord minus group origin),
-               then rotates around that point. -->
-          <g transform="translate(246.49 132.09) rotate(-30)">
+          <!-- Letter ring: a single SVG asset that holds the 11 glyphs
+               Figma actually drew. Positioned exactly per Figma:
+               x=31.15, y=7.6, size 702.288 × 704.351. -->
+          <image href="images/landing/letters.svg"
+                 x="31.15" y="7.6"
+                 width="702.288" height="704.351"
+                 preserveAspectRatio="xMidYMid meet" />
+
+          <!-- Decorative cutouts. Coordinates are wrapper centers in
+               the Mid coordinate system (Figma frame minus Mid origin).
+               Each <g> translates to that center then rotates the inner
+               image about it. -->
+          <g transform="translate(226 85.44) rotate(-30)">
             <image href="images/landing/image10.png" x="-32" y="-44.5" width="64" height="89"/>
           </g>
-          <g transform="translate(421.57 98.81) rotate(10.49)">
+          <g transform="translate(401.07 52.16) rotate(10.49)">
             <image href="images/landing/image14.png" x="-37.5" y="-46" width="75" height="92" clip-path="url(#clip14)"/>
           </g>
-          <g transform="translate(575.84 154.23) rotate(36.97)">
+          <g transform="translate(555.34 107.57) rotate(36.97)">
             <image href="images/landing/image20.png" x="-43.5" y="-50" width="87" height="100" clip-path="url(#clip20)"/>
           </g>
-          <g transform="translate(115.99 264.41) rotate(-49.3)">
+          <g transform="translate(95.49 217.76) rotate(-49.3)">
             <image href="images/landing/image21.png" x="-40" y="-45.5" width="80" height="91" clip-path="url(#clip21)"/>
           </g>
-          <g transform="translate(695 298)">
+          <g transform="translate(674.5 251.35)">
             <image href="images/landing/image18.png" x="-45.5" y="-45.5" width="91" height="91"/>
           </g>
-          <g transform="translate(96.63 455.90) rotate(-105)">
+          <g transform="translate(76.13 409.25) rotate(-105)">
             <image href="images/landing/image22.png" x="-45.5" y="-66.5" width="91" height="133" clip-path="url(#clip22)"/>
           </g>
-          <g transform="translate(710.25 493.89) rotate(107.41)">
+          <g transform="translate(689.59 447.24) rotate(107.41)">
             <image href="images/landing/image13.png" x="-42" y="-54.5" width="84" height="109" clip-path="url(#clip13)"/>
           </g>
-          <g transform="translate(181.28 609.28) rotate(-135)">
+          <g transform="translate(160.78 562.63) rotate(-135)">
             <image href="images/landing/image23.png" x="-48" y="-69.5" width="96" height="139"/>
           </g>
-          <g transform="translate(621.11 622.69) rotate(45.63)">
+          <g transform="translate(600.61 576.04) rotate(45.63)">
             <image href="images/landing/image24.png" x="-60.5" y="-23" width="121" height="46"/>
           </g>
-          <g transform="translate(493.24 707.65) rotate(163.11)">
+          <g transform="translate(472.74 661) rotate(163.11)">
             <image href="images/landing/image15.png" x="-44.5" y="-55.5" width="89" height="111"/>
           </g>
-          <g transform="translate(318.38 710.23) rotate(-150)">
+          <g transform="translate(297.88 663.57) rotate(-150)">
             <image href="images/landing/image11.png" x="-39" y="-49.5" width="78" height="99" clip-path="url(#clip11)"/>
           </g>
 
-          <!-- Letter ring on path — proper SVG text-on-path, exactly
-               like Figma's text-path. The 28 letters are spaced
-               uniformly along the circle. -->
-          <text class="wheel-letters">
-            <textPath href="#wheelLetterPath" startOffset="0">ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ</textPath>
-          </text>
-
-          <!-- START disc, clickable. -->
+          <!-- START disc, clickable. Center matches Figma exactly:
+               disc at (380, 335.85), 102px radius. -->
           <a class="start-link" href="index.html" aria-label="Start the Danish Citizenship Test experience">
-            <circle class="start-disc" cx="400" cy="400" r="102" />
-            <text class="start-label" x="400" y="418" text-anchor="middle">START</text>
+            <circle class="start-disc" cx="380" cy="335.85" r="102" />
+            <text class="start-label" x="380" y="354" text-anchor="middle">START</text>
           </a>
         </svg>
       </div>
