@@ -1737,3 +1737,57 @@ a { color: inherit; text-decoration: none; }
   .study-nav { padding: 20px 20px; }
   .article-figure { margin: 24px 0; }
 }
+
+/* ================================================================
+   Top-right hamburger menu — shared dropdown injected by js/menu.js.
+   Used on landing.html, chapters.html, and any other page that
+   includes the script.
+   ================================================================ */
+.nav-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 220px;
+  padding: 8px;
+  background: var(--bg, #fffaf5);
+  color: var(--fg, #2d2a22);
+  border: 1.5px solid var(--fg, #2d2a22);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px -12px rgba(45, 42, 34, 0.25);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.nav-menu.hidden {
+  display: none;
+}
+
+.nav-menu__item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  color: var(--fg, #2d2a22);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-menu__item:hover,
+.nav-menu__item:focus-visible {
+  background: var(--fg, #2d2a22);
+  color: var(--bg, #fffaf5);
+  outline: none;
+}
+
+.nav-menu__item--active {
+  background: rgba(45, 42, 34, 0.08);
+}
+.nav-menu__item--active:hover,
+.nav-menu__item--active:focus-visible {
+  background: var(--fg, #2d2a22);
+  color: var(--bg, #fffaf5);
+}

@@ -121,12 +121,15 @@
       gap: 24px;
     }
 
-    /* Logo cluster */
+    /* Logo cluster — also functions as a "go home" link, so reset
+       default <a> styling so the brand mark looks the same as before. */
     .logo {
       display: flex;
       align-items: flex-start;
       gap: 6px;
       padding-left: 0;
+      text-decoration: none;
+      color: inherit;
     }
 
     .logo__text {
@@ -379,14 +382,14 @@
        classes, but all landing-specific layout (.landing, .menu-btn, .tagline,
        .logo, wheel) is defined above and not overridden. -->
   <link rel="stylesheet" href="css/tokens.css?v=12">
-  <link rel="stylesheet" href="css/app.css?v=12">
+  <link rel="stylesheet" href="css/app.css?v=13">
 </head>
 <body>
   <div class="landing">
 
     <!-- Header -->
     <header class="landing__header">
-      <div class="logo">
+      <a class="logo" href="landing.html" aria-label="Indfødsretsprøven — forside">
         <div class="logo__text">DCT</div>
         <div class="logo__stack" aria-hidden="true">
           <!-- Globe icon (top) -->
@@ -419,7 +422,7 @@
             <span class="logo__dk-text">DK</span>
           </div>
         </div>
-      </div>
+      </a>
 
       <p class="tagline">
         Practice for the Danish citizenship test at your own pace. Build your knowledge, grow your confidence — one step at a time.
@@ -674,5 +677,6 @@
   <script src="js/firebase-config.js"></script>
   <script src="js/progress.js?v=3"></script>
   <script src="js/auth.js?v=4"></script>
+  <script src="js/menu.js?v=1"></script>
 </body>
 </html>
