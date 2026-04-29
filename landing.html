@@ -537,10 +537,15 @@
             </g>
           </g>
 
-          <!-- image13 (gold horn) — pill clip, no inner offset -->
+          <!-- image13 — pill clip; the source PNG is almost square
+               (970×1008) while the display box is taller (84×109), so
+               we need preserveAspectRatio="slice" to behave like
+               Figma's object-cover (fill + crop) instead of meet
+               (letterbox). -->
           <g transform="translate(689.59 447.24) rotate(107.41)">
             <g clip-path="url(#clip13)">
-              <image href="images/landing/image13.png" x="-42" y="-54.5" width="84" height="109"/>
+              <image href="images/landing/image13.png" x="-42" y="-54.5" width="84" height="109"
+                     preserveAspectRatio="xMidYMid slice"/>
             </g>
           </g>
 
