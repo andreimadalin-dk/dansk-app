@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vælg kapitel — Danish Citizenship Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- PP Acma (self-hosted) ---------- */
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Semibold.otf') format('opentype'),
+           url('fonts/PPAcma-Semibold.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'PP Acma';
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+      src: url('fonts/PPAcma-Black.otf') format('opentype'),
+           url('fonts/PPAcma-Black.ttf') format('truetype');
+    }
+
+    :root {
+      --bg: #fffaf5;
+      --fg: #2d2a22;
+      /* Card / CTA tokens — sampled directly from Figma 445:244. */
+      --brown:        #95785a;  /* CTA disc + button background */
+      --card-bg:      #f1e7dd;  /* peach arch background */
+      --card-portrait-bg: #ddcfc2;  /* darker peach behind portrait */
+      --card-number:  #382626;  /* deep brown for "01"-"06" */
+      --avatar-bg:    #382626;  /* avatar circle */
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Mirrors Figma "Landingpage": vertical SPACE_BETWEEN with
+       padding T17 R20 B24 L16, centred horizontally. */
+    .chapters-page {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      padding: 17px 20px 24px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* TopArea — header + title stacked, gap 33 (Figma value). */
+    .chapters-top {
+      width: 100%;
+      max-width: 1476px;
+      display: flex;
+      flex-direction: column;
+      gap: 33px;
+      align-items: stretch;
+    }
+
+    /* ---------- Header ---------- */
+    .chapters-header {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    /* Logo cluster (same composition as landing.html) */
+    .logo {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .logo__text {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 65.123px;
+      line-height: 0.81;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--fg);
+      white-space: nowrap;
+    }
+    .logo__stack {
+      position: relative;
+      width: 14px;
+      height: 51px;
+      flex: 0 0 14px;
+    }
+    .logo__stack svg { display: block; }
+    .logo__globe { position: absolute; top: 0; left: 0; width: 14px; height: 14px; }
+    .logo__halves { position: absolute; top: 17.11px; left: 0; width: 14px; height: 14px; }
+    .logo__dk {
+      position: absolute;
+      top: 37px;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo__dk svg { position: absolute; inset: 0; }
+    .logo__dk-text {
+      position: relative;
+      font-family: 'PP Acma', sans-serif;
+      font-weight: 900;
+      font-size: 6.5px;
+      line-height: 1;
+      color: var(--fg);
+      letter-spacing: -0.02em;
+      transform: translateY(0.25px);
+    }
+
+    /* Actions cluster: 86×36 = avatar 36 + gap 14 + menu 36. */
+    .chapters-actions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+    }
+    .menu-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--fg);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .menu-btn svg { display: block; }
+    /* Auth-widget overrides (mirrors landing.html). */
+    .chapters-page #authWidget .auth-widget__avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--avatar-bg);
+      color: var(--bg);
+      border-color: var(--avatar-bg);
+    }
+    .chapters-page #authWidget .auth-widget__initials {
+      color: var(--bg);
+      font-weight: 600;
+    }
+    .chapters-page #authWidget .btn--outlined.btn--sm {
+      height: 36px;
+      padding: 0 14px;
+      font-size: 12px;
+      border-width: 1.5px;
+      border-color: var(--fg);
+      color: var(--fg);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .chapters-page #authWidget .btn--outlined.btn--sm:hover {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+    }
+
+    /* Title — Figma: 50px PP Acma Semibold, line-height normal, centred. */
+    .chapters-title {
+      width: 100%;
+      text-align: center;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 50px;
+      line-height: normal;
+      color: #000;
+    }
+
+    /* ---------- Chapter grid ---------- */
+    .chapters-grid {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: flex-end;     /* bottom-align so hovered card extends UPWARD */
+      justify-content: center;
+    }
+
+    /* ---------- Chapter card ---------- */
+    .chapter-card {
+      width: 227px;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      /* The card itself doesn't grow; the CTA below does, lifting the
+         visible content upward thanks to align-items: flex-end. */
+    }
+
+    /* Arched peach panel — Figma image 30/32/...:
+       w 227 × h 539, radius top 160/160 bottom 10/10. */
+    .chapter-card__main {
+      position: relative;
+      width: 227px;
+      height: 539px;
+      flex: 0 0 539px;
+      background: var(--card-bg);
+      border-radius: 160px 160px 10px 10px;
+      overflow: hidden;
+    }
+
+    /* Round portrait window: 196×274 inside a 242px-radius circle. */
+    .chapter-card__portrait {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      width: 196px;
+      height: 274px;
+      border-radius: 50%;
+      background: var(--card-portrait-bg);
+      overflow: hidden;
+    }
+    /* Image is 222.55% wide and offset −50.36%/+3.22% — Figma's exact
+       crop so only the queen's torso fills the circle. */
+    .chapter-card__portrait img {
+      position: absolute;
+      width: 222.55%;
+      height: 101.56%;
+      left: -50.36%;
+      top: 3.22%;
+      max-width: none;
+      object-fit: cover;
+    }
+
+    /* Title — PP Acma Semibold 20/22, two lines. */
+    .chapter-card__title {
+      position: absolute;
+      top: 329px;
+      left: 18px;
+      width: 194px;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 1.1;
+      color: #000;
+    }
+
+    /* "Kapitel" label — small, 50% opacity. */
+    .chapter-card__label {
+      position: absolute;
+      top: 466px;
+      left: 18px;
+      width: 161px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 10px;
+      line-height: normal;
+      color: #000;
+      opacity: 0.5;
+    }
+
+    /* Chapter number — PP Acma Semibold 40, deep brown. */
+    .chapter-card__number {
+      position: absolute;
+      top: 478px;
+      left: 14px;
+      width: 196px;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 40px;
+      line-height: 1;
+      color: var(--card-number);
+    }
+
+    /* "Læs nu" CTA — collapsed by default; eases open on hover/focus.
+       flex-basis transition is what gives the smooth lift. */
+    .chapter-card__cta {
+      flex: 0 0 0;
+      margin-top: 0;
+      width: 226px;
+      height: 60px;
+      background: var(--brown);
+      color: var(--card-bg);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      overflow: hidden;
+      transition:
+        flex-basis 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        margin-top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .chapter-card:hover .chapter-card__cta,
+    .chapter-card:focus-visible .chapter-card__cta,
+    .chapter-card:focus .chapter-card__cta {
+      flex-basis: 60px;
+      margin-top: 10px;
+    }
+
+    /* Slight tilt + shadow on hover for extra polish (subtle). */
+    .chapter-card__main {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .chapter-card:hover .chapter-card__main,
+    .chapter-card:focus .chapter-card__main {
+      box-shadow: 0 14px 32px -16px rgba(45, 42, 34, 0.25);
+    }
+
+    /* ---------- Responsive ---------- */
+    /* The 6 cards × 227px + 5 gaps × 20px = 1462px wide; under that
+       width the grid wraps to 3 columns, then 2, then 1. */
+    @media (max-width: 1500px) {
+      .chapters-grid {
+        flex-wrap: wrap;
+        max-width: 740px;          /* roughly 3 columns of 227 + gaps */
+      }
+    }
+    @media (max-width: 900px) {
+      .chapters-page { padding: 12px; }
+      .chapters-header {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .logo__text { font-size: 44px; }
+      .menu-btn { width: 32px; height: 32px; }
+      .chapters-page #authWidget .auth-widget__avatar { width: 32px; height: 32px; }
+      .chapters-page #authWidget .btn--outlined.btn--sm { height: 32px; padding: 0 12px; font-size: 11px; }
+      .chapters-title { font-size: 32px; }
+      .chapters-grid {
+        max-width: 480px;          /* 2 columns */
+        gap: 16px;
+      }
+    }
+    @media (max-width: 540px) {
+      .chapters-grid {
+        max-width: 100%;
+        gap: 16px;
+      }
+      .chapter-card { width: 100%; max-width: 320px; }
+      .chapter-card__main { width: 100%; }
+      .chapter-card__cta { width: 100%; }
+    }
+  </style>
+
+  <link rel="stylesheet" href="css/tokens.css?v=12">
+  <link rel="stylesheet" href="css/app.css?v=12">
+</head>
+<body>
+  <div class="chapters-page">
+
+    <div class="chapters-top">
+      <header class="chapters-header">
+
+        <!-- Logo (same composition as landing.html) -->
+        <a class="logo" href="landing.html" aria-label="Indfødsretsprøven — forside">
+          <span class="logo__text">DCT</span>
+          <span class="logo__stack" aria-hidden="true">
+            <svg class="logo__globe" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#globeClipChapters)">
+                <circle cx="7" cy="7" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+                <path d="M7 0.328125C7.31428 0.328125 7.63942 0.472462 7.96387 0.786133C8.2899 1.10133 8.59896 1.57301 8.86523 2.18164C9.39736 3.39794 9.73438 5.10132 9.73438 7C9.73438 8.89868 9.39736 10.6021 8.86523 11.8184C8.59896 12.427 8.2899 12.8987 7.96387 13.2139C7.63942 13.5275 7.31428 13.6719 7 13.6719C6.68572 13.6719 6.36058 13.5275 6.03613 13.2139C5.7101 12.8987 5.40104 12.427 5.13477 11.8184C4.60264 10.6021 4.26562 8.89868 4.26562 7C4.26562 5.10132 4.60264 3.39794 5.13477 2.18164C5.40104 1.57301 5.7101 1.10133 6.03613 0.786133C6.36058 0.472462 6.68572 0.328125 7 0.328125Z" stroke="#2D2A22" stroke-width="0.65625"/>
+                <path d="M0.21875 7H13.5625" stroke="#2D2A22" stroke-width="0.65625"/>
+                <circle cx="7" cy="17.0625" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+                <circle cx="7" cy="-3.0625" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+              </g>
+              <defs>
+                <clipPath id="globeClipChapters">
+                  <rect width="14" height="14" rx="7" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <svg class="logo__halves" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 0.388672C10.5207 0.388672 13.3974 3.14106 13.5986 6.61133H0.401367C0.602589 3.14106 3.47928 0.388672 7 0.388672Z" stroke="#2D2A22" stroke-width="0.777778"/>
+              <path d="M7 14C3.13401 14 0 10.866 0 7H14C14 10.866 10.866 14 7 14Z" fill="#2D2A22"/>
+            </svg>
+            <span class="logo__dk">
+              <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+                <circle cx="7" cy="7" r="6.67188" stroke="#2D2A22" stroke-width="0.65625"/>
+              </svg>
+              <span class="logo__dk-text">DK</span>
+            </span>
+          </span>
+        </a>
+
+        <div class="chapters-actions">
+          <!-- auth.js injects either a "Log ind" pill or the avatar dropdown here -->
+          <div id="authWidget"></div>
+          <button class="menu-btn" aria-label="Open menu" type="button">
+            <svg width="14" height="10" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="0" y1="7" x2="20" y2="7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="0" y1="13" x2="20" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <h1 class="chapters-title">Vælg kapitel</h1>
+    </div>
+
+    <!-- Cards rendered by JS below from DANSK_CHAPTERS so the titles
+         track the real chapter data even though the portrait image
+         is a shared placeholder. -->
+    <div class="chapters-grid" id="chaptersGrid"></div>
+
+  </div>
+
+  <!-- Firebase SDK + project config + auth + chapter data -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="data/chapters.js"></script>
+  <script src="js/progress.js?v=3"></script>
+  <script src="js/auth.js?v=4"></script>
+
+  <!-- Chapter card renderer.
+       The Figma design uses one shared portrait as a placeholder.
+       Real chapter titles come from DANSK_CHAPTERS so editing data
+       updates the page without touching markup. -->
+  <script>
+    (function () {
+      var grid = document.getElementById('chaptersGrid');
+      if (!grid || !window.DANSK_CHAPTERS) return;
+
+      function escapeHtml(str) {
+        var d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+      }
+
+      // Wrap title onto two lines at the closest space to the centre
+      // (matches Figma's "Danmarks <br> Historien" treatment).
+      function wrapTitle(str) {
+        if (!str) return '';
+        var s = str.trim();
+        if (s.indexOf(' ') === -1) return escapeHtml(s);
+        var middle = Math.floor(s.length / 2);
+        var left = s.lastIndexOf(' ', middle);
+        var right = s.indexOf(' ', middle);
+        var split = (left === -1) ? right
+                  : (right === -1) ? left
+                  : (middle - left <= right - middle) ? left : right;
+        return escapeHtml(s.slice(0, split)) + '<br>' + escapeHtml(s.slice(split + 1));
+      }
+
+      var html = '';
+      DANSK_CHAPTERS.forEach(function (ch) {
+        var num = String(ch.number).padStart(2, '0');
+        html +=
+          '<a class="chapter-card" href="study.html?chapter=' + ch.id + '" aria-label="Kapitel ' + num + ' — ' + escapeHtml(ch.titleDa) + '">' +
+            '<div class="chapter-card__main">' +
+              '<div class="chapter-card__portrait">' +
+                '<img src="images/chapters/queen.png" alt="" loading="lazy">' +
+              '</div>' +
+              '<div class="chapter-card__title">' + wrapTitle(ch.titleDa) + '</div>' +
+              '<div class="chapter-card__label">Kapitel</div>' +
+              '<div class="chapter-card__number">' + num + '</div>' +
+            '</div>' +
+            '<div class="chapter-card__cta">Læs nu</div>' +
+          '</a>';
+      });
+      grid.innerHTML = html;
+    })();
+  </script>
+</body>
+</html>
