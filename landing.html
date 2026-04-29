@@ -455,15 +455,29 @@
              role="img"
              aria-label="Danish Citizenship Test — start">
           <defs>
-            <!-- Pill/circle clip paths for cutouts whose Figma fill is
-                 rounded (corner radius >= min(w,h)/2). Defined around
-                 origin so each <g transform> places them correctly. -->
-            <clipPath id="clip14"><rect x="-37.5" y="-46"   width="75" height="92"  rx="37.5" /></clipPath>
-            <clipPath id="clip20"><rect x="-43.5" y="-50"   width="87" height="100" rx="43.5" /></clipPath>
-            <clipPath id="clip21"><rect x="-40"   y="-45.5" width="80" height="91"  rx="40"   /></clipPath>
-            <clipPath id="clip22"><rect x="-45.5" y="-66.5" width="91" height="133" rx="45.5" /></clipPath>
-            <clipPath id="clip13"><rect x="-42"   y="-54.5" width="84" height="109" rx="42"   /></clipPath>
-            <clipPath id="clip11"><rect x="-39"   y="-49.5" width="78" height="99"  rx="39"   /></clipPath>
+            <!-- Clip shapes mirroring each Figma cutout's outer fill.
+                 All are defined around (0, 0) so an outer <g> translate
+                 places them. Pills use rx = min(w,h)/2; rect-only clips
+                 use no rx. image15 has an asymmetric profile (12.027
+                 top corners, 44.5 bottom corners — a half-circle bottom
+                 with an almost-square top) so it gets a custom path. -->
+            <clipPath id="clip14"><rect x="-37.5" y="-46"   width="75"  height="92"  rx="37.5" /></clipPath>
+            <clipPath id="clip20"><rect x="-43.5" y="-50"   width="87"  height="100" rx="43.5" /></clipPath>
+            <clipPath id="clip21"><rect x="-40"   y="-45.5" width="80"  height="91"  rx="40"   /></clipPath>
+            <clipPath id="clip22"><rect x="-45.5" y="-66.5" width="91"  height="133" rx="45.5" /></clipPath>
+            <clipPath id="clip13"><rect x="-42"   y="-54.5" width="84"  height="109" rx="42"   /></clipPath>
+            <clipPath id="clip11"><rect x="-39"   y="-49.5" width="78"  height="99"  rx="39"   /></clipPath>
+            <clipPath id="clip24"><rect x="-60.5" y="-23"   width="121" height="46"  /></clipPath>
+            <clipPath id="clip25"><rect x="-58.42" y="-18.6" width="116.84" height="37.19" /></clipPath>
+            <clipPath id="clip15">
+              <path d="M -32.473 -55.5
+                       L 32.473 -55.5
+                       A 12.027 12.027 0 0 1 44.5 -43.473
+                       L 44.5 11
+                       A 44.5 44.5 0 0 1 -44.5 11
+                       L -44.5 -43.473
+                       A 12.027 12.027 0 0 1 -32.473 -55.5 Z" />
+            </clipPath>
           </defs>
 
           <!-- Letter ring: a single SVG asset that holds the 11 glyphs
@@ -474,42 +488,98 @@
                  width="702.288" height="704.351"
                  preserveAspectRatio="xMidYMid meet" />
 
-          <!-- Decorative cutouts. Coordinates are wrapper centers in
-               the Mid coordinate system (Figma frame minus Mid origin).
-               Each <g> translates to that center then rotates the inner
-               image about it. -->
+          <!-- Decorative cutouts. Each <g> translates to the wrapper
+               centre (Figma coord minus the Mid origin) and rotates,
+               then a second <g clip-path="..."> holds the photo. The
+               photo is positioned/sized to the FIGMA inner-image
+               offset+scale so only the intended crop is visible — this
+               is the "image inside a rounded mask" pattern Figma uses. -->
+
+          <!-- image10 — plain crop, no clip, no inner offset -->
           <g transform="translate(226 85.44) rotate(-30)">
             <image href="images/landing/image10.png" x="-32" y="-44.5" width="64" height="89"/>
           </g>
+
+          <!-- image14 (HC Andersen) — circular pill, no inner offset -->
           <g transform="translate(401.07 52.16) rotate(10.49)">
-            <image href="images/landing/image14.png" x="-37.5" y="-46" width="75" height="92" clip-path="url(#clip14)"/>
+            <g clip-path="url(#clip14)">
+              <image href="images/landing/image14.png" x="-37.5" y="-46" width="75" height="92"/>
+            </g>
           </g>
+
+          <!-- image20 (cat/crown) — pill clip; photo is 211% wide and
+               offset 49.65% left so we see the right portion only. -->
           <g transform="translate(555.34 107.57) rotate(36.97)">
-            <image href="images/landing/image20.png" x="-43.5" y="-50" width="87" height="100" clip-path="url(#clip20)"/>
+            <g clip-path="url(#clip20)">
+              <image href="images/landing/image20.png" x="-86.7" y="-50.03" width="183.78" height="117.16"/>
+            </g>
           </g>
+
+          <!-- image21 (woman portrait) — circular pill; photo is 117%
+               wide and offset 8.58% left. -->
           <g transform="translate(95.49 217.76) rotate(-49.3)">
-            <image href="images/landing/image21.png" x="-40" y="-45.5" width="80" height="91" clip-path="url(#clip21)"/>
+            <g clip-path="url(#clip21)">
+              <image href="images/landing/image21.png" x="-46.86" y="-46.62" width="93.6" height="93.62"/>
+            </g>
           </g>
+
+          <!-- image18 (rune compass) — plain 91×91, no clip, no rotation -->
           <g transform="translate(674.5 251.35)">
             <image href="images/landing/image18.png" x="-45.5" y="-45.5" width="91" height="91"/>
           </g>
+
+          <!-- image22 (woman in fur) — pill clip; photo is 139% wide,
+               92% tall, offset 19.57% left and 12.88% down — so only
+               the lower portion of the source photo is visible. -->
           <g transform="translate(76.13 409.25) rotate(-105)">
-            <image href="images/landing/image22.png" x="-45.5" y="-66.5" width="91" height="133" clip-path="url(#clip22)"/>
+            <g clip-path="url(#clip22)">
+              <image href="images/landing/image22.png" x="-63.31" y="-49.37" width="126.61" height="123.01"/>
+            </g>
           </g>
+
+          <!-- image13 (gold horn) — pill clip, no inner offset -->
           <g transform="translate(689.59 447.24) rotate(107.41)">
-            <image href="images/landing/image13.png" x="-42" y="-54.5" width="84" height="109" clip-path="url(#clip13)"/>
+            <g clip-path="url(#clip13)">
+              <image href="images/landing/image13.png" x="-42" y="-54.5" width="84" height="109"/>
+            </g>
           </g>
+
+          <!-- image23 (white shape) — plain crop, no clip -->
           <g transform="translate(160.78 562.63) rotate(-135)">
             <image href="images/landing/image23.png" x="-48" y="-69.5" width="96" height="139"/>
           </g>
+
+          <!-- image24 (column / pillar) — plain rectangular crop;
+               photo is 147% tall and offset -63% UP, exposing only a
+               horizontal strip near the bottom of the source. -->
           <g transform="translate(600.61 576.04) rotate(45.63)">
-            <image href="images/landing/image24.png" x="-60.5" y="-23" width="121" height="46"/>
+            <g clip-path="url(#clip24)">
+              <image href="images/landing/image24.png" x="-57.4" y="-52.38" width="121" height="67.97"/>
+            </g>
           </g>
+
+          <!-- image25 (second pillar — same source as image24, smaller
+               and at a different rotation, with its own crop). -->
+          <g transform="translate(613.25 558.66) rotate(15.53)">
+            <g clip-path="url(#clip25)">
+              <image href="images/landing/image24.png" x="-79.21" y="-12.76" width="159.65" height="89.83"/>
+            </g>
+          </g>
+
+          <!-- image15 (man in armour) — ASYMMETRIC clip (rounded
+               bottom + small top corners); photo is 110% in both axes,
+               offset -8.22% left and -1.49% up. -->
           <g transform="translate(472.74 661) rotate(163.11)">
-            <image href="images/landing/image15.png" x="-44.5" y="-55.5" width="89" height="111"/>
+            <g clip-path="url(#clip15)">
+              <image href="images/landing/image15.png" x="-51.82" y="-57.15" width="98.66" height="123.04"/>
+            </g>
           </g>
+
+          <!-- image11 (man with white ruff) — pill clip, no inner offset -->
           <g transform="translate(297.88 663.57) rotate(-150)">
-            <image href="images/landing/image11.png" x="-39" y="-49.5" width="78" height="99" clip-path="url(#clip11)"/>
+            <g clip-path="url(#clip11)">
+              <image href="images/landing/image11.png" x="-39" y="-49.5" width="78" height="99"/>
+            </g>
           </g>
 
           <!-- START disc, clickable. Center matches Figma exactly:
