@@ -97,21 +97,27 @@
       position: relative;
       width: 100%;
       min-height: 100vh;
-      /* Figma: logo at left=16px, footer right edge ~20px from frame.
-         Vertical 19px so the tagline / footer baselines match Figma. */
-      padding: 19px 20px 16px 16px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 16px;
+      /* Mirrors the Figma "Landingpage" frame's vertical auto-layout
+         (SPACE_BETWEEN, padding T17 R20 B16 L16). */
+      padding: 17px 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0;
     }
 
-    /* ---------- Header ---------- */
+    /* ---------- Header ----------
+       Mirrors the Figma "Header" frame: horizontal auto-layout,
+       SPACE_BETWEEN, top-aligned, full-width. Logo and Actions hug
+       their content; the tagline sits between them at a fixed 479px
+       width — same composition as the Figma frame. */
     .landing__header {
-      display: grid;
-      /* Three-column auto-layout: logo (left) / tagline (center, capped
-         at the Figma 479px width) / actions cluster (right). */
-      grid-template-columns: 1fr minmax(0, 479px) 1fr;
-      align-items: start;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
       gap: 24px;
     }
 
@@ -189,11 +195,13 @@
       transform: translateY(0.25px);
     }
 
-    /* Tagline — Figma: 18px SuisseIntl SemiBold, 479px wide, three
-       lines with leading-none. */
+    /* Tagline — Figma "Intro" text node: 18px Inter Semi Bold (was
+       SuisseIntl in the design but that font isn't deployed; Inter Semi
+       Bold is the closest available substitute and is used in the
+       cleaned Figma file too). 479px fixed, three lines, leading-none. */
     .tagline {
-      max-width: 479px;
-      margin: 0 auto;
+      flex: 0 0 479px;
+      width: 479px;
       text-align: center;
       font-weight: 600;
       font-size: 18px;
@@ -261,113 +269,70 @@
 
     /* ---------- Main (wheel) ---------- */
     .landing__main {
+      width: 100%;
+      flex: 1 1 0;          /* take up the middle of the page column */
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 820px;
     }
 
-    .wheel {
+    /* The wheel is one self-contained SVG with viewBox 0 0 800 800,
+       so every coordinate inside is the Figma frame coordinate minus
+       the Figma group origin (355.5, 108.5). Sizing the SVG via CSS
+       (width 100%, max-width 800) makes the entire composition scale
+       perfectly at any viewport — letters, cutouts, and START disc
+       stay locked to each other and to Figma. */
+    .wheel-stage {
       position: relative;
-      /* Figma group "Group 15383" bounding box: 799.45 × 799.45,
-         encompassing the letter ring and every cutout. */
-      width: 800px;
-      height: 800px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
     }
 
-    /* Static ring — Figma is a fixed composition where specific
-       images sit over specific letters (HC Andersen on F, runic
-       compass between G and H, etc.). Any rotation breaks those
-       relationships, so the ring is locked to the Figma frame. */
-    .wheel__ring {
-      position: absolute;
-      inset: 0;
-    }
-
-    .wheel__char {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      font-family: 'PP Acma', 'DM Serif Display', serif;
-      font-weight: 600;
-      line-height: 0.81;
-      color: var(--fg);
-      text-transform: uppercase;
-      user-select: none;
-      /* The inline style sets the --angle and --radius; we compose here */
-      transform:
-        translate(-50%, -50%)
-        rotate(var(--angle))
-        translateY(calc(-1 * var(--radius)));
-      transform-origin: 50% 50%;
-      font-size: var(--size, 64px);
-      letter-spacing: var(--spacing, 0);
-    }
-
-    /* Brown START disc — sits at the center of the wheel */
-    .start-btn {
-      position: relative;
-      z-index: 3;
-      width: 204px;
-      height: 204px;
-      border-radius: 50%;
-      background: var(--brown);
-      color: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-family: 'PP Acma', 'DM Serif Display', serif;
-      font-weight: 600;
-      font-size: 50.847px;
-      line-height: 0.81;
-      letter-spacing: 0;
-      text-transform: uppercase;
-      transition: transform 0.2s ease;
-    }
-    .start-btn:hover {
-      transform: scale(1.04);
-    }
-
-    /* === Decorative cutouts ===
-       Historical/cultural images interleaved with the letters around
-       the ring. They live INSIDE #outerRing so they spin with the
-       wheel — every cutout stays locked between the same two
-       characters. --x / --y / --r / --w / --h are set inline per
-       instance: pixel offset from wheel center, intrinsic rotation,
-       and natural size. */
-    .wheel__decoration {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: var(--w);
-      height: var(--h);
-      transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--r, 0deg));
-      pointer-events: none;
-      z-index: 2;
-    }
-    .wheel__decoration img {
+    .wheel-svg {
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-    }
-    /* A handful of cutouts in the design are clipped to circles */
-    .wheel__decoration--circle img {
-      border-radius: 50%;
     }
 
-    /* ---------- Footer ---------- */
+    .wheel-svg .wheel-letters {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 110.67px;
+      letter-spacing: 1.7px;
+      fill: var(--fg);
+      text-transform: uppercase;
+    }
+
+    /* START disc lives inside the SVG so it scales with everything else.
+       The <a> wraps a <circle> + <text>, both styled here. */
+    .wheel-svg .start-disc {
+      fill: var(--brown);
+      transition: transform 0.2s ease;
+      transform-origin: 400px 400px;
+    }
+    .wheel-svg .start-link:hover .start-disc {
+      transform: scale(1.04);
+    }
+    .wheel-svg .start-label {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 50.847px;
+      fill: var(--bg);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    /* ---------- Footer ----------
+       Mirrors the Figma "Footer" frame: horizontal auto-layout, three
+       equal-FILL text columns, each owning its own alignment. */
     .landing__footer {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: end;
-      gap: 24px;
-      padding: 0 0 0 0;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      gap: 0;
       font-family: 'Inter', sans-serif;
       font-weight: 600;
       font-size: 12px;
@@ -375,36 +340,35 @@
       color: var(--fg);
     }
 
-    .landing__footer span:nth-child(1) { text-align: left; }
-    .landing__footer span:nth-child(2) { text-align: center; }
-    .landing__footer span:nth-child(3) { text-align: right; }
+    .landing__footer > span {
+      flex: 1 1 0;
+    }
+    .landing__footer > span:nth-child(1) { text-align: left; }
+    .landing__footer > span:nth-child(2) { text-align: center; }
+    .landing__footer > span:nth-child(3) { text-align: right; }
 
-    /* ---------- Responsive ---------- */
+    /* ---------- Responsive ----------
+       On narrow viewports the 479px tagline can't fit between Logo and
+       Actions side-by-side, so the header re-flows into a 2-row layout:
+       Logo + Actions on top, tagline below. The wheel itself scales
+       smoothly via aspect-ratio + viewBox. */
     @media (max-width: 900px) {
       .landing {
         padding: 12px;
         gap: 12px;
+        justify-content: flex-start;
       }
       .landing__header {
-        /* Tagline drops to its own row on small screens; header
-           collapses to logo + actions on the same line. */
-        grid-template-columns: auto auto;
-        grid-template-rows: auto auto;
-        grid-template-areas:
-          "logo actions"
-          "tagline tagline";
+        flex-wrap: wrap;
         gap: 12px;
         align-items: center;
       }
-      .logo { grid-area: logo; }
-      .landing__actions {
-        grid-area: actions;
-        gap: 10px;
-      }
+      .landing__actions { gap: 10px; }
       .tagline {
-        grid-area: tagline;
+        flex: 1 1 100%;
+        order: 99;             /* push to second row */
+        width: auto;
         font-size: 13px;
-        max-width: none;
       }
       .logo__text { font-size: 44px; }
       .menu-btn { width: 32px; height: 32px; }
@@ -417,17 +381,7 @@
         padding: 0 12px;
         font-size: 11px;
       }
-      .wheel {
-        width: 92vw;
-        height: 92vw;
-        max-width: 560px;
-        max-height: 560px;
-      }
-      .start-btn {
-        width: 150px;
-        height: 150px;
-        font-size: 36px;
-      }
+      .wheel-stage { max-width: 92vw; }
       .landing__footer { font-size: 11px; }
     }
   </style>
@@ -495,112 +449,105 @@
       </div>
     </header>
 
-    <!-- Main: rotating ring of letters + cutouts + central START.
-         The cutouts live INSIDE #outerRing alongside the letters so
-         they share the same rotation — every cutout stays locked to
-         its slot between the same two characters as the ring spins.
-         Each --x/--y is the pixel offset from wheel center as measured
-         in the Figma frame; --w/--h is the cutout's natural size. -->
+    <!-- Main wheel: a single SVG with viewBox 0 0 800 800. Every
+         coordinate inside is the Figma frame coordinate translated by
+         (-355.5, -108.5) — i.e. the Figma "Group 15383" origin. The
+         SVG scales as one unit via CSS, so letters, cutouts, and the
+         START disc stay locked to each other and to Figma at every
+         viewport size. -->
     <main class="landing__main">
-      <div class="wheel" id="wheel">
-        <div class="wheel__ring" id="outerRing" aria-hidden="true">
-          <!-- Top arc -->
-          <div class="wheel__decoration" style="--x:23px;--y:-302px;--w:75px;--h:92px;--r:10.49deg;">
-            <img src="images/landing/image14.png" alt="">
-          </div>
-          <div class="wheel__decoration" style="--x:-152px;--y:-269px;--w:64px;--h:89px;--r:-30deg;">
-            <img src="images/landing/image10.png" alt="">
-          </div>
-          <div class="wheel__decoration wheel__decoration--circle" style="--x:177px;--y:-246px;--w:87px;--h:100px;--r:36.97deg;">
-            <img src="images/landing/image20.png" alt="">
-          </div>
+      <div class="wheel-stage">
+        <svg class="wheel-svg"
+             viewBox="0 0 800 800"
+             preserveAspectRatio="xMidYMid meet"
+             xmlns="http://www.w3.org/2000/svg"
+             role="img"
+             aria-label="Danish Citizenship Test — start">
+          <defs>
+            <!-- Letter ring: circle r=274.5 centered at (400, 400),
+                 starting at the 10 o'clock position so that after 5
+                 letters of "ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ" the F lands
+                 exactly at 12 o'clock — matching Figma's text-path. -->
+            <path id="wheelLetterPath"
+                  d="M 152.6,280.9 A 274.5,274.5 0 1,1 647.4,519.1 A 274.5,274.5 0 1,1 152.6,280.9" />
 
-          <!-- Sides -->
-          <div class="wheel__decoration wheel__decoration--circle" style="--x:-283px;--y:-136px;--w:80px;--h:91px;--r:-49.3deg;">
-            <img src="images/landing/image21.png" alt="">
-          </div>
-          <div class="wheel__decoration" style="--x:296px;--y:-103px;--w:91px;--h:91px;">
-            <img src="images/landing/image18.png" alt="">
-          </div>
-          <div class="wheel__decoration wheel__decoration--circle" style="--x:-302px;--y:55px;--w:91px;--h:133px;--r:-105deg;">
-            <img src="images/landing/image22.png" alt="">
-          </div>
-          <div class="wheel__decoration wheel__decoration--circle" style="--x:312px;--y:93px;--w:84px;--h:109px;--r:107.41deg;">
-            <img src="images/landing/image13.png" alt="">
-          </div>
+            <!-- Pill/circle clip paths for cutouts whose Figma fill is
+                 rounded (corner radius >= min(w,h)/2). Each clipPath
+                 is in userSpaceOnUse so we can reuse it at the image
+                 element with its own transform. -->
+            <clipPath id="clip14"><rect x="-37.5" y="-46" width="75" height="92" rx="37.5" /></clipPath>
+            <clipPath id="clip20"><rect x="-43.5" y="-50" width="87" height="100" rx="43.5" /></clipPath>
+            <clipPath id="clip21"><rect x="-40" y="-45.5" width="80" height="91" rx="40" /></clipPath>
+            <clipPath id="clip22"><rect x="-45.5" y="-66.5" width="91" height="133" rx="45.5" /></clipPath>
+            <clipPath id="clip13"><rect x="-42" y="-54.5" width="84" height="109" rx="42" /></clipPath>
+            <clipPath id="clip11"><rect x="-39" y="-49.5" width="78" height="99" rx="39" /></clipPath>
+          </defs>
 
-          <!-- Bottom arc -->
-          <div class="wheel__decoration" style="--x:-217px;--y:209px;--w:96px;--h:139px;--r:-135deg;">
-            <img src="images/landing/image23.png" alt="">
-          </div>
-          <div class="wheel__decoration" style="--x:222px;--y:222px;--w:121px;--h:46px;--r:45.63deg;">
-            <img src="images/landing/image24.png" alt="">
-          </div>
-          <div class="wheel__decoration wheel__decoration--circle" style="--x:-80px;--y:309px;--w:78px;--h:99px;--r:-150deg;">
-            <img src="images/landing/image11.png" alt="">
-          </div>
-          <div class="wheel__decoration" style="--x:95px;--y:307px;--w:89px;--h:111px;--r:163.11deg;">
-            <img src="images/landing/image15.png" alt="">
-          </div>
-        </div>
+          <!-- Decorative cutouts. Each <g> centers the image at its
+               Figma wrapper-center (Figma coord minus group origin),
+               then rotates around that point. -->
+          <g transform="translate(246.49 132.09) rotate(-30)">
+            <image href="images/landing/image10.png" x="-32" y="-44.5" width="64" height="89"/>
+          </g>
+          <g transform="translate(421.57 98.81) rotate(10.49)">
+            <image href="images/landing/image14.png" x="-37.5" y="-46" width="75" height="92" clip-path="url(#clip14)"/>
+          </g>
+          <g transform="translate(575.84 154.23) rotate(36.97)">
+            <image href="images/landing/image20.png" x="-43.5" y="-50" width="87" height="100" clip-path="url(#clip20)"/>
+          </g>
+          <g transform="translate(115.99 264.41) rotate(-49.3)">
+            <image href="images/landing/image21.png" x="-40" y="-45.5" width="80" height="91" clip-path="url(#clip21)"/>
+          </g>
+          <g transform="translate(695 298)">
+            <image href="images/landing/image18.png" x="-45.5" y="-45.5" width="91" height="91"/>
+          </g>
+          <g transform="translate(96.63 455.90) rotate(-105)">
+            <image href="images/landing/image22.png" x="-45.5" y="-66.5" width="91" height="133" clip-path="url(#clip22)"/>
+          </g>
+          <g transform="translate(710.25 493.89) rotate(107.41)">
+            <image href="images/landing/image13.png" x="-42" y="-54.5" width="84" height="109" clip-path="url(#clip13)"/>
+          </g>
+          <g transform="translate(181.28 609.28) rotate(-135)">
+            <image href="images/landing/image23.png" x="-48" y="-69.5" width="96" height="139"/>
+          </g>
+          <g transform="translate(621.11 622.69) rotate(45.63)">
+            <image href="images/landing/image24.png" x="-60.5" y="-23" width="121" height="46"/>
+          </g>
+          <g transform="translate(493.24 707.65) rotate(163.11)">
+            <image href="images/landing/image15.png" x="-44.5" y="-55.5" width="89" height="111"/>
+          </g>
+          <g transform="translate(318.38 710.23) rotate(-150)">
+            <image href="images/landing/image11.png" x="-39" y="-49.5" width="78" height="99" clip-path="url(#clip11)"/>
+          </g>
 
-        <a class="start-btn" href="index.html" aria-label="Start the Danish Citizenship Test experience">START</a>
+          <!-- Letter ring on path — proper SVG text-on-path, exactly
+               like Figma's text-path. The 28 letters are spaced
+               uniformly along the circle. -->
+          <text class="wheel-letters">
+            <textPath href="#wheelLetterPath" startOffset="0">ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ</textPath>
+          </text>
+
+          <!-- START disc, clickable. -->
+          <a class="start-link" href="index.html" aria-label="Start the Danish Citizenship Test experience">
+            <circle class="start-disc" cx="400" cy="400" r="102" />
+            <text class="start-label" x="400" y="418" text-anchor="middle">START</text>
+          </a>
+        </svg>
       </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer — three equal-FILL columns matching the cleaned Figma. -->
     <footer class="landing__footer">
-      <span>LIttle Studio</span>
+      <span>Little Studio</span>
       <span>Danish Citizenship test</span>
       <span>©2026</span>
     </footer>
   </div>
 
-  <script>
-    (function () {
-      // Outer ring: 28 letters — Danish uppercase alphabet minus W, plus Æ Ø Å.
-      // Matches the Figma text-path: "abcdefghijklmnopqrstuvxyzæøå" (UPPER case).
-      var outerLetters = 'ABCDEFGHIJKLMNOPQRSTUVXYZÆØÅ'.split('');
-
-      // Figma starts the alphabet so that F sits at 12 o'clock and
-      // letters proceed clockwise (F G H ... Æ Ø Å A B C D E). With 28
-      // letters spaced 360/28 ≈ 12.857° apart, putting F (index 5) at
-      // angle 0 means shifting every letter by -5 × 12.857°.
-      var STEP = 360 / outerLetters.length;
-      var START_OFFSET = -5 * STEP; // F at top
-
-      function placeRing(containerId, chars, radius, size, spacing, startAngle) {
-        var container = document.getElementById(containerId);
-        if (!container) return;
-        var count = chars.length;
-        for (var i = 0; i < count; i++) {
-          var angle = (i / count) * 360 + (startAngle || 0);
-          var span = document.createElement('span');
-          span.className = 'wheel__char';
-          span.textContent = chars[i];
-          span.style.setProperty('--angle', angle + 'deg');
-          span.style.setProperty('--radius', radius + 'px');
-          span.style.setProperty('--size', size + 'px');
-          if (spacing) span.style.setProperty('--spacing', spacing + 'px');
-          container.appendChild(span);
-        }
-      }
-
-      // Figma uses SVG text-on-path with the baseline at r=274.5 — i.e.
-      // the BOTTOM of every uppercase letter sits on that circle and the
-      // glyph extends OUTWARD from there. CSS positions each span by its
-      // CENTRE, so we add half the line-box (≈45px at 0.81 line-height ×
-      // 110px font) to put the visual bottom on Figma's baseline radius.
-      // Net result: letters span ~r270 → r364, exactly where Figma's do,
-      // which gives the cutouts (centered around r302) room to nest
-      // BETWEEN letters instead of overlapping their bodies.
-      placeRing('outerRing', outerLetters, 319, 110, 1.7, START_OFFSET);
-    })();
-  </script>
-
   <!-- Auth: Firebase SDK + project config + progress + auth widget. Loaded
        here (not in the head) so the wheel paints first; auth.js attaches
-       to #authWidget once onAuthStateChanged fires. -->
+       to #authWidget once onAuthStateChanged fires. The wheel itself is
+       a static SVG above — no JS needed for layout. -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
