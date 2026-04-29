@@ -6,7 +6,7 @@
   <title>Vælg kapitel — Danish Citizenship Test</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ---------- PP Acma (self-hosted) ---------- */
     @font-face {
@@ -209,7 +209,7 @@
     }
 
     /* ---------- Chapter card ---------- */
-    .chapter-card {
+    .kapitel-card {
       width: 227px;
       display: flex;
       flex-direction: column;
@@ -222,7 +222,7 @@
 
     /* Arched peach panel — Figma image 30/32/...:
        w 227 × h 539, radius top 160/160 bottom 10/10. */
-    .chapter-card__main {
+    .kapitel-card__main {
       position: relative;
       width: 227px;
       height: 539px;
@@ -233,7 +233,7 @@
     }
 
     /* Round portrait window: 196×274 inside a 242px-radius circle. */
-    .chapter-card__portrait {
+    .kapitel-card__portrait {
       position: absolute;
       top: 14px;
       left: 16px;
@@ -245,7 +245,7 @@
     }
     /* Image is 222.55% wide and offset −50.36%/+3.22% — Figma's exact
        crop so only the queen's torso fills the circle. */
-    .chapter-card__portrait img {
+    .kapitel-card__portrait img {
       position: absolute;
       width: 222.55%;
       height: 101.56%;
@@ -256,7 +256,7 @@
     }
 
     /* Title — PP Acma Semibold 20/22, two lines. */
-    .chapter-card__title {
+    .kapitel-card__title {
       position: absolute;
       top: 329px;
       left: 18px;
@@ -268,36 +268,42 @@
       color: #000;
     }
 
-    /* "Kapitel" label — small, 50% opacity. */
-    .chapter-card__label {
+    /* "Kapitel" label — Figma uses SuisseIntl Book (a light book
+       weight). SuisseIntl isn't available in this project so we
+       substitute Inter Light (300), which is the closest match in
+       weight and proportion. Renders muted at 50% opacity. */
+    .kapitel-card__label {
       position: absolute;
       top: 466px;
       left: 18px;
       width: 161px;
       font-family: 'Inter', sans-serif;
-      font-weight: 400;
+      font-weight: 300;
       font-size: 10px;
       line-height: normal;
       color: #000;
       opacity: 0.5;
     }
 
-    /* Chapter number — PP Acma Semibold 40, deep brown. */
-    .chapter-card__number {
+    /* Chapter number — PP Acma Semibold 40, deep brown #382626.
+       Figma uses leading-[normal] (CSS `line-height: normal`),
+       NOT a tight 1.0 — that gives the glyph a 60px line box
+       which matches the 478px → 538px footprint Figma reports. */
+    .kapitel-card__number {
       position: absolute;
       top: 478px;
-      left: 14px;
+      left: 15px;
       width: 196px;
       font-family: 'PP Acma', 'DM Serif Display', serif;
       font-weight: 600;
       font-size: 40px;
-      line-height: 1;
+      line-height: normal;
       color: var(--card-number);
     }
 
     /* "Læs nu" CTA — collapsed by default; eases open on hover/focus.
        flex-basis transition is what gives the smooth lift. */
-    .chapter-card__cta {
+    .kapitel-card__cta {
       flex: 0 0 0;
       margin-top: 0;
       width: 226px;
@@ -317,20 +323,20 @@
         flex-basis 0.35s cubic-bezier(0.16, 1, 0.3, 1),
         margin-top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .chapter-card:hover .chapter-card__cta,
-    .chapter-card:focus-visible .chapter-card__cta,
-    .chapter-card:focus .chapter-card__cta {
+    .kapitel-card:hover .kapitel-card__cta,
+    .kapitel-card:focus-visible .kapitel-card__cta,
+    .kapitel-card:focus .kapitel-card__cta {
       flex-basis: 60px;
       margin-top: 10px;
     }
 
     /* Slight tilt + shadow on hover for extra polish (subtle). */
-    .chapter-card__main {
+    .kapitel-card__main {
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
                   box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .chapter-card:hover .chapter-card__main,
-    .chapter-card:focus .chapter-card__main {
+    .kapitel-card:hover .kapitel-card__main,
+    .kapitel-card:focus .kapitel-card__main {
       box-shadow: 0 14px 32px -16px rgba(45, 42, 34, 0.25);
     }
 
@@ -365,9 +371,9 @@
         max-width: 100%;
         gap: 16px;
       }
-      .chapter-card { width: 100%; max-width: 320px; }
-      .chapter-card__main { width: 100%; }
-      .chapter-card__cta { width: 100%; }
+      .kapitel-card { width: 100%; max-width: 320px; }
+      .kapitel-card__main { width: 100%; }
+      .kapitel-card__cta { width: 100%; }
     }
   </style>
 
@@ -478,16 +484,16 @@
       DANSK_CHAPTERS.forEach(function (ch) {
         var num = String(ch.number).padStart(2, '0');
         html +=
-          '<a class="chapter-card" href="study.html?chapter=' + ch.id + '" aria-label="Kapitel ' + num + ' — ' + escapeHtml(ch.titleDa) + '">' +
-            '<div class="chapter-card__main">' +
-              '<div class="chapter-card__portrait">' +
+          '<a class="kapitel-card" href="study.html?chapter=' + ch.id + '" aria-label="Kapitel ' + num + ' — ' + escapeHtml(ch.titleDa) + '">' +
+            '<div class="kapitel-card__main">' +
+              '<div class="kapitel-card__portrait">' +
                 '<img src="images/chapters/queen.png" alt="" loading="lazy">' +
               '</div>' +
-              '<div class="chapter-card__title">' + wrapTitle(ch.titleDa) + '</div>' +
-              '<div class="chapter-card__label">Kapitel</div>' +
-              '<div class="chapter-card__number">' + num + '</div>' +
+              '<div class="kapitel-card__title">' + wrapTitle(ch.titleDa) + '</div>' +
+              '<div class="kapitel-card__label">Kapitel</div>' +
+              '<div class="kapitel-card__number">' + num + '</div>' +
             '</div>' +
-            '<div class="chapter-card__cta">Læs nu</div>' +
+            '<div class="kapitel-card__cta">Læs nu</div>' +
           '</a>';
       });
       grid.innerHTML = html;
