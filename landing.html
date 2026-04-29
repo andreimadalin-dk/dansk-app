@@ -480,6 +480,14 @@
             </clipPath>
           </defs>
 
+          <!-- Spinning ring — letters + cutouts rotate together around
+               the START disc centre (380, 335.85). The disc itself
+               stays outside this <g> so it never moves. JS in
+               <script> below drives the rotation; on START hover the
+               target speed lerps toward zero, producing the "slow
+               down on a curve" effect. -->
+          <g id="wheelRing" transform="rotate(0 380 335.85)">
+
           <!-- Letter ring: a single SVG asset that holds the 11 glyphs
                Figma actually drew. Positioned exactly per Figma:
                x=31.15, y=7.6, size 702.288 × 704.351. -->
@@ -587,8 +595,10 @@
             </g>
           </g>
 
-          <!-- START disc, clickable. Center matches Figma exactly:
-               disc at (380, 335.85), 102px radius. -->
+          </g><!-- /#wheelRing -->
+
+          <!-- START disc, clickable, NOT inside the rotating ring so
+               it stays still while the ring spins around it. -->
           <a class="start-link" href="index.html" aria-label="Start the Danish Citizenship Test experience">
             <circle class="start-disc" cx="380" cy="335.85" r="102" />
             <text class="start-label" x="380" y="354" text-anchor="middle">START</text>
@@ -605,10 +615,59 @@
     </footer>
   </div>
 
+  <!-- Wheel rotation: drives #wheelRing's transform on each animation
+       frame. Speed lerps toward a target value, so when the user
+       hovers the START disc the speed eases down to almost zero on a
+       smooth curve (and eases back up on mouseleave). Honours
+       prefers-reduced-motion by leaving the ring static. -->
+  <script>
+    (function () {
+      var ring = document.getElementById('wheelRing');
+      var startLink = document.querySelector('.start-link');
+      if (!ring || !startLink) return;
+
+      var prefersReduce = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduce) return;
+
+      // Tuned for "slow but visible". Linear normal speed, hover near-zero.
+      var NORMAL = 0.07;   // deg per 1/60s frame ≈ ~85s per full rotation
+      var HOVER  = 0.005;  // ≈ ~20 min per rotation — visually a near-stop
+      var LERP   = 0.05;   // smoothing per frame at 60fps; smaller = softer curve
+
+      var rotation = 0;
+      var current = NORMAL;
+      var target  = NORMAL;
+      var lastT   = performance.now();
+      var CX = 380, CY = 335.85;
+
+      function tick(now) {
+        // Frame-time-normalised so the easing feels right even on
+        // displays that aren't exactly 60Hz.
+        var dt = Math.min(3, (now - lastT) / 16.6667);
+        lastT = now;
+
+        current += (target - current) * LERP * dt;
+        rotation = (rotation + current * dt) % 360;
+
+        ring.setAttribute('transform', 'rotate(' + rotation + ' ' + CX + ' ' + CY + ')');
+        requestAnimationFrame(tick);
+      }
+
+      function slowDown() { target = HOVER; }
+      function speedUp()  { target = NORMAL; }
+      startLink.addEventListener('mouseenter', slowDown);
+      startLink.addEventListener('mouseleave', speedUp);
+      startLink.addEventListener('focus', slowDown);
+      startLink.addEventListener('blur',  speedUp);
+
+      requestAnimationFrame(tick);
+    })();
+  </script>
+
   <!-- Auth: Firebase SDK + project config + progress + auth widget. Loaded
        here (not in the head) so the wheel paints first; auth.js attaches
-       to #authWidget once onAuthStateChanged fires. The wheel itself is
-       a static SVG above — no JS needed for layout. -->
+       to #authWidget once onAuthStateChanged fires. -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
