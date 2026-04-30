@@ -199,52 +199,73 @@
       color: #000;
     }
 
-    /* ---------- Chapter grid ---------- */
+    /* ---------- Chapter grid ----------
+       Real CSS Grid (not flex) so cards share a column width and
+       reflow cleanly across breakpoints. Cards inside use container
+       queries so all their interior typography + spacing scales with
+       the column width. */
     .chapters-grid {
-      display: flex;
-      flex-direction: row;
+      width: 100%;
+      max-width: 1462px;       /* 6 × 227 + 5 × 20 = full design width */
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 20px;
-      align-items: flex-end;     /* bottom-align so hovered card extends UPWARD */
-      justify-content: center;
+      align-items: end;        /* bottom-align so the hovered card lifts upward */
+      justify-items: center;
     }
 
-    /* ---------- Chapter card ---------- */
+    /* ---------- Chapter card ----------
+       The whole card is a SINGLE container for cqi units, so every
+       inner number (font sizes, margins, CTA height) tracks the
+       column width Grid hands us. At Figma's 227px reference width
+       the cqi values produce the original pixel sizes exactly. */
     .kapitel-card {
-      width: 227px;
+      container-type: inline-size;
+      container-name: kapitel;
+      width: 100%;
+      max-width: 227px;        /* never bigger than the design */
       display: flex;
       flex-direction: column;
       text-decoration: none;
       color: inherit;
       cursor: pointer;
-      /* The card itself doesn't grow; the CTA below does, lifting the
-         visible content upward thanks to align-items: flex-end. */
     }
 
-    /* Arched peach panel — Figma image 30/32/...:
-       w 227 × h 539, radius top 160/160 bottom 10/10. */
+    /* Arched peach panel — Figma's 227×539 with radius top 160/160
+       bottom 10/10. Expressed as percentages so the arch shape stays
+       proportional at any width. */
     .kapitel-card__main {
       position: relative;
-      width: 227px;
-      height: 539px;
-      flex: 0 0 539px;
+      width: 100%;
+      aspect-ratio: 227 / 539;
       background: var(--card-bg);
-      border-radius: 160px 160px 10px 10px;
+      /* horizontal: 160/227=70.5%, 10/227=4.4%
+         vertical:   160/539=29.7%, 10/539=1.85%
+         When two adjacent corners' horizontal radii sum > 100% the
+         browser caps them, which is exactly what gives us the smooth
+         top arch even though the raw values exceed 50%. */
+      border-radius:
+        70.5% 70.5% 4.4% 4.4% /
+        29.7% 29.7% 1.85% 1.85%;
       overflow: hidden;
+      transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Round portrait window: 196×274 inside a 242px-radius circle. */
+    /* Round portrait window: 196×274 within the 227×539 card. */
     .kapitel-card__portrait {
       position: absolute;
-      top: 14px;
-      left: 16px;
-      width: 196px;
-      height: 274px;
+      top: 2.6%;               /* 14/539 */
+      left: 7.05%;             /* 16/227 */
+      width: 86.34%;           /* 196/227 */
+      height: 50.83%;          /* 274/539 */
       border-radius: 50%;
       background: var(--card-portrait-bg);
       overflow: hidden;
     }
-    /* Image is 222.55% wide and offset −50.36%/+3.22% — Figma's exact
-       crop so only the queen's torso fills the circle. */
+    /* Inner photo cropped to Figma's 222.55%/-50.36%/+3.22% offset. */
     .kapitel-card__portrait img {
       position: absolute;
       width: 222.55%;
@@ -255,68 +276,66 @@
       object-fit: cover;
     }
 
-    /* Title — PP Acma Semibold 20/22, two lines. */
+    /* Title — PP Acma Semibold. clamp() keeps it readable at very
+       narrow card widths (won't drop below 12px). */
     .kapitel-card__title {
       position: absolute;
-      top: 329px;
-      left: 18px;
-      width: 194px;
+      top: 61.04%;             /* 329/539 */
+      left: 7.93%;             /* 18/227 */
+      width: 85.46%;           /* 194/227 */
       font-family: 'PP Acma', 'DM Serif Display', serif;
       font-weight: 600;
-      font-size: 20px;
+      font-size: clamp(12px, 8.81cqi, 20px);  /* 20/227 = 8.81% */
       line-height: 1.1;
       color: #000;
     }
 
-    /* "Kapitel" label — Figma uses SuisseIntl Book (a light book
-       weight). SuisseIntl isn't available in this project so we
-       substitute Inter Light (300), which is the closest match in
-       weight and proportion. Renders muted at 50% opacity. */
+    /* "Kapitel" label — Inter Light (substitute for SuisseIntl Book). */
     .kapitel-card__label {
       position: absolute;
-      top: 466px;
-      left: 18px;
-      width: 161px;
+      top: 86.46%;             /* 466/539 */
+      left: 7.93%;             /* 18/227 */
+      width: 70.93%;           /* 161/227 */
       font-family: 'Inter', sans-serif;
       font-weight: 300;
-      font-size: 10px;
+      font-size: clamp(8px, 4.41cqi, 10px);   /* 10/227 = 4.41% */
       line-height: normal;
       color: #000;
       opacity: 0.5;
     }
 
-    /* Chapter number — PP Acma Semibold 40, deep brown #382626.
-       Figma uses leading-[normal] (CSS `line-height: normal`),
-       NOT a tight 1.0 — that gives the glyph a 60px line box
-       which matches the 478px → 538px footprint Figma reports. */
+    /* Chapter number — PP Acma Semibold 40, deep brown.
+       line-height: normal preserves Figma's 60px line box. */
     .kapitel-card__number {
       position: absolute;
-      top: 478px;
-      left: 15px;
-      width: 196px;
+      top: 88.68%;             /* 478/539 */
+      left: 6.61%;             /* 15/227 */
+      width: 86.34%;           /* 196/227 */
       font-family: 'PP Acma', 'DM Serif Display', serif;
       font-weight: 600;
-      font-size: 40px;
+      font-size: clamp(22px, 17.62cqi, 40px); /* 40/227 = 17.62% */
       line-height: normal;
       color: var(--card-number);
     }
 
     /* "Læs nu" CTA — collapsed by default; eases open on hover/focus.
-       flex-basis transition is what gives the smooth lift. */
+       Both flex-basis (height) and margin-top use cqi so the lift
+       distance scales with the card. At 227px width these resolve to
+       60px and 10px exactly. */
     .kapitel-card__cta {
       flex: 0 0 0;
       margin-top: 0;
-      width: 226px;
-      height: 60px;
+      width: 99.56%;           /* 226/227 */
+      align-self: center;
       background: var(--brown);
       color: var(--card-bg);
-      border-radius: 10px;
+      border-radius: clamp(6px, 4.42cqi, 10px);   /* 10/226 ≈ 4.42% */
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Inter', sans-serif;
       font-weight: 600;
-      font-size: 14px;
+      font-size: clamp(10px, 6.19cqi, 14px);      /* 14/226 ≈ 6.19% */
       letter-spacing: 0.2px;
       overflow: hidden;
       transition:
@@ -326,27 +345,23 @@
     .kapitel-card:hover .kapitel-card__cta,
     .kapitel-card:focus-visible .kapitel-card__cta,
     .kapitel-card:focus .kapitel-card__cta {
-      flex-basis: 60px;
-      margin-top: 10px;
+      flex-basis: 26.43cqi;    /* 60/227 — height that scales with width */
+      margin-top: 4.41cqi;     /* 10/227 */
     }
 
-    /* Slight tilt + shadow on hover for extra polish (subtle). */
-    .kapitel-card__main {
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
     .kapitel-card:hover .kapitel-card__main,
     .kapitel-card:focus .kapitel-card__main {
       box-shadow: 0 14px 32px -16px rgba(45, 42, 34, 0.25);
     }
 
-    /* ---------- Responsive ---------- */
-    /* The 6 cards × 227px + 5 gaps × 20px = 1462px wide; under that
-       width the grid wraps to 3 columns, then 2, then 1. */
-    @media (max-width: 1500px) {
+    /* ---------- Responsive ----------
+       Each breakpoint just changes the column count — the cards
+       handle the rest themselves via cqi units. */
+    @media (max-width: 1100px) {
       .chapters-grid {
-        flex-wrap: wrap;
-        max-width: 740px;          /* roughly 3 columns of 227 + gaps */
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        max-width: 760px;
+        row-gap: 32px;
       }
     }
     @media (max-width: 900px) {
@@ -361,19 +376,20 @@
       .chapters-page #authWidget .auth-widget__avatar { width: 32px; height: 32px; }
       .chapters-page #authWidget .btn--outlined.btn--sm { height: 32px; padding: 0 12px; font-size: 11px; }
       .chapters-title { font-size: 32px; }
+    }
+    @media (max-width: 600px) {
       .chapters-grid {
-        max-width: 480px;          /* 2 columns */
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 480px;
         gap: 16px;
+        row-gap: 24px;
       }
     }
-    @media (max-width: 540px) {
+    @media (max-width: 380px) {
       .chapters-grid {
-        max-width: 100%;
-        gap: 16px;
+        grid-template-columns: 1fr;
+        max-width: 280px;
       }
-      .kapitel-card { width: 100%; max-width: 320px; }
-      .kapitel-card__main { width: 100%; }
-      .kapitel-card__cta { width: 100%; }
     }
   </style>
 
