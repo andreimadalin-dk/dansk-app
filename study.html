@@ -8,377 +8,1595 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tokens.css?v=12">
-  <link rel="stylesheet" href="css/app.css?v=12">
+  <link rel="stylesheet" href="css/app.css?v=13">
+  <link rel="stylesheet" href="css/nav.css?v=2">
+  <style>
+    /* ---------- Article page ----------
+       Mirrors Figma "Article page variation 1" (603:664) — centered single
+       column with hero portrait, page title, lede paragraph, body, fact
+       cards and bottom navigation pills. The sub-chapter drawer (Figma
+       549:515) slides in from the left when the bottom-left button is
+       hit.
+
+       PP Acma + Inter are already loaded by app.css; the values below pin
+       the Figma-specific sizes that aren't part of the global token set. */
+    :root {
+      --article-bg: #fffaf5;
+      --article-fg: #382626;
+      --article-portrait-bg: #ddcfc2;
+    }
+    html, body { background: var(--article-bg); color: var(--article-fg); }
+    body {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    /* Top-level page wrapper — no horizontal padding so the sticky nav
+       can span the full viewport width without margin trickery (and so
+       the FAB buttons' `left/right: 20px` lines up with the nav's
+       internal 20px padding). Horizontal padding lives on #studyContent
+       so the article body still gets breathing room on narrow screens.
+
+       Bottom padding matches the FAB inset (20px) so that when the user
+       scrolls to the end, the Forrige/Læst/Næste row finishes at the
+       same vertical offset from the viewport bottom as the drawer FAB
+       in the bottom-left corner. */
+    .article-page {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      padding: 0 0 20px;
+    }
+
+    /* Three-column header: DCT left, chapter/section breadcrumb center,
+       burger right.
+
+       Sticky so the breadcrumb stays anchored while the article scrolls.
+       Spans the full viewport width with 20px internal padding — that
+       means DCT is at viewport-left + 20px and burger is at viewport-
+       right - 20px, matching the FAB buttons (left/right: 20px).
+
+       Background stays transparent: pointer-events: none on the bar +
+       pointer-events: auto on each cell lets clicks in the empty gaps
+       pass through to the article underneath. z-index sits below the
+       burger overlay (60) and the drawer (80). */
+    .article-nav {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: transparent;
+      padding: 20px;
+      pointer-events: none;
+    }
+    .article-nav > * { pointer-events: auto; }
+
+    /* Article body gets its own horizontal padding so content doesn't
+       touch the viewport edges on narrow screens. */
+    #studyContent { padding: 0 20px; }
+    .article-nav__center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+    .article-nav__title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.1;
+      color: var(--article-fg);
+      text-align: center;
+    }
+    .article-nav__sub {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 1;
+      color: var(--article-fg);
+    }
+    .article-nav__right { justify-self: end; }
+
+    /* Hero portrait — Figma 603:699 (233×339 oval, peach #ddcfc2 bg). */
+    .article-hero {
+      margin: 92px auto 32px;
+      width: 233px;
+      max-width: 60vw;
+      aspect-ratio: 233 / 339;
+      background: var(--article-portrait-bg);
+      border-radius: 50% / 38%;
+      overflow: hidden;
+    }
+    .article-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* Title + intro */
+    .article-title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: clamp(32px, 4.5vw, 50px);
+      line-height: 1.1;
+      text-align: center;
+      color: #000;
+      max-width: 726px;
+      margin: 24px auto 28px;
+    }
+    /* Articles without a hero (everything except each chapter's
+       Indledning) start with the title — give it the hero's top offset
+       so it clears the sticky nav. */
+    #studyContent > .article-title:first-child {
+      margin-top: 120px;
+    }
+    .article-intro {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-weight: 400;
+      font-size: clamp(18px, 1.6vw, 24px);
+      line-height: 1.2;
+      text-align: center;
+      color: #000;
+      max-width: 724px;
+      margin: 0 auto 56px;
+    }
+
+    /* Body — centred 478px column (matches Figma data-node-id="603:683"),
+       15px Suisse / Inter, color rgba(0,0,0,0.8).
+       padding: 0 overrides app.css's legacy .article-body padding
+       (40px sides) so paragraphs span the full 478px — the same width
+       as the Fakta section below. */
+    .article-body {
+      max-width: 478px;
+      margin: 0 auto;
+      padding: 0;
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.8);
+    }
+    .article-body p { margin-bottom: 16px; }
+    .article-body .study-paragraph--dropcap::first-letter {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-size: 3em;
+      float: left;
+      line-height: 0.9;
+      padding: 4px 10px 0 0;
+      color: #000;
+    }
+    .article-body figure {
+      margin: 24px 0;
+    }
+    .article-body figure img {
+      width: 100%;
+      border-radius: 12px;
+    }
+    .article-body figcaption {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* Fakta cards — Figma 603:684. */
+    .article-facts {
+      max-width: 478px;
+      margin: 48px auto 0;
+      border-top: 1px solid rgba(56, 38, 38, 0.2);
+      padding-top: 24px;
+    }
+    .article-facts__title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.2;
+      color: #000;
+      margin-bottom: 16px;
+    }
+    /* Two columns horizontally; vertically, rows share their seam.
+       The grid carries the first row's top line, every fact carries
+       its own bottom line, and row-gap is 0 — so stacked facts read
+       as a single continuous stroke instead of two close-spaced lines. */
+    .article-facts__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 20px;
+      row-gap: 0;
+      border-top: 1px solid rgba(56, 38, 38, 0.15);
+    }
+    .article-fact {
+      border-bottom: 1px solid rgba(56, 38, 38, 0.15);
+      padding: 12px 0;
+      min-height: 142px;
+    }
+    .article-fact__title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1.2;
+      color: #000;
+      margin-bottom: 12px;
+    }
+    .article-fact__body {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-size: 12px;
+      line-height: 1.2;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Bottom nav: pills for Forrige / Læst / Næste (Figma 603:710-720). */
+    /* Three-column grid keeps the middle "Læst" button locked to the
+       column's true center; Forrige hugs the left, Næste/Tag quiz the
+       right — even when one side button is absent or a different width. */
+    .article-bottom {
+      max-width: 478px;
+      margin: 48px auto 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+    }
+    .article-bottom > :nth-child(1) { justify-self: start; }
+    .article-bottom > :nth-child(2) { justify-self: center; }
+    .article-bottom > :nth-child(3) { justify-self: end; }
+    .article-btn {
+      height: 40px;
+      min-width: 100px;
+      padding: 0 18px;
+      border: 1px solid #ddcfc2;
+      background: transparent;
+      border-radius: 50px;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1;
+      color: #000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .article-btn--filled {
+      background: #ddcfc2;
+      border-color: #ddcfc2;
+    }
+    .article-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* Floating buttons — drawer (bottom-left) opens the sub-chapter nav;
+       eye toggle (right edge) switches to the alternative card view. */
+    .article-fab {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddcfc2;
+      color: #382626;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+    }
+    /* Drawer + eye toggle inset 20px from the viewport edges so they
+       align with the sticky nav's left/right padding. */
+    .article-fab--drawer { left: 20px; bottom: 20px; }
+    .article-fab--toggle { right: 20px; top: 50%; transform: translateY(-50%); }
+    .article-fab svg { display: block; }
+
+    /* ---------- Sub-chapter drawer (Figma 549:515) ---------- */
+    .drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+    }
+    .drawer--open { display: block; }
+    .drawer__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(45, 42, 34, 0.18);
+    }
+    .drawer__panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: min(951px, 95vw);
+      background: #f1e7dd;
+      padding: 25px 24px 100px;
+      overflow-y: auto;
+    }
+    .drawer__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 96px;
+    }
+    /* Figma 549:656 — title is 55px PP Acma at y=25, and the "Kap. 01"
+       label (549:663) sits below the title at y=82 in 16px Suisse. */
+    .drawer__title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .drawer__title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 55px;
+      line-height: 1;
+      color: #382626;
+    }
+    .drawer__chapter-label {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-size: 16px;
+      line-height: 1.2;
+      color: #382626;
+    }
+    .drawer__close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1px solid #cebdaf;
+      color: #382626;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .drawer__list { max-width: 600px; }
+    .drawer__section {
+      border-bottom: 1px solid rgba(56, 38, 38, 0.15);
+    }
+    .drawer__section:first-child {
+      border-top: 1px solid rgba(56, 38, 38, 0.15);
+    }
+    .drawer__section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0;
+      cursor: pointer;
+      list-style: none;
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: inherit;
+      color: inherit;
+    }
+    .drawer__section-head::-webkit-details-marker { display: none; }
+    .drawer__section-title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 1.2;
+      color: #382626;
+    }
+    .drawer__section-period {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-weight: 400;
+      font-size: 10px;
+      color: #382626;
+      margin-left: 4px;
+    }
+    .drawer__section-arrow {
+      width: 30px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #382626;
+      transition: transform 0.2s ease;
+    }
+    details[open] .drawer__section-arrow { transform: rotate(180deg); }
+
+    .drawer__subsections {
+      padding: 6px 0 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .drawer__subsection {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid rgba(56, 38, 38, 0.2);
+      border-radius: 10px 60px 60px 10px;
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-size: 12px;
+      color: #382626;
+      text-align: left;
+      width: 100%;
+    }
+    .drawer__subsection--active {
+      background: #ddcfc2;
+      border-color: transparent;
+    }
+    .drawer__subsection--read {
+      border-color: transparent;
+    }
+    .drawer__subsection-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #382626;
+    }
+    .drawer__subsection-text { flex: 1; }
+    .drawer__subsection-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #382626;
+      color: #f1e7dd;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ---------- Chapter quickjump popover (Figma 780:166 / 534:3710) ----------
+       260×312 peach panel that anchors above the bottom-right CTA. Lists
+       all 6 chapters as 228×40 rows: active row gets a solid peach pill
+       background, inactive rows get a 1px border. Tapping a row
+       navigates to that chapter. */
+    .quickjump {
+      position: fixed;
+      right: 20px;
+      bottom: 80px;         /* CTA bottom 20 + height 40 + 20 gap = 80 */
+      width: 260px;
+      height: 312px;
+      background: #f1e7dd;
+      border-radius: 30px;
+      padding: 16px;
+      z-index: 50;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+    .quickjump--open { display: flex; }
+    .quickjump__row {
+      position: relative;
+      width: 228px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding-left: 56px;   /* 16px portrait inset + 40 portrait + 0 gap */
+      background: transparent;
+      border: 1px solid rgba(101, 83, 79, 0.2);
+      border-radius: 44.944px;
+      cursor: pointer;
+      text-align: left;
+      text-decoration: none;
+      color: #382626;
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: normal;
+    }
+    .quickjump__row--active {
+      background: #ddcfc2;
+      border-color: transparent;
+    }
+    .quickjump__portrait {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddcfc2;
+      overflow: hidden;
+    }
+    .quickjump__portrait img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .quickjump__num { font-weight: 400; min-width: 14px; }
+    .quickjump-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 49;
+      background: transparent;
+      display: none;
+    }
+    .quickjump-backdrop--open { display: block; }
+
+    /* Bottom-right CTA — Figma 603:700 ("image 16"). 40px peach circle
+       holding the current chapter's portrait. Opens the quickjump. */
+    .article-fab--chapters {
+      right: 20px;
+      bottom: 20px;
+      background: #ddcfc2;
+      overflow: hidden;
+      padding: 0;
+    }
+    .article-fab--chapters img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* ---------- Card view (Figma 603:722, "Article page alternative
+       card view") ----------
+       A full-screen alternative to the standard article view: a dark
+       historical-painting backdrop, a cream content card floating over
+       it, a "Fakta" kings list, the chapter section number, and a
+       bottom-center "Læst" pill. Toggled on by clicking the right-side
+       eye button (#viewToggle), off by clicking it again.
+
+       The Figma frame is sized at 1512×982, so absolute pixel offsets
+       below mirror the design verbatim. At narrower viewports we
+       collapse the layered backdrop cards and recentre the cream card. */
+    .card-view {
+      position: fixed;
+      inset: 0;
+      z-index: 25;          /* under sticky nav (40) so nav still draws on top */
+      display: none;
+      overflow: hidden;
+      /* Peach field behind the portrait: the high-res chapter portraits
+         are transparent cutouts, so this fills the margins (then the
+         overlay darkens the whole field). */
+      background: #f1e7dd;
+    }
+    body.card-view-active .card-view  { display: block; }
+    body.card-view-active #studyContent { display: none; }
+
+    /* Background — the current chapter's main portrait (same image as
+       the chapters page card), stretched full-bleed behind the overlay.
+       Set per-chapter by renderCardView(). */
+    .card-view__bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      pointer-events: none;
+    }
+    .card-view__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
+
+    /* Centered card stack — the backdrops + cream card live inside one
+       wrapper that is truly centered in the viewport (regardless of
+       screen size). Backdrop offsets are relative to the card, mirroring
+       Figma's 603:767/768 deltas (-40px / -20px above the card top). */
+    .card-view__stack {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 480px;
+      height: 651px;
+      /* 3D frustum so the flicked card hinges in depth and the next one
+         rises from behind. perspective is a separate property, so the
+         centering transform above is untouched. */
+      perspective: 1400px;
+      perspective-origin: 50% 42%;
+      transform-style: preserve-3d;
+    }
+
+    /* Section number — sits just left of the centered card (Figma gap
+       between number and card is ~90px), vertically centered. */
+    .card-view__section-num {
+      position: absolute;
+      left: -90px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 26px;
+      line-height: 1.1;
+      color: #f1e7dd;
+      pointer-events: none;
+    }
+
+    /* Deck cards behind the front — two UNIFORM cream cards that fill the
+       stack (inset:0) and are placed into the MID / DEEP slots purely via
+       transform + opacity by JS. Being identical lets the deck promote
+       seamlessly: on a flick the card behind rises into the front slot while
+       the deeper one moves up, and the two simply swap slots (no flicker). */
+    .card-view__back-1,
+    .card-view__back-2 {
+      position: absolute;
+      inset: 0;
+      background: #fffaf5;
+      border-radius: 26px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.30);
+      pointer-events: none;
+      will-change: transform, opacity;
+      transform-origin: 50% 50%;
+    }
+
+    /* Cream content card — flex column so a long (wrapping) title pushes
+       the intro down instead of overlapping it. The Fakta block anchors
+       toward the bottom via margin-top:auto, echoing Figma's layout. */
+    .card-view__card {
+      position: absolute;
+      inset: 0;
+      background: #fffaf5;
+      border-radius: 26px;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 20px 20px;
+      overflow: hidden;
+      z-index: 3;            /* the live front card sits above the MID/DEEP deck cards */
+    }
+    .card-view__title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1.1;
+      color: #382626;
+      margin: 0 0 12px;
+    }
+    .card-view__intro {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: normal;   /* Figma 603:773 — leading normal */
+      color: #382626;
+      margin: 0;
+    }
+    .card-view__fakta {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.2;
+      color: #382626;
+      margin: auto 0 16px;   /* auto top margin anchors Fakta low in the card */
+      padding-top: 24px;
+    }
+    /* Facts — static stacked list inside the card (Figma 603:775). */
+    .card-view__kings {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-view__king {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid rgba(175, 157, 127, 0.4);
+      border-radius: 12px;
+      padding: 10px 10px 10px 20px;
+      overflow: hidden;
+    }
+
+    /* ---------- Whole-card flick (article → article) ----------
+       The entire cream card can be flicked (drag / arrow keys) to move
+       to the next or previous article in the chapter. The layered
+       backdrops behind stay put — the next card "arrives" from the deck. */
+    /* Base card + incoming clone share the box + hinge origin. */
+    .card-view__card,
+    .card-view__card--clone {
+      transform-origin: 50% 50%;
+      backface-visibility: hidden;
+    }
+    .card-view__card {
+      cursor: grab;
+      touch-action: pan-y;
+      will-change: transform, opacity;
+      /* Used for spring-back + the settle snap; the fly-off / rise-in
+         curves are assigned inline in JS so each phase can differ. */
+      transition: transform 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity   0.30s linear;
+    }
+    .card-view__card:active { cursor: grabbing; }
+
+    /* Incoming clone — identical box that starts coincident with the MID
+       deck card and rises into the front slot, carrying the next content. */
+    .card-view__card--clone {
+      position: absolute;
+      inset: 0;
+      background: #fffaf5;
+      border-radius: 26px;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 20px 20px;
+      overflow: hidden;
+      pointer-events: none;
+      will-change: transform, opacity;
+      z-index: 4;            /* rises above the front card as it lands (set inline too) */
+    }
+    /* Composited lift-shadow on the rising clone (opacity only — no
+       per-frame box-shadow recompute). */
+    .card-view__card--clone::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      pointer-events: none;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.40);
+      opacity: 0;
+      will-change: opacity;
+      transition: opacity 0.40s ease-out;
+    }
+    .card-view__card--clone.is-rising::after { opacity: 1; }
+
+
+    /* Edge rubber-band — class-driven so it never fights inline transforms. */
+    @keyframes cv-bounce-left {
+      0%, 100% { transform: perspective(1400px) translate3d(0, 0, 0) rotateY(0) rotateZ(0); }
+      42%      { transform: perspective(1400px) translate3d(-26px, 2px, -30px) rotateY(-7deg) rotateZ(-1.5deg); }
+    }
+    @keyframes cv-bounce-right {
+      0%, 100% { transform: perspective(1400px) translate3d(0, 0, 0) rotateY(0) rotateZ(0); }
+      42%      { transform: perspective(1400px) translate3d(26px, 2px, -30px) rotateY(7deg) rotateZ(1.5deg); }
+    }
+    .card-view__card--bounce-left  { animation: cv-bounce-left  0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+    .card-view__card--bounce-right { animation: cv-bounce-right 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-view__card, .card-view__card--clone,
+      .card-view__back-1, .card-view__back-2 { transition-duration: 0.12s !important; }
+      .card-view__card--clone::after { transition: none !important; }
+      .card-view__card--bounce-left, .card-view__card--bounce-right { animation-duration: 0.12s !important; }
+    }
+    .card-view__king-icon {
+      width: 28px;
+      height: auto;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    .card-view__king-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .card-view__king-name {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1.2;
+      color: #382626;
+    }
+    .card-view__king-desc {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 1.2;
+      color: rgba(56, 38, 38, 0.7);
+    }
+
+    /* Bottom-center "Læst" pill — Figma 603:741. Visible only in card view. */
+    .card-view__laest {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 40px;
+      background: transparent;
+      border: 1px solid #ddcfc2;
+      border-radius: 50px;
+      color: #ddcfc2;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      z-index: 35;
+    }
+    body.card-view-active .card-view__laest { display: inline-flex; }
+    /* Read state — mirrors the article page's filled Læst pill: peach
+       background, dark text, check icon to the right of the label. */
+    .card-view__laest--read {
+      background: #ddcfc2;
+      color: #000;
+    }
+
+    /* When in card view, recolor the sticky top-nav text to cream so it
+       reads on the dark backdrop. The burger button stays dark on peach
+       — that's the same treatment as Figma. */
+    body.card-view-active .article-nav .site-nav__logo,
+    body.card-view-active .article-nav__title,
+    body.card-view-active .article-nav__sub {
+      color: #f1e7dd;
+    }
+
+    /* Use a small peach-bordered eye toggle in card view (slightly
+       different finish from the standard one — Figma 515:3239). */
+    body.card-view-active .article-fab--toggle img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Narrow viewport (<900px) — drop the layered backdrops + side
+       number; the stack shrinks to fit the screen. */
+    @media (max-width: 900px) {
+      .card-view__back-1, .card-view__back-2,
+      .card-view__section-num { display: none; }
+      .card-view__stack {
+        width: calc(100vw - 40px);
+        max-width: 480px;
+        height: min(651px, calc(100vh - 140px));
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .article-nav { grid-template-columns: 1fr; gap: 8px; text-align: center; }
+      .article-nav__right { justify-self: center; }
+      .article-fab--toggle { display: none; }
+      .article-hero { margin-top: 32px; }
+      .article-facts__grid { grid-template-columns: 1fr; }
+      .drawer__title { font-size: 36px; }
+    }
+  </style>
 </head>
 <body>
 
-  <nav class="top-nav">
-    <a href="index.html" class="top-nav__title">Indfødsretsprøven</a>
-    <div class="top-nav__right">
-      <a id="reelsLink" href="reels.html" class="btn btn--outlined btn--sm" style="font-size:12px; padding:4px 12px; display:inline-flex; align-items:center; gap:5px;">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 2l8 6-8 6V2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Reels
-      </a>
-      <div id="authWidget"></div>
+  <div class="article-page">
+
+    <!-- Top nav — DCT + breadcrumb + burger, mirrors Figma 603:891. -->
+    <header class="article-nav site-nav">
+      <a class="site-nav__logo" href="landing.html" aria-label="Forside">DCT</a>
+      <div class="article-nav__center">
+        <div class="article-nav__title" id="navChapterTitle">Danmarks Historien</div>
+        <div class="article-nav__sub" id="navSectionTitle">Indledning</div>
+      </div>
+      <div class="article-nav__right">
+        <button class="burger-btn" type="button" aria-label="Open menu">
+          <img src="images/icons/menu-burger.svg" width="18" height="8" alt="" aria-hidden="true">
+        </button>
+      </div>
+    </header>
+
+    <!-- Article content is rendered into here. -->
+    <div id="studyContent">
+      <div style="text-align:center; padding:64px 24px; color:var(--gray-50);">
+        <p>Vælg et afsnit fra kapitelmenuen for at begynde.</p>
+      </div>
     </div>
-  </nav>
 
-  <div class="two-panel">
-    <!-- Sidebar -->
-    <aside class="panel-left">
-      <div class="toc-header">
-        <a href="index.html" style="display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--gray-50); margin-bottom:8px; text-decoration:none;">
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Alle kapitler
-        </a>
-        <div class="toc-header__chapter" id="tocChapterLabel"></div>
-        <div class="toc-header__title" id="tocChapterTitle"></div>
-      </div>
-      <ul class="toc-list" id="tocList"></ul>
-      <div style="padding:12px 16px; border-top:1px solid var(--border);">
-        <div style="display:flex; align-items:center; gap:8px; font-size:11px; color:var(--gray-50);">
-          <div class="progress-bar" style="flex:1;"><div class="progress-bar__fill" id="sidebarProgress" style="width:0%"></div></div>
-          <span id="sidebarProgressLabel">0/0</span>
-        </div>
-      </div>
-    </aside>
+    <!-- Card view (alternative article layout, Figma 603:722).
+         Hidden by default; toggled by the eye button on the right edge.
+         Content is populated by renderCardView() below from the same
+         entry that feeds the standard article view. -->
+    <section class="card-view" id="cardView" aria-hidden="true">
+      <img class="card-view__bg" id="cardViewBg" src="images/quiz-bg/ch1.png" alt="" loading="lazy">
+      <div class="card-view__overlay"></div>
 
-    <!-- Content -->
-    <main class="panel-right" id="contentPanel">
-      <div class="study-content" id="studyContent">
-        <div style="text-align:center; padding:64px 24px; color:var(--gray-50);">
-          <p>Vælg et afsnit fra sidepanelet for at begynde.</p>
-        </div>
+      <!-- Centered stack: backdrops + cream card + adjacent section
+           number all move together, truly centered in the viewport. -->
+      <div class="card-view__stack">
+        <div class="card-view__section-num" id="cardViewSectionNum">01</div>
+        <div class="card-view__back-1"></div>
+        <div class="card-view__back-2"></div>
+
+        <article class="card-view__card" id="cardViewCard">
+          <h1 class="card-view__title"  id="cardViewTitle">Danmarks historien</h1>
+          <p  class="card-view__intro"  id="cardViewIntro"></p>
+          <h2 class="card-view__fakta">Fakta</h2>
+          <div class="card-view__kings" id="cardViewKings"></div>
+        </article>
       </div>
-    </main>
+    </section>
+
   </div>
 
-  <!-- Firebase SDK (compat) -->
+  <!-- Bottom-center "Læst" pill (Figma 603:741) — visible only while
+       the card view is open. Marks the current section as read and
+       advances to the next. -->
+  <button class="card-view__laest" type="button" id="cardViewLaest">Læst</button>
+
+  <!-- Drawer button: opens the sub-chapter nav (Figma 549:515). -->
+  <button class="article-fab article-fab--drawer" type="button"
+          id="drawerOpen" aria-label="Åbn kapitelmenu">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="3" y1="6"  x2="17" y2="6"  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="3" y1="10" x2="13" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="3" y1="14" x2="17" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <!-- Bottom-right CTA — opens the chapter quickjump popover. Shows the
+       current chapter's portrait; updated by JS each navigation. -->
+  <button class="article-fab article-fab--chapters" type="button"
+          id="chaptersOpen" aria-label="Vælg kapitel">
+    <img id="chaptersOpenImg" src="images/chapters/ch1.png" alt="">
+  </button>
+
+  <!-- Eye toggle: alternative card view (Figma 603:721). Placeholder
+       wiring — currently just toggles a class on the body. -->
+  <button class="article-fab article-fab--toggle" type="button"
+          id="viewToggle" aria-label="Skift visning">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 7C1 7 4 1 10 1C16 1 19 7 19 7C19 7 16 13 10 13C4 13 1 7 1 7Z"
+            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="10" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  </button>
+
+  <!-- Chapter quickjump popover (Figma 750:756) — populated by JS below.
+       Opens when the user clicks the chapter title in the sticky nav. -->
+  <div class="quickjump-backdrop" id="quickjumpBackdrop"></div>
+  <nav class="quickjump" id="quickjump" role="menu" aria-label="Vælg kapitel"></nav>
+
+  <!-- Sub-chapter drawer overlay (rendered + populated by JS below). -->
+  <div class="drawer" id="drawer" role="dialog" aria-hidden="true"
+       aria-label="Kapitelmenu">
+    <div class="drawer__backdrop" id="drawerBackdrop"></div>
+    <div class="drawer__panel" id="drawerPanel">
+      <div class="drawer__head">
+        <div class="drawer__title-block">
+          <div class="drawer__title" id="drawerTitle">Danmarks Historien</div>
+          <div class="drawer__chapter-label" id="drawerChapterLabel">Kap. 01</div>
+        </div>
+        <button class="drawer__close" type="button" id="drawerClose" aria-label="Luk">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L10 10M10 1L1 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="drawer__list" id="drawerList"></div>
+    </div>
+  </div>
+
+  <!-- Firebase + chapter data, then app code. -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
-
-  <script src="data/chapters.js"></script>
+  <script src="data/chapters.js?v=2"></script>
   <script src="data/vocabulary.js"></script>
-  <script src="js/progress.js?v=3"></script>
+  <script src="js/progress.js?v=5"></script>
   <script src="js/app.js?v=4"></script>
   <script src="js/auth.js?v=4"></script>
+  <script src="js/menu.js?v=4"></script>
+
   <script>
     (function() {
       var chapterId = DanskApp.getParam('chapter') || 'ch1';
       var sectionId = DanskApp.getParam('section');
       var chapter = DanskApp.getChapter(chapterId);
-      if (!chapter) { window.location.href = 'index.html'; return; }
+      if (!chapter) { window.location.href = 'landing.html'; return; }
 
       var leaves = DanskApp.getLeafSections(chapterId);
 
-      // Update reels link with chapter
-      document.getElementById('reelsLink').href = 'reels.html?chapter=' + chapterId;
+      // Pad chapter number — Figma uses "Kap. 01" form.
+      function padNum(n) { return ('0' + n).slice(-2); }
 
-      // Set sidebar header
-      function updateSidebarHeader() {
-        document.getElementById('tocChapterLabel').textContent = 'Kapitel ' + chapter.number;
-        document.getElementById('tocChapterTitle').textContent = chapter.titleDa;
+      // ---------- Top-bar breadcrumb ----------
+      function updateNavBreadcrumb() {
+        document.getElementById('navChapterTitle').textContent = chapter.titleDa;
+        var leaf = leaves.find(function(l) { return l.id === sectionId; });
+        var label = leaf
+          ? (leaf.parentSection ? leaf.parentSection.titleDa : leaf.titleDa)
+          : '';
+        document.getElementById('navSectionTitle').textContent = label;
         document.title = chapter.titleDa + ' — Læs';
       }
-      updateSidebarHeader();
 
-      // Render TOC
-      function renderToc() {
-        updateSidebarHeader();
-        var prog = DanskProgress.getChapterProgress(chapterId);
-        var pct = prog.total > 0 ? Math.round((prog.read / prog.total) * 100) : 0;
-        document.getElementById('sidebarProgress').style.width = pct + '%';
-        document.getElementById('sidebarProgressLabel').textContent = prog.read + '/' + prog.total;
+      // ---------- Drawer (sub-chapter accordion) ----------
+      function renderDrawer() {
+        document.getElementById('drawerTitle').textContent = chapter.titleDa;
+        document.getElementById('drawerChapterLabel').textContent = 'Kap. ' + padNum(chapter.number);
 
+        var list = document.getElementById('drawerList');
         var html = '';
         chapter.sections.forEach(function(s) {
-          if (s.subsections && s.subsections.length > 0) {
-            html += '<li class="toc-item" style="font-weight:700; font-size:12px; color:var(--gray-50); cursor:default; text-transform:uppercase; letter-spacing:0.16px;">' +
-              '<span class="toc-item__number">' + s.number + '</span>' +
-              DanskApp.escapeHtml(s.titleDa) +
-            '</li>';
-            s.subsections.forEach(function(ss) {
-              var isRead = DanskProgress.isSectionRead(ss.id);
-              var isActive = sectionId === ss.id;
-              html += '<li class="toc-item toc-subsection' + (isActive ? ' active' : '') + '" data-section="' + ss.id + '">' +
-                '<span class="toc-item__number">' + ss.number + '</span>' +
-                '<span>' + DanskApp.escapeHtml(ss.titleDa) + '</span>' +
-                (isRead ? '<span class="toc-item__check" style="color:var(--success);">' + DanskApp.checkSvg(12) + '</span>' : '') +
-              '</li>';
-            });
-          } else {
-            var isRead = DanskProgress.isSectionRead(s.id);
-            var isActive = sectionId === s.id;
-            html += '<li class="toc-item' + (isActive ? ' active' : '') + '" data-section="' + s.id + '">' +
-              '<span class="toc-item__number">' + s.number + '</span>' +
-              '<span>' + DanskApp.escapeHtml(s.titleDa) + '</span>' +
-              (isRead ? '<span class="toc-item__check" style="color:var(--success);">' + DanskApp.checkSvg(12) + '</span>' : '') +
-            '</li>';
-          }
-        });
-        document.getElementById('tocList').innerHTML = html;
+          // Pull the parenthesised period out of the title (e.g. "Vikingetid (ca. 750-1050)")
+          // so we can render it in the smaller secondary style from Figma.
+          var m = s.titleDa.match(/^(.*?)\s*(\(.+\))$/);
+          var titleMain = m ? m[1] : s.titleDa;
+          var titlePeriod = m ? m[2] : '';
 
-        // TOC click handlers
-        document.querySelectorAll('.toc-item[data-section]').forEach(function(item) {
-          item.addEventListener('click', function() {
-            loadSection(item.getAttribute('data-section'));
+          var isCurrentSection = !!sectionId && s.subsections.some(function(ss) { return ss.id === sectionId; })
+                              || sectionId === s.id;
+          var open = isCurrentSection ? ' open' : '';
+
+          html += '<details class="drawer__section"' + open + '>';
+          html += '<summary class="drawer__section-head">';
+          html +=   '<span class="drawer__section-title">' + DanskApp.escapeHtml(titleMain);
+          if (titlePeriod) {
+            html += ' <span class="drawer__section-period">' + DanskApp.escapeHtml(titlePeriod) + '</span>';
+          }
+          html +=   '</span>';
+          html +=   '<span class="drawer__section-arrow">' +
+                    '<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                      '<path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '</svg></span>';
+          html += '</summary>';
+
+          if (s.subsections && s.subsections.length > 0) {
+            html += '<div class="drawer__subsections">';
+            s.subsections.forEach(function(ss) {
+              var read = DanskProgress.isSectionRead(ss.id);
+              var active = sectionId === ss.id;
+              var cls = 'drawer__subsection' + (active ? ' drawer__subsection--active' : '') + (read ? ' drawer__subsection--read' : '');
+              html += '<button class="' + cls + '" data-section="' + ss.id + '">';
+              html +=   '<span class="drawer__subsection-icon">';
+              if (active) {
+                // Eye icon for the currently-open subsection.
+                html += '<svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                        '<path d="M1 6S3.7 1.2 9 1.2 17 6 17 6 14.3 10.8 9 10.8 1 6 1 6Z" stroke="currentColor" stroke-width="1.2"/>' +
+                        '<circle cx="9" cy="6" r="2.2" stroke="currentColor" stroke-width="1.2"/></svg>';
+              }
+              html +=   '</span>';
+              html +=   '<span class="drawer__subsection-text">' + DanskApp.escapeHtml(ss.titleDa) + '</span>';
+              if (read) {
+                html += '<span class="drawer__subsection-check">' +
+                        '<svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                          '<path d="M1 4L4 7L9 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+                        '</svg></span>';
+              }
+              html += '</button>';
+            });
+            html += '</div>';
+          } else {
+            // Section with no subsections — clicking opens the section itself.
+            var read = DanskProgress.isSectionRead(s.id);
+            var active = sectionId === s.id;
+            var cls = 'drawer__subsection' + (active ? ' drawer__subsection--active' : '') + (read ? ' drawer__subsection--read' : '');
+            html += '<div class="drawer__subsections"><button class="' + cls + '" data-section="' + s.id + '">';
+            html +=   '<span class="drawer__subsection-icon"></span>';
+            html +=   '<span class="drawer__subsection-text">' + DanskApp.escapeHtml(s.titleDa) + '</span>';
+            html += '</button></div>';
+          }
+          html += '</details>';
+        });
+        list.innerHTML = html;
+
+        list.querySelectorAll('button[data-section]').forEach(function(b) {
+          b.addEventListener('click', function() {
+            loadSection(b.getAttribute('data-section'));
+            closeDrawer();
           });
         });
       }
+      function openDrawer()  { document.getElementById('drawer').classList.add('drawer--open'); }
+      function closeDrawer() { document.getElementById('drawer').classList.remove('drawer--open'); }
 
-      // Load content for a section
+      document.getElementById('drawerOpen').addEventListener('click', openDrawer);
+      document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+      document.getElementById('drawerBackdrop').addEventListener('click', closeDrawer);
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') { closeDrawer(); closeQuickjump(); }
+      });
+
+      // ---------- Chapter quickjump popover (Figma 780:166 / 534:3710) ----------
+      // Renders 6 chapter rows with mini portraits; clicking a row jumps
+      // to that chapter. Opened by the bottom-right CTA (#chaptersOpen).
+      function renderQuickjump() {
+        var qj = document.getElementById('quickjump');
+        var html = '';
+        (window.DANSK_CHAPTERS || []).forEach(function(ch) {
+          var isActive = (ch.id === chapterId);
+          var cls = 'quickjump__row' + (isActive ? ' quickjump__row--active' : '');
+          html += '<a class="' + cls + '" href="study.html?chapter=' + ch.id + '">' +
+                    '<span class="quickjump__portrait">' +
+                      '<img src="images/chapters/ch' + ch.number + '.png" alt="" loading="lazy">' +
+                    '</span>' +
+                    '<span class="quickjump__num">' + ch.number + '.</span>' +
+                    '<span>' + DanskApp.escapeHtml(ch.titleDa) + '</span>' +
+                  '</a>';
+        });
+        qj.innerHTML = html;
+        // Keep the CTA portrait in sync with the current chapter.
+        var img = document.getElementById('chaptersOpenImg');
+        if (img) img.src = 'images/chapters/ch' + (chapter ? chapter.number : 1) + '.png';
+      }
+      function openQuickjump() {
+        renderQuickjump();
+        document.getElementById('quickjump').classList.add('quickjump--open');
+        document.getElementById('quickjumpBackdrop').classList.add('quickjump-backdrop--open');
+      }
+      function closeQuickjump() {
+        document.getElementById('quickjump').classList.remove('quickjump--open');
+        document.getElementById('quickjumpBackdrop').classList.remove('quickjump-backdrop--open');
+      }
+      document.getElementById('chaptersOpen').addEventListener('click', function(e) {
+        e.stopPropagation();
+        var open = document.getElementById('quickjump').classList.contains('quickjump--open');
+        if (open) closeQuickjump(); else openQuickjump();
+      });
+      document.getElementById('quickjumpBackdrop').addEventListener('click', closeQuickjump);
+
+      // ---------- Section loader ----------
       function loadSection(id) {
         sectionId = id;
         var url = new URL(window.location);
         url.searchParams.set('section', id);
         history.replaceState(null, '', url);
-        renderToc();
+        updateNavBreadcrumb();
+        renderDrawer();
         renderContent();
-        document.getElementById('contentPanel').scrollTop = 0;
+        renderCardView();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      // Chapter hero images (from unsplash.com — all verified)
-      var HERO_IMAGES = {
-        'ch1': 'https://images.unsplash.com/photo-1567108077905-f8a10e69a5a6?w=1200&h=500&fit=crop',  // Viking ship, Norway
-        'ch2': 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=1200&h=500&fit=crop',  // Nyhavn, Copenhagen
-        'ch3': 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=1200&h=500&fit=crop',      // Nyhavn daytime
-        'ch4': 'https://images.unsplash.com/photo-1649281014163-4df345e37cd6?w=1200&h=500&fit=crop',   // Danish church on hill
-        'ch5': 'https://images.unsplash.com/photo-1759675739458-6e5a4a60a117?w=1200&h=500&fit=crop',   // Aurora borealis
-        'ch6': 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=1200&h=500&fit=crop'    // Rolling green hills
+      // Per-section inline figure (Figma 603:604 — "Article page
+       // variation 2"). Each entry adds an <img> + caption between the
+       // 2nd and 3rd paragraph of the article body. Only populated for
+       // sub-section pages where there's a Figma reference; other
+       // sections fall back to no figure.
+      var SECTION_FIGURES = {
+        'ch1-s4-ss2': {
+          src: 'images/card-view/background.png',
+          caption: 'Christian 4. (1577–1648) — kongen der formede Danmark gennem byggeri og krig'
+        }
       };
 
-      // Section-specific images for inline figures (from unsplash.com — all verified)
-      var SECTION_IMAGES = {
-        // Intro
-        'ch1-s1':     { src: 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=800&h=400&fit=crop', caption: 'Danmark — over tusind år som selvstændig stat' },
-        // Viking Age
-        'ch1-s2-ss1': { src: 'https://images.unsplash.com/photo-1741309485091-0edd5aceab8d?w=800&h=400&fit=crop', caption: 'Vikingeskibet — symbolet på den nordiske ekspansion' },
-        'ch1-s2-ss2': { src: 'https://images.unsplash.com/photo-1772950399275-81eea958d92b?w=800&h=400&fit=crop', caption: 'Havet — vikingernes vej til omverdenen' },
-        'ch1-s2-ss3': { src: 'https://images.unsplash.com/photo-1759675739458-6e5a4a60a117?w=800&h=400&fit=crop', caption: 'Nordlys — naturens magi i den nordiske verden' },
-        // Middle Ages
-        'ch1-s3-ss1': { src: 'https://images.unsplash.com/photo-1580513860129-dee8825dfe44?w=800&h=400&fit=crop', caption: 'Middelalderens fæstninger vidner om magtkampe' },
-        'ch1-s3-ss2': { src: 'https://images.unsplash.com/photo-1649281014163-4df345e37cd6?w=800&h=400&fit=crop', caption: 'Den danske kirke — centrum for middelalderens samfund' },
-        // Reformation & Swedish Wars
-        'ch1-s4-ss1': { src: 'https://images.unsplash.com/photo-1746714164463-b6fd498dd1cb?w=800&h=400&fit=crop', caption: 'Bindingsværk — europæisk arkitektur fra reformationens tid' },
-        'ch1-s4-ss2': { src: 'https://images.unsplash.com/photo-1761816484796-728b83cc56c6?w=800&h=400&fit=crop', caption: 'Fæstningsværker — vidne til svenskekrigenes tid' },
-        'ch1-s4-ss3': { src: 'https://images.unsplash.com/photo-1732475972128-9d2d1437866f?w=800&h=400&fit=crop', caption: 'Kanoner — magt og militær i enevældens Danmark' },
-        // Seafaring
-        'ch1-s5':     { src: 'https://images.unsplash.com/photo-1717252654577-74b6963f163f?w=800&h=400&fit=crop', caption: 'Sejlskibe — Danmarks forbindelse til verdenshavene' },
-        // Enlightenment & Democracy
-        'ch1-s6-ss1': { src: 'https://images.unsplash.com/photo-1566977881883-50c9a3c98af2?w=800&h=400&fit=crop', caption: 'Det danske landskab — forandret af landboreformerne' },
-        'ch1-s6-ss2': { src: 'https://images.unsplash.com/photo-1671707606091-7093027c63ee?w=800&h=400&fit=crop', caption: 'Søfart og handel — den florissante periodes rigdom' },
-        'ch1-s6-ss3': { src: 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=800&h=400&fit=crop', caption: 'Nyhavn — symbolet på vejen til demokrati og frihed' },
-        // Schleswig Wars
-        'ch1-s7-ss1': { src: 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=800&h=400&fit=crop', caption: 'Dannebrog — Danmarks flag i kamp for Slesvig' },
-        'ch1-s7-ss2': { src: 'https://images.unsplash.com/photo-1674074471770-215788e1097c?w=800&h=400&fit=crop', caption: 'Kanoner på slagmarken — nederlaget i 1864' },
-        // Industrialization
-        'ch1-s8-ss1': { src: 'https://images.unsplash.com/reserve/0Ad9yHP8QdCYBUqKxoiw_Stockholmsnow.jpg?w=800&h=400&fit=crop', caption: 'Industrien forandrede byerne og samfundet' },
-        'ch1-s8-ss2': { src: 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=800&h=400&fit=crop', caption: 'Landbruget — grundlaget for andelsbevægelsen' },
-        'ch1-s8-ss3': { src: 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=800&h=400&fit=crop', caption: 'København — centrum for demokratisk forandring' },
-        'ch1-s8-ss4': { src: 'https://images.unsplash.com/photo-1581952449676-b59f9fc1b746?w=800&h=400&fit=crop', caption: 'Stemmerettens kamp — kvindebevægelsens mærke' },
-        // WWI & Interwar
-        'ch1-s9-ss1': { src: 'https://images.unsplash.com/photo-1572966901946-e5c9ac18c283?w=800&h=400&fit=crop', caption: 'Skyttegrave — Første Verdenskrigs gru' },
-        'ch1-s9-ss2': { src: 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=800&h=400&fit=crop', caption: 'Sundhedskrisen — den spanske syges hærgen' },
-        'ch1-s9-ss3': { src: 'https://images.unsplash.com/photo-1743004964641-770e1a528526?w=800&h=400&fit=crop', caption: 'Danmark genforenet — Sønderjylland vender hjem' },
-        'ch1-s9-ss4': { src: 'https://images.unsplash.com/photo-1563195416-6fa1b3187194?w=800&h=400&fit=crop', caption: 'Krisetider — fra økonomisk krise til socialreformer' },
-        // WWII
-        'ch1-s10-ss1': { src: 'https://images.unsplash.com/photo-1683480678669-6a603f08d345?w=800&h=400&fit=crop', caption: 'Soldater i krig — besættelsens mørke tid' },
-        'ch1-s10-ss2': { src: 'https://images.unsplash.com/photo-1772950399275-81eea958d92b?w=800&h=400&fit=crop', caption: 'Havet til Sverige — flugtruten for danske jøder' },
-        'ch1-s10-ss3': { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop', caption: 'Island — fra dansk til selvstændig nation' },
-        'ch1-s10-ss4': { src: 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=800&h=400&fit=crop', caption: 'Dannebrog — befrielsens symbol den 5. maj 1945' },
-        // Cold War & Welfare
-        'ch1-s11-ss1': { src: 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=800&h=400&fit=crop', caption: 'Europa delt — den kolde krigs alliancer' },
-        'ch1-s11-ss2': { src: 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=800&h=400&fit=crop', caption: 'Velfærdsstatens Danmark tager form' },
-        'ch1-s11-ss3': { src: 'https://images.unsplash.com/photo-1581952449676-b59f9fc1b746?w=800&h=400&fit=crop', caption: 'Ungdomsoprør — nye stemmer i samfundsdebatten' },
-        // Modern Denmark
-        'ch1-s12-ss1': { src: 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=800&h=400&fit=crop', caption: 'EU-flaget — Danmark i det europæiske fællesskab' },
-        'ch1-s12-ss2': { src: 'https://images.unsplash.com/reserve/0Ad9yHP8QdCYBUqKxoiw_Stockholmsnow.jpg?w=800&h=400&fit=crop', caption: 'Energikrisen forandrede det danske samfund' },
-        'ch1-s12-ss3': { src: 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=800&h=400&fit=crop', caption: 'København — en by i politisk forandring' },
-        'ch1-s12-ss4': { src: 'https://images.unsplash.com/photo-1635274142658-9260d3bf88c4?w=800&h=400&fit=crop', caption: 'Miljøbevægelsen — ny bevidsthed om naturen' },
-        // Contemporary
-        'ch1-s13-ss1': { src: 'https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=800&h=400&fit=crop', caption: 'Det nye Europa — Berlinmurens fald åbnede nye muligheder' },
-        'ch1-s13-ss2': { src: 'https://images.unsplash.com/photo-1557846978-e801fff1c245?w=800&h=400&fit=crop', caption: 'Danmark i en globaliseret verden' },
-        'ch1-s13-ss3': { src: 'https://images.unsplash.com/photo-1683480678669-6a603f08d345?w=800&h=400&fit=crop', caption: 'Danmark i internationale konflikter' },
-        'ch1-s13-ss4': { src: 'https://images.unsplash.com/photo-1526662075745-edd1c71a4cff?w=800&h=400&fit=crop', caption: 'København — fra krise til økonomisk opsving' },
-        'ch1-s13-ss5': { src: 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=800&h=400&fit=crop', caption: 'Velfærdsstatens udfordringer i det 21. århundrede' },
-        'ch1-s13-ss6': { src: 'https://images.unsplash.com/photo-1554734867-bf3c00a49371?w=800&h=400&fit=crop', caption: 'Sundhedskrise — pandemien ramte hele verden' },
-        'ch1-s13-ss7': { src: 'https://images.unsplash.com/photo-1750608541645-28b1338ab155?w=800&h=400&fit=crop', caption: 'Dannebrog — Danmarks demokrati i en ny tid' }
+      // ---------- Card view (Figma 603:722) ----------
+      // Populates the alternative card view DOM from the same entry that
+      // feeds renderContent(). Cycles through the three king-icon assets
+      // for whichever facts we have. The "08" section number uses the
+      // leaf index (1-indexed, padded).
+      var KING_ICONS = [
+        'images/card-view/king1-icon.png',
+        'images/card-view/king2-icon.png',
+        'images/card-view/king3-icon.png'
+      ];
+
+      // Shared card-inner markup — used by both renderCardView() (the live
+      // card) and buildClone() (the incoming card) so the two can never
+      // drift apart. Returns title + intro + Fakta + up to 3 fact rows.
+      function cardInnerHtml(entry) {
+        var kings = '';
+        (entry.keyFacts || []).slice(0, 3).forEach(function(f, i) {
+          kings +=
+            '<div class="card-view__king">' +
+              '<img class="card-view__king-icon" src="' + KING_ICONS[i % KING_ICONS.length] + '" alt="" draggable="false">' +
+              '<div class="card-view__king-text">' +
+                '<div class="card-view__king-name">' + DanskApp.escapeHtml(f.da)   + '</div>' +
+                '<div class="card-view__king-desc">' + DanskApp.escapeHtml(f.fact) + '</div>' +
+              '</div>' +
+            '</div>';
+        });
+        return '<h1 class="card-view__title">' + DanskApp.escapeHtml(entry.titleDa) + '</h1>' +
+               '<p class="card-view__intro">' + DanskApp.escapeHtml(entry.summary || '') + '</p>' +
+               '<h2 class="card-view__fakta">Fakta</h2>' +
+               '<div class="card-view__kings">' + kings + '</div>';
+      }
+
+      // Build the incoming card (a clone) for the target leaf, pre-filled
+      // with its real content. Returns null if content isn't available.
+      function buildClone(targetIdx) {
+        var entry = (DanskApp.getContentObj(chapterId) || {})[leaves[targetIdx].id];
+        if (!entry) return null;
+        var c = document.createElement('article');
+        c.className = 'card-view__card card-view__card--clone';
+        c.innerHTML = cardInnerHtml(entry);
+        return c;
+      }
+
+      function renderCardView() {
+        var contentObj = DanskApp.getContentObj(chapterId);
+        var entry = contentObj && contentObj[sectionId];
+        if (!entry) return;
+
+        var leafIdx = leaves.findIndex(function(l) { return l.id === sectionId; });
+        var num = padNum(leafIdx >= 0 ? leafIdx + 1 : 1);
+
+        // Background = the current chapter's main portrait, same image as
+        // the chapters page card.
+        var bg = document.getElementById('cardViewBg');
+        if (bg) bg.src = 'images/quiz-bg/ch' + chapter.number + '.png';
+
+        document.getElementById('cardViewSectionNum').textContent = num;
+
+        // Title + intro + Fakta + facts — built from the shared helper so
+        // the live card matches any incoming clone exactly.
+        document.getElementById('cardViewCard').innerHTML = cardInnerHtml(entry);
+
+        // Læst pill — mirrors the article page: outlined with no icon
+        // while unread; filled with the check to the right once read.
+        var isRead = DanskProgress.isSectionRead(sectionId);
+        var laest = document.getElementById('cardViewLaest');
+        laest.classList.toggle('card-view__laest--read', isRead);
+        laest.innerHTML = 'Læst' +
+          (isRead
+            ? ' <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M1 4L4 7L9 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            : '');
+      }
+
+      // ---------- Whole-card flick: article → article ("perspective-deck") ----------
+      // Flicking the cream card (drag or arrow keys) navigates next/prev.
+      // The departing card banks away on a 3D arc while the NEXT card —
+      // a clone pre-filled with the target's real content — rises from the
+      // back of the deck into the front slot. loadSection() runs on settle
+      // so the URL / breadcrumb / underlying article view stay correct.
+      var cardFlicking = false;
+
+      // Tuning knobs.
+      var PD = {
+        flyEase:  'cubic-bezier(0.5, 0, 0.75, 0.2)',   // ease-in: front accelerates out
+        riseEase: 'cubic-bezier(0.22, 1, 0.36, 1)',    // ease-out: cards settle forward
+        flyMsBase: 600, riseMs: 640,
+        dragThresh: 100, flickVel: 0.55
       };
 
-      // Render content
+      // Reduced-motion: collapse to a quick, calm move.
+      var CV_REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+      // ---- Deck slots ----------------------------------------------------
+      // Three slots: the live #cardViewCard is ALWAYS the FRONT; the two
+      // uniform cream cards (back-1 / back-2) occupy MID and DEEP and SWAP on
+      // every flick, so the deck promotes seamlessly (the card behind rises
+      // into the front, the deeper one moves up). Slot look = scale + lift +
+      // opacity + paint order — all compositor-friendly.
+      function slotTransform(slot) {
+        if (slot === 'front') return 'translate3d(0, 0, 0) scale(1)';
+        if (slot === 'mid')   return 'translate3d(0, -46px, 0) scale(0.94)';
+        return                       'translate3d(0, -80px, 0) scale(0.88)';  // deep
+      }
+      function slotOpacity(slot) { return slot === 'front' ? '1' : slot === 'mid' ? '0.6' : '0.32'; }
+      function slotZ(slot)       { return slot === 'front' ? '3' : slot === 'mid' ? '2'   : '1'; }
+
+      // Which backdrop element is currently in MID vs DEEP (they swap per flick).
+      var deck = { mid: null, deep: null };
+      function deckInit() {
+        deck.mid  = document.querySelector('.card-view__back-2');  // closer card -> MID
+        deck.deep = document.querySelector('.card-view__back-1');  // further card -> DEEP
+      }
+      // Place an element into a slot. animateMs>0 => transition; 0 => instant.
+      function placeSlot(el, slot, animateMs) {
+        if (!el) return;
+        el.style.transition = animateMs > 0
+          ? 'transform ' + animateMs + 'ms ' + PD.riseEase + ', opacity ' + animateMs + 'ms ease-out'
+          : 'none';
+        el.style.transform = slotTransform(slot);
+        el.style.opacity   = slotOpacity(slot);
+        el.style.zIndex    = slotZ(slot);
+      }
+      // Snap the two backdrops to their current resting slots (no animation).
+      function deckRest() {
+        if (!deck.mid) deckInit();
+        placeSlot(deck.mid, 'mid', 0);
+        placeSlot(deck.deep, 'deep', 0);
+        if (deck.mid) void deck.mid.offsetWidth;  // commit the 'none' so later changes animate
+      }
+      // Departing front card: gentle slide to the side + slight bank + fade
+      // (premium and calm, like the reference — not an aggressive 3D throw).
+      function flyTransform(dir) {
+        var s = dir > 0 ? -1 : 1;   // next (dir+1) slides LEFT
+        return 'perspective(1400px) translate3d(' + (s * 118) + '%, 30px, -40px) ' +
+               'rotateY(' + (s * 16) + 'deg) rotateZ(' + (s * 4) + 'deg) scale(0.9)';
+      }
+      // Backdrop positions are owned by the deck logic, not by drag.
+      function setBackParallax() { /* no-op */ }
+      function resetBackParallax() { deckRest(); }
+
+      // dir +1 next / -1 prev. vel = release speed (px/ms); arrow keys pass 0.
+      function flickCard(dir, vel) {
+        if (cardFlicking) return;
+        var leafIdx = leaves.findIndex(function(l) { return l.id === sectionId; });
+        var targetIdx = leafIdx + dir;
+        var card = document.getElementById('cardViewCard');
+        var stack = card.parentNode;
+
+        if (targetIdx < 0 || targetIdx >= leaves.length) {
+          // Edge: rubber-band, no navigation.
+          var bc = dir > 0 ? 'card-view__card--bounce-left' : 'card-view__card--bounce-right';
+          card.style.transition = ''; card.style.transform = ''; card.style.opacity = '';
+          card.classList.remove('card-view__card--bounce-left', 'card-view__card--bounce-right');
+          void card.offsetWidth; card.classList.add(bc);
+          setTimeout(function() { card.classList.remove(bc); }, 440);
+          return;
+        }
+
+        var clone = buildClone(targetIdx);
+        if (!clone) { loadSection(leaves[targetIdx].id); return; }  // content missing -> instant nav
+        if (!deck.mid) deckInit();
+
+        cardFlicking = true;
+        var flyMs  = CV_REDUCE ? 150 : Math.max(360, PD.flyMsBase - (vel || 0) * 60);  // velocity-aware throw
+        var riseMs = CV_REDUCE ? 150 : PD.riseMs;
+
+        // The incoming card starts COINCIDENT with the MID deck card (same
+        // pose), then rises into the FRONT slot carrying the next content —
+        // so the card you saw behind is the one that comes forward.
+        clone.style.transition = 'none';
+        clone.style.transform = slotTransform('mid');
+        clone.style.opacity   = slotOpacity('mid');
+        clone.style.zIndex    = '4';                 // lands above the outgoing front card
+        stack.insertBefore(clone, card);
+        void clone.offsetWidth;
+
+        // Front card slides gently out and fades.
+        card.style.transition = 'transform ' + flyMs + 'ms ' + PD.flyEase + ', opacity ' + (flyMs * 0.85) + 'ms ease-in';
+        card.style.transform = flyTransform(dir); card.style.opacity = '0';
+
+        // Incoming card rises MID -> FRONT, sharpening from dim to full.
+        clone.classList.add('is-rising');
+        clone.style.transition = 'transform ' + riseMs + 'ms ' + PD.riseEase + ', opacity ' + (riseMs * 0.5) + 'ms ease-out';
+        clone.style.transform = slotTransform('front'); clone.style.opacity = '1';
+
+        // Deck promotes: the DEEP card rises to MID, the MID card recedes to
+        // DEEP. The two are identical, so the swap is invisible and there is
+        // no bulge/retreat — every flick leaves an identical 3-card stack.
+        var wasMid = deck.mid, wasDeep = deck.deep;
+        placeSlot(wasDeep, 'mid', riseMs);
+        placeSlot(wasMid, 'deep', riseMs);
+        deck.mid = wasDeep; deck.deep = wasMid;
+
+        var DONE = Math.max(flyMs, riseMs) + 40, targetId = leaves[targetIdx].id;
+        window._cvFlickTimer = setTimeout(function() {
+          window._cvFlickTimer = null;
+          if (!document.body.classList.contains('card-view-active')) {  // closed mid-flight: bail
+            if (clone.parentNode) clone.parentNode.removeChild(clone);
+            card.style.cssText = ''; cardFlicking = false; return;
+          }
+          loadSection(targetId);                       // re-render the (hidden) front card with next content
+          card.style.transition = 'none'; card.style.transform = ''; card.style.opacity = ''; card.style.zIndex = '';
+          void card.offsetWidth; card.style.transition = '';
+          if (clone.parentNode) clone.parentNode.removeChild(clone);  // backdrops already rest in their swapped slots
+          cardFlicking = false;
+        }, DONE);
+      }
+
+      // Drag-to-flick: gentle tilt while dragging, velocity tracking, edge damping.
+      (function() {
+        var card = document.getElementById('cardViewCard');
+        var dragging = false, startX = 0, curX = 0, pid = null, lastX = 0, lastT = 0, vel = 0;
+        function dragT(px) {
+          var a = Math.min(1, Math.abs(px) / 320);
+          return 'perspective(1400px) translate3d(' + px + 'px,' + (a * 6) + 'px,0) ' +
+                 'rotateZ(' + (px / 110) + 'deg) scale(' + (1 - 0.04 * a) + ')';
+        }
+        card.addEventListener('pointerdown', function(e) {
+          if (cardFlicking) return;
+          dragging = true; startX = e.clientX; curX = 0; pid = e.pointerId;
+          lastX = e.clientX; lastT = e.timeStamp; vel = 0;
+          card.style.transition = 'none';
+          card.setPointerCapture && card.setPointerCapture(e.pointerId);
+        });
+        card.addEventListener('pointermove', function(e) {
+          if (!dragging) return;
+          curX = e.clientX - startX;
+          var dt = e.timeStamp - lastT;
+          if (dt > 0) { vel = vel * 0.6 + ((e.clientX - lastX) / dt) * 0.4; lastX = e.clientX; lastT = e.timeStamp; }
+          var leafIdx = leaves.findIndex(function(l) { return l.id === sectionId; });
+          var atEdge = (curX < 0 && leafIdx >= leaves.length - 1) || (curX > 0 && leafIdx <= 0);
+          var px = atEdge ? curX * 0.35 : curX;       // resistance at the ends
+          card.style.transform = dragT(px); setBackParallax(px);
+        });
+        function end() {
+          if (!dragging) return;
+          dragging = false;
+          if (pid != null && card.releasePointerCapture) { try { card.releasePointerCapture(pid); } catch (e) {} }
+          pid = null;
+          var speed = Math.abs(vel), commit = Math.abs(curX) > PD.dragThresh || speed > PD.flickVel;
+          if (commit && Math.abs(curX) > 12) {
+            card.style.transition = ''; var d = (curX < 0) ? 1 : -1; curX = 0; flickCard(d, speed);
+          } else {
+            card.style.transition = ''; card.style.transform = ''; resetBackParallax(); curX = 0;
+          }
+          vel = 0;
+        }
+        card.addEventListener('pointerup', end);
+        card.addEventListener('pointercancel', end);
+      })();
+
+      // Arrow keys flick between article cards while the card view is open
+      // (velocity 0 → standard flight time).
+      document.addEventListener('keydown', function(e) {
+        if (!document.body.classList.contains('card-view-active')) return;
+        if (e.key === 'ArrowRight') flickCard(1, 0);
+        else if (e.key === 'ArrowLeft') flickCard(-1, 0);
+      });
+
+      // Toggle handler for the eye/nav-icon button — swaps standard
+      // article view ↔ card view via a body class. The CSS does the
+      // rest (hides #studyContent, shows .card-view + .card-view__laest,
+      // recolors the sticky nav to cream).
+      function openCardView()  {
+        document.body.classList.add('card-view-active');
+        document.getElementById('cardView').setAttribute('aria-hidden', 'false');
+        renderCardView();
+        deckRest();   // place the two deck cards into their MID / DEEP slots
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+      function closeCardView() {
+        document.body.classList.remove('card-view-active');
+        document.getElementById('cardView').setAttribute('aria-hidden', 'true');
+        // Cancel any in-flight flick so a pending loadSection can't fire
+        // after the view is closed (or fight drawer/quickjump navigation).
+        if (window._cvFlickTimer) {
+          clearTimeout(window._cvFlickTimer);
+          window._cvFlickTimer = null;
+          cardFlicking = false;
+          var stray = document.querySelector('.card-view__card--clone');
+          if (stray && stray.parentNode) stray.parentNode.removeChild(stray);
+          var liveCard = document.getElementById('cardViewCard');
+          if (liveCard) { liveCard.style.cssText = ''; }
+        }
+        resetBackParallax();   // backdrops are a static frame — guarantee they're clean
+      }
+      document.getElementById('viewToggle').addEventListener('click', function() {
+        if (document.body.classList.contains('card-view-active')) closeCardView();
+        else openCardView();
+      });
+
+      // "Læst" pill — same behavior as the article page: toggles the
+      // current section's read state in place (check appears/disappears
+      // to the right). Navigation is handled by flicking the card.
+      // renderContent() keeps the (hidden) article view in sync so its
+      // Læst button shows the right state when the card view is closed.
+      document.getElementById('cardViewLaest').addEventListener('click', function() {
+        DanskProgress.toggleSectionRead(sectionId);
+        renderDrawer();
+        renderCardView();
+        renderContent();
+      });
+
       function renderContent() {
         var contentObj = DanskApp.getContentObj(chapterId);
         var entry = contentObj[sectionId];
         if (!entry) {
           document.getElementById('studyContent').innerHTML =
-            '<div style="text-align:center; padding:64px 24px; color:var(--gray-50);">' +
-            '<p>Indhold for dette afsnit er endnu ikke tilgængeligt.</p>' +
-            '<p style="margin-top:8px;">Vælg et andet afsnit fra sidepanelet.</p></div>';
+            '<div style="text-align:center; padding:64px 24px; color:rgba(56,38,38,0.5);">' +
+            '<p>Indhold for dette afsnit er endnu ikke tilgængeligt.</p></div>';
           return;
         }
 
         var leaf = leaves.find(function(l) { return l.id === sectionId; });
         var leafIdx = leaves.findIndex(function(l) { return l.id === sectionId; });
-        var heroImg = HERO_IMAGES[chapterId] || HERO_IMAGES['ch1'];
-        var parentTitle = leaf && leaf.parentSection ? leaf.parentSection.titleDa : chapter.titleDa;
+
+        // Hero rule: only each chapter's "Indledning" article shows the
+        // rounded hero oval — with the chapter's main portrait (the same
+        // image as on the chapters page). All other articles have no hero.
+        var isIndledning = !!leaf && !leaf.parentSection && leaf.titleDa === 'Indledning';
 
         var html = '';
-
-        // === Hero Banner ===
-        html += '<div class="article-hero">';
-        html += '<img class="article-hero__img" src="' + heroImg + '" alt="" loading="eager">';
-        html += '<div class="article-hero__overlay"></div>';
-        html += '<div class="article-hero__content">';
-        html += '<div class="article-hero__kicker">Kapitel ' + chapter.number + ' — ' + DanskApp.escapeHtml(parentTitle) + '</div>';
-        html += '<h1 class="article-hero__title">' + DanskApp.escapeHtml(entry.titleDa) + '</h1>';
-        html += '</div>';
-        html += '</div>';
-
-        // === Article Body ===
-        html += '<div class="article-body">';
-
-        // Pull quote (summary)
-        if (entry.summary) {
-          html += '<blockquote class="article-pullquote">' + DanskApp.escapeHtml(entry.summary) + '</blockquote>';
+        if (isIndledning) {
+          html += '<div class="article-hero">';
+          html += '<img src="images/chapters/ch' + chapter.number + '.png" alt="" loading="eager">';
+          html += '</div>';
         }
 
-        // Paragraphs with drop cap on first
-        var figureInserted = false;
-        var sectionFigure = SECTION_IMAGES[sectionId];
+        html += '<h1 class="article-title">' + DanskApp.escapeHtml(entry.titleDa) + '</h1>';
 
+        if (entry.summary) {
+          html += '<p class="article-intro">' + DanskApp.escapeHtml(entry.summary) + '</p>';
+        }
+
+        // Body paragraphs with vocab highlighting. Sub-section articles
+        // (Figma 603:604 "Article page variation 2") drop an inline
+        // figure between paragraphs and use the longer "Vigtige Fakta"
+        // label instead of "Fakta". A leaf with a parentSection has
+        // sub-section data — that's our cue.
+        var isSubSection = !!(leaf && leaf.parentSection);
+        var fig = SECTION_FIGURES[sectionId];
+
+        html += '<div class="article-body">';
         entry.paragraphs.forEach(function(p, idx) {
           var textDa = highlightVocab(p.textDa, p.vocabRefs || []);
-          if (idx === 0) {
-            html += '<p class="study-paragraph study-paragraph--dropcap">' + textDa + '</p>';
-          } else {
-            html += '<p class="study-paragraph">' + textDa + '</p>';
-          }
+          var cls = (idx === 0) ? 'study-paragraph study-paragraph--dropcap' : 'study-paragraph';
+          html += '<p class="' + cls + '">' + textDa + '</p>';
 
-          // Insert inline figure after 2nd paragraph if available
-          if (idx === 1 && sectionFigure && !figureInserted) {
-            html += '<figure class="article-figure">';
-            html += '<img src="' + sectionFigure.src + '" alt="" loading="lazy">';
-            if (sectionFigure.caption) {
-              html += '<figcaption class="article-figure__caption">' + sectionFigure.caption + '</figcaption>';
-            }
-            html += '</figure>';
-            figureInserted = true;
+          // Inline figure after the 2nd paragraph for sub-section pages.
+          if (idx === 1 && fig) {
+            html += '<figure class="article-figure">' +
+                      '<img src="' + fig.src + '" alt="" loading="lazy">' +
+                      (fig.caption
+                        ? '<figcaption>' + DanskApp.escapeHtml(fig.caption) + '</figcaption>'
+                        : '') +
+                    '</figure>';
           }
         });
+        html += '</div>';
 
-        // Decorative divider before key facts
+        // Fakta cards — "Vigtige Fakta" for sub-section articles, plain
+        // "Fakta" for top-level section intros (matches Figma).
         if (entry.keyFacts && entry.keyFacts.length > 0) {
-          html += '<div class="article-divider">';
-          html += '<div class="article-divider__line"></div>';
-          html += '<div class="article-divider__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1l2.2 4.4L15 6l-3.5 3.4.8 4.6L8 11.8 3.7 14l.8-4.6L1 6l4.8-.6L8 1z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
-          html += '<div class="article-divider__line"></div>';
-          html += '</div>';
-        }
-
-        html += '</div>'; // close .article-body
-
-        // Key Facts (full-width section)
-        if (entry.keyFacts && entry.keyFacts.length > 0) {
-          html += '<div class="key-facts">';
-          html += '<div class="key-facts__title" style="max-width:660px; margin:0 auto 18px;">Vigtige fakta</div>';
-          html += '<div class="key-facts__grid" style="max-width:660px; margin:0 auto;">';
+          html += '<section class="article-facts">';
+          html += '<h2 class="article-facts__title">' +
+                  (isSubSection ? 'Vigtige Fakta' : 'Fakta') + '</h2>';
+          html += '<div class="article-facts__grid">';
           entry.keyFacts.forEach(function(f) {
-            html += '<div class="key-fact">' +
-              '<div class="key-fact__icon">' + DanskApp.factIcon(f.type) + '</div>' +
-              '<div>' +
-                '<div class="key-fact__da">' + DanskApp.escapeHtml(f.da) + '</div>' +
-                '<div class="key-fact__fact">' + DanskApp.escapeHtml(f.fact) + '</div>' +
-              '</div>' +
-            '</div>';
+            html += '<div class="article-fact">' +
+                      '<div class="article-fact__title">' + DanskApp.escapeHtml(f.da) + '</div>' +
+                      '<div class="article-fact__body">' + DanskApp.escapeHtml(f.fact) + '</div>' +
+                    '</div>';
           });
-          html += '</div>';
-          html += '</div>';
+          html += '</div></section>';
         }
 
-        // Mark as read button
+        // Bottom nav — Forrige / Læst / Næste.
         var isRead = DanskProgress.isSectionRead(sectionId);
-        html += '<div style="text-align:center; margin:32px 0 8px;">' +
-          '<button class="btn ' + (isRead ? 'btn--primary' : 'btn--outlined') + '" id="markReadBtn">' +
-            (isRead ? DanskApp.checkSvg(12) + ' Læst' : 'Markér som læst') +
-          '</button>' +
-        '</div>';
-
-        // Nav
-        html += '<div class="study-nav">';
+        html += '<div class="article-bottom">';
         if (leafIdx > 0) {
-          html += '<button class="btn btn--outlined" id="prevBtn">' + DanskApp.backArrowSvg() + ' Forrige</button>';
-        } else {
-          html += '<div></div>';
-        }
+          html += '<button class="article-btn" id="prevBtn">' +
+                  '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 1L3 5L7 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+                  ' Forrige</button>';
+        } else { html += '<span></span>'; }
+
+        // Match Forrige/Næste outlined style until the section is read;
+        // once read, switch to the filled pill with the check icon.
+        html += '<button class="article-btn' + (isRead ? ' article-btn--filled' : '') + '" id="markReadBtn">' +
+                'Læst' +
+                (isRead
+                  ? ' <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4L4 7L9 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+                  : '') +
+                '</button>';
+
         if (leafIdx < leaves.length - 1) {
-          html += '<button class="btn btn--primary" id="nextBtn">Næste ' + DanskApp.checkSvg(12) + '</button>';
+          html += '<button class="article-btn" id="nextBtn">Næste ' +
+                  '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 1L7 5L3 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+                  '</button>';
         } else {
-          html += '<a href="quiz.html?chapter=' + chapterId + '" class="btn btn--coral">Tag quiz</a>';
+          html += '<a class="article-btn" href="quiz.html?chapter=' + chapterId + '">Tag quiz</a>';
         }
         html += '</div>';
 
         document.getElementById('studyContent').innerHTML = html;
 
-        // Mark as read handler
+        // Wire bottom-nav buttons. Læst toggles: click marks read, click
+        // again reverts to unread.
         document.getElementById('markReadBtn').addEventListener('click', function() {
-          DanskProgress.markSectionRead(sectionId);
-          renderToc();
+          DanskProgress.toggleSectionRead(sectionId);
+          renderDrawer();
           renderContent();
         });
-
-        // Nav handlers
         var prevBtn = document.getElementById('prevBtn');
         var nextBtn = document.getElementById('nextBtn');
-        if (prevBtn) {
-          prevBtn.addEventListener('click', function() { loadSection(leaves[leafIdx - 1].id); });
-        }
-        if (nextBtn) {
-          nextBtn.addEventListener('click', function() {
-            if (!DanskProgress.isSectionRead(sectionId)) {
-              DanskProgress.markSectionRead(sectionId);
-            }
-            loadSection(leaves[leafIdx + 1].id);
-          });
-        }
+        if (prevBtn) prevBtn.addEventListener('click', function() { loadSection(leaves[leafIdx - 1].id); });
+        if (nextBtn) nextBtn.addEventListener('click', function() {
+          if (!DanskProgress.isSectionRead(sectionId)) DanskProgress.markSectionRead(sectionId);
+          loadSection(leaves[leafIdx + 1].id);
+        });
 
-        // Vocab tooltips
         setupVocabTooltips();
       }
 
-      // Highlight vocab terms in text
-      function highlightVocab(text, refs) {
-        if (!refs || refs.length === 0 || !window.DANSK_VOCAB) return DanskApp.escapeHtml(text);
-
-        var escaped = DanskApp.escapeHtml(text);
-        refs.forEach(function(ref) {
-          var entry = window.DANSK_VOCAB[ref];
-          if (!entry) return;
-          // Try to find the Danish term in the text (case-insensitive)
-          var regex = new RegExp('(' + escapeRegex(entry.da) + ')', 'gi');
-          escaped = escaped.replace(regex, '<span class="vocab-term" data-vocab="' + ref + '">$1</span>');
-        });
-        return escaped;
+      // Article body text renders as plain prose — vocab terms are no
+      // longer wrapped in clickable spans (no link styling). The hook
+      // stays in place so future enrichments can re-enable it if needed.
+      function highlightVocab(text /*, refs */) {
+        return DanskApp.escapeHtml(text);
       }
 
-      function escapeRegex(str) {
-        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      }
-
-      // Vocab tooltips
       function setupVocabTooltips() {
         var activeTooltip = null;
-
         document.querySelectorAll('.vocab-term').forEach(function(el) {
           el.addEventListener('click', function(e) {
             e.stopPropagation();
             if (activeTooltip) { activeTooltip.remove(); activeTooltip = null; }
-
             var ref = el.getAttribute('data-vocab');
             var entry = window.DANSK_VOCAB ? window.DANSK_VOCAB[ref] : null;
             if (!entry) return;
-
             var tip = document.createElement('div');
             tip.className = 'vocab-tooltip';
             tip.innerHTML = '<div class="vocab-tooltip__da">' + DanskApp.escapeHtml(entry.da) + '</div>';
@@ -387,42 +1605,40 @@
             activeTooltip = tip;
           });
         });
-
         document.addEventListener('click', function() {
           if (activeTooltip) { activeTooltip.remove(); activeTooltip = null; }
         });
       }
 
-      // Dynamic content script loading
+      // Dynamic content script loading.
       var chNum = chapterId.replace('ch', '');
       var script = document.createElement('script');
-      script.src = 'data/content-ch' + chNum + '.js';
+      script.src = 'data/content-ch' + chNum + '.js?v=2';
       script.onload = function() {
-        renderToc();
-        // Auto-select first section if none specified
+        renderDrawer();
+        updateNavBreadcrumb();
+        // Sync the bottom-right CTA portrait to the current chapter.
+        var ctaImg = document.getElementById('chaptersOpenImg');
+        if (ctaImg) ctaImg.src = 'images/chapters/ch' + chapter.number + '.png';
         if (!sectionId && leaves.length > 0) {
-          // Find first unread section
           var first = leaves.find(function(l) { return !DanskProgress.isSectionRead(l.id); });
           if (!first) first = leaves[0];
           loadSection(first.id);
         } else if (sectionId) {
+          updateNavBreadcrumb();
           renderContent();
         }
       };
       script.onerror = function() {
-        renderToc();
+        renderDrawer();
         document.getElementById('studyContent').innerHTML =
-          '<div style="text-align:center; padding:64px 24px; color:var(--gray-50);">' +
+          '<div style="text-align:center; padding:64px 24px; color:rgba(56,38,38,0.5);">' +
           '<p>Indhold for dette kapitel er endnu ikke tilgængeligt.</p></div>';
       };
       document.head.appendChild(script);
 
-      // Re-render sidebar + content whenever progress.js signals the
-      // backing store changed (e.g. Firestore finished syncing after login,
-      // or a background cloud reset). Keeps check marks and the sidebar
-      // progress bar in sync without forcing the user to refresh.
       window.addEventListener('dansk:progress-changed', function() {
-        renderToc();
+        renderDrawer();
         if (sectionId) renderContent();
       });
     })();

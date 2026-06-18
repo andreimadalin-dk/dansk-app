@@ -3,89 +3,378 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz — Indfødsretsprøven</title>
+  <title>Test dig — Indfødsretsprøven</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tokens.css?v=12">
-  <link rel="stylesheet" href="css/app.css?v=12">
+  <link rel="stylesheet" href="css/app.css?v=13">
+  <link rel="stylesheet" href="css/nav.css?v=2">
+  <style>
+    /* ---------- Quiz page — Figma 767:568 ----------
+       Peach stage, chapter portrait bleeding off the left edge, cream
+       question card on the right, minimal progress track underneath. */
+    :root {
+      --quiz-bg:      #f1e7dd;
+      --quiz-card:    #fffaf5;
+      --quiz-fg:      #382626;
+      --quiz-peach:   #ddcfc2;
+      --quiz-green:   #264834;
+      --quiz-red:     #b95757;
+    }
+    html, body {
+      background: var(--quiz-bg);
+      color: var(--quiz-fg);
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    /* ===== Top nav (DCT / Test dig / burger) ===== */
+    .quiz-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 20px 26px;
+      z-index: 40;
+      pointer-events: none;
+    }
+    .quiz-nav > * { pointer-events: auto; }
+    .quiz-nav__logo {
+      justify-self: start;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 30px;
+      line-height: 0.81;
+      color: var(--quiz-fg);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .quiz-nav__title {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.1;
+      color: #000;
+      text-align: center;
+    }
+    .quiz-nav__right { justify-self: end; }
+
+    /* ===== Left portrait — high-res chapter figure, flipped to face
+       right (toward the question card) and anchored to the bottom-left
+       corner. The box is taller than the viewport so the figure bleeds
+       off the top; object-position bottom keeps the lower portion (the
+       bust) pinned to the corner. The peach page background shows
+       through the portrait PNG's transparent margins. ===== */
+    .quiz-portrait {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 820px;
+      height: 1100px;
+      object-fit: cover;
+      object-position: center bottom;
+      transform: scaleX(-1);
+      pointer-events: none;
+    }
+    @media (max-width: 1380px) {
+      /* Scale the box down with the viewport, staying pinned bottom-left. */
+      .quiz-portrait { width: 56vw; height: 110vh; }
+    }
+
+    /* ===== Question card (Figma 767:574 — 480×600 at right) ===== */
+    .quiz-stage {
+      position: fixed;
+      top: 190px;
+      right: max(40px, calc((100vw - 1512px) / 2 + 147px));
+      width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+    .quiz-card {
+      width: 480px;
+      min-height: 600px;
+      background: var(--quiz-card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 39px 20px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .quiz-card__eyebrow {
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--quiz-fg);
+      margin: 0 0 12px;
+    }
+    .quiz-card__question {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 32px;
+      text-align: center;
+      color: var(--quiz-fg);
+      margin: 0 auto 20px;
+      max-width: 431px;
+    }
+
+    /* Answer pills — 56px tall, radius 62, letter disc left. */
+    .quiz-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .quiz-opt {
+      position: relative;
+      height: 56px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 62px;
+      background: var(--quiz-bg);
+      cursor: pointer;
+      text-align: left;
+      padding: 0 16px 0 55px;
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+      font-size: 15px;
+      color: var(--quiz-fg);
+      display: flex;
+      align-items: center;
+      transition: background 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+      width: 100%;
+    }
+    .quiz-opt__letter {
+      position: absolute;
+      left: 7px;
+      top: 7px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--quiz-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 22.857px;
+      color: var(--quiz-fg);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .quiz-opt:hover:not(.quiz-opt--locked) { background: var(--quiz-peach); }
+    /* Post-answer states (Figma: green correct, red wrong, faded rest). */
+    .quiz-opt--locked { cursor: default; }
+    .quiz-opt--correct {
+      background: var(--quiz-green);
+      color: var(--quiz-card);
+    }
+    /* Letter disc on a colored pill is a darkened circle (Figma) with a
+       cream serif letter — not a translucent light disc. */
+    .quiz-opt--correct .quiz-opt__letter {
+      background: rgba(0, 0, 0, 0.28);
+      color: var(--quiz-card);
+    }
+    .quiz-opt--wrong {
+      background: var(--quiz-red);
+      color: var(--quiz-card);
+    }
+    .quiz-opt--wrong .quiz-opt__letter {
+      background: rgba(0, 0, 0, 0.22);
+      color: var(--quiz-card);
+    }
+    .quiz-opt--faded { opacity: 0.5; }
+
+    /* Explanation card (Figma 767:594). */
+    .quiz-explain {
+      display: none;
+      position: relative;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      border-radius: 16px;
+      padding: 18px 18px 18px 57px;
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: normal;
+      color: var(--quiz-fg);
+    }
+    .quiz-explain--show { display: block; }
+    .quiz-explain__icon {
+      position: absolute;
+      left: 16px;
+      top: 19px;
+      width: 29px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    /* "Næste Spørgsmål" pill (Figma 767:615) — bottom-right of card. */
+    .quiz-next {
+      visibility: hidden;
+      margin-top: auto;
+      width: 170px;
+      height: 40px;
+      border: 1px solid var(--quiz-peach);
+      border-radius: 50px;
+      background: transparent;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: #000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      align-self: flex-end;
+    }
+    .quiz-next--show { visibility: visible; }
+    .quiz-next svg { display: block; }
+
+    /* Progress track below the card (Figma 767:620). */
+    .quiz-track {
+      width: 258px;
+      margin-top: 46px;
+      position: relative;
+    }
+    .quiz-track__line {
+      width: 100%;
+      height: 2px;
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: 2px;
+    }
+    .quiz-track__fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 2px;
+      background: #000;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .quiz-track__label {
+      margin-top: 7px;
+      text-align: center;
+      font-size: 12px;
+      color: #000;
+      font-family: 'Inter', 'SuisseIntl', sans-serif;
+    }
+
+    /* ===== Results (re-using the card shell) ===== */
+    .quiz-results-card {
+      display: none;
+      width: 480px;
+      min-height: 420px;
+      background: var(--quiz-card);
+      border-radius: 20px;
+      padding: 60px 32px 40px;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+    }
+    .quiz-results-card--show { display: flex; }
+    .quiz-results-card__score {
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 64px;
+      line-height: 1;
+      color: var(--quiz-fg);
+      margin-bottom: 8px;
+    }
+    .quiz-results-card__label {
+      font-size: 15px;
+      color: rgba(56, 38, 38, 0.7);
+      margin-bottom: 36px;
+    }
+    .quiz-results-card__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 280px;
+      margin-top: auto;
+    }
+    .quiz-pill {
+      height: 40px;
+      border: 1px solid var(--quiz-peach);
+      border-radius: 50px;
+      background: transparent;
+      font-family: 'PP Acma', 'DM Serif Display', serif;
+      font-weight: 600;
+      font-size: 14px;
+      color: #000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .quiz-pill--filled { background: var(--quiz-peach); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1100px) {
+      .quiz-portrait { display: none; }
+      .quiz-stage {
+        position: static;
+        margin: 110px auto 40px;
+        right: auto;
+        width: min(480px, calc(100vw - 32px));
+      }
+      .quiz-card, .quiz-results-card { width: 100%; }
+    }
+  </style>
 </head>
 <body>
 
-  <nav class="top-nav">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <a href="index.html" class="icon-btn" aria-label="Tilbage til forsiden">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <span class="top-nav__title" id="quizTitle">Quiz</span>
+  <!-- Top nav — DCT / Test dig / burger (Figma 767:570/619/572). -->
+  <header class="quiz-nav">
+    <a class="quiz-nav__logo" href="landing.html" aria-label="Forside">DCT</a>
+    <div class="quiz-nav__title">Test dig</div>
+    <div class="quiz-nav__right">
+      <button class="burger-btn" type="button" aria-label="Open menu">
+        <img src="images/icons/menu-burger.svg" width="18" height="8" alt="" aria-hidden="true">
+      </button>
     </div>
-    <div class="top-nav__right">
-      <span style="font-size:11px; color:var(--gray-50); letter-spacing:0.16px;" id="quizCounter"></span>
-      <div id="authWidget"></div>
-    </div>
-  </nav>
+  </header>
 
-  <!-- Config Modal -->
-  <div class="modal-overlay" id="configModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal">
-      <div class="modal__header">
-        <h2 class="modal__title" id="modalTitle">Quiz-indstillinger</h2>
-        <button class="icon-btn" id="closeModal" aria-label="Luk">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-      <div class="modal__body">
-        <div class="form-group">
-          <label class="form-label">Kapitel</label>
-          <select class="form-select" id="chapterSelect"></select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Antal spørgsmål</label>
-          <div class="pill-group" id="countGroup">
-            <button class="pill-toggle active" data-count="10">10</button>
-            <button class="pill-toggle" data-count="20">20</button>
-            <button class="pill-toggle" data-count="0">Alle</button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tilstand</label>
-          <div class="pill-group" id="modeGroup">
-            <button class="pill-toggle active" data-mode="all">Alle spørgsmål</button>
-            <button class="pill-toggle" data-mode="wrong">Gennemgå forkerte svar</button>
-          </div>
-        </div>
-      </div>
-      <div class="modal__footer">
-        <button class="btn btn--primary" id="startQuiz">Start quiz</button>
-      </div>
-    </div>
-  </div>
+  <!-- Chapter portrait, bleeding off the left edge (Figma 767:573). -->
+  <img class="quiz-portrait" id="quizPortrait" src="images/quiz-bg/ch1.png" alt="">
 
-  <!-- Quiz Area -->
-  <div class="quiz-container" id="quizArea" style="display:none;">
-    <!-- Progress bar -->
-    <div style="margin-bottom:20px;">
-      <div class="progress-bar progress-bar--lg"><div class="progress-bar__fill" id="quizProgressBar" style="width:0%"></div></div>
+  <!-- Question card + progress track (Figma 767:574 + 767:620). -->
+  <div class="quiz-stage">
+    <div class="quiz-card" id="quizCard">
+      <p class="quiz-card__eyebrow" id="quizEyebrow">SPØRGSMÅL 1</p>
+      <h1 class="quiz-card__question" id="quizQuestion"></h1>
+      <div class="quiz-opts" id="quizOpts"></div>
+      <div class="quiz-explain" id="quizExplain">
+        <img class="quiz-explain__icon" src="images/card-view/king2-icon.png" alt="">
+        <span id="quizExplainText"></span>
+      </div>
+      <button class="quiz-next" type="button" id="quizNext">
+        Næste Spørgsmål
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 1L7 5L3 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
 
-    <div id="questionArea"></div>
-  </div>
+    <!-- Results card (hidden until the quiz ends). -->
+    <div class="quiz-results-card" id="quizResults">
+      <div class="quiz-results-card__score" id="resultScore">0/0</div>
+      <div class="quiz-results-card__label" id="resultLabel"></div>
+      <div class="quiz-results-card__actions">
+        <button class="quiz-pill quiz-pill--filled" id="retryBtn">Prøv igen</button>
+        <button class="quiz-pill" id="reviewBtn">Gennemgå forkerte</button>
+        <a class="quiz-pill" href="chapters.html">Kapitler</a>
+      </div>
+    </div>
 
-  <!-- Results -->
-  <div class="quiz-container" id="resultsArea" style="display:none;">
-    <div class="quiz-results">
-      <div class="quiz-results__score" id="resultScore"></div>
-      <div class="quiz-results__label" id="resultLabel"></div>
-      <div style="margin-bottom:24px;">
-        <div class="progress-bar progress-bar--lg" style="max-width:300px; margin:0 auto;">
-          <div class="progress-bar__fill" id="resultBar" style="width:0%; background:var(--success);"></div>
-        </div>
-      </div>
-      <div class="quiz-results__actions">
-        <button class="btn btn--outlined" id="reviewBtn">Gennemgå forkerte</button>
-        <button class="btn btn--primary" id="retryBtn">Prøv igen</button>
-        <a href="index.html" class="btn btn--outlined">Forside</a>
-      </div>
+    <div class="quiz-track" id="quizTrack">
+      <div class="quiz-track__line"></div>
+      <div class="quiz-track__fill" id="quizTrackFill" style="width: 0;"></div>
+      <div class="quiz-track__label" id="quizTrackLabel">01/–</div>
     </div>
   </div>
 
@@ -95,150 +384,56 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
 
-  <script src="data/chapters.js"></script>
-  <script src="js/progress.js?v=3"></script>
+  <script src="data/chapters.js?v=2"></script>
+  <script src="js/progress.js?v=5"></script>
   <script src="js/app.js?v=4"></script>
-  <script src="js/auth.js?v=4"></script>
+  <script src="js/menu.js?v=4"></script>
   <script>
     (function() {
       var chapterId = DanskApp.getParam('chapter') || 'ch1';
-      var questions = [];
       var currentIdx = 0;
-      var answers = []; // { questionId, selectedId, isCorrect }
+      var answers = [];        // { questionId, selectedId, isCorrect }
       var quizQuestions = [];
-      var questionCount = 10;
-      var mode = 'all';
 
-      // Populate chapter select
-      var sel = document.getElementById('chapterSelect');
-      DANSK_CHAPTERS.forEach(function(ch) {
-        var opt = document.createElement('option');
-        opt.value = ch.id;
-        opt.textContent = ch.number + '. ' + ch.titleDa;
-        if (ch.id === chapterId) opt.selected = true;
-        sel.appendChild(opt);
-      });
+      var chapter = DanskApp.getChapter(chapterId);
+      if (!chapter) { window.location.href = 'chapters.html'; return; }
 
-      // Count pills
-      document.querySelectorAll('#countGroup .pill-toggle').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          document.querySelectorAll('#countGroup .pill-toggle').forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          questionCount = parseInt(btn.getAttribute('data-count'));
-        });
-      });
+      // Chapter portrait on the left — same image as the chapters page.
+      document.getElementById('quizPortrait').src = 'images/quiz-bg/ch' + chapter.number + '.png';
+      document.title = 'Test dig — ' + chapter.titleDa;
 
-      // Mode pills
-      document.querySelectorAll('#modeGroup .pill-toggle').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          document.querySelectorAll('#modeGroup .pill-toggle').forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          mode = btn.getAttribute('data-mode');
-        });
-      });
+      function pad2(n) { return ('0' + n).slice(-2); }
 
-      // Close modal
-      document.getElementById('closeModal').addEventListener('click', function() {
-        window.location.href = 'index.html';
-      });
-      document.getElementById('configModal').addEventListener('click', function(e) {
-        if (e.target === this) window.location.href = 'index.html';
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && !document.getElementById('configModal').classList.contains('hidden')) {
-          window.location.href = 'index.html';
-        }
-      });
-
-      // Start quiz
-      document.getElementById('startQuiz').addEventListener('click', function() {
-        chapterId = sel.value;
-        var chNum = chapterId.replace('ch', '');
-
-        // Load quiz data dynamically
-        var script = document.createElement('script');
-        script.src = 'data/quiz-' + chapterId + '.js';
-        script.onload = function() {
-          var allQ = DanskApp.getQuizArr(chapterId);
-          if (allQ.length === 0) {
-            alert('Der er endnu ingen quizspørgsmål til dette kapitel.');
-            return;
-          }
-
-          // Filter by mode
-          if (mode === 'wrong') {
-            var wrongIds = DanskProgress.getWrongQuestionIds(allQ.map(function(q) { return q.id; }));
-            quizQuestions = allQ.filter(function(q) { return wrongIds.indexOf(q.id) !== -1; });
-            if (quizQuestions.length === 0) {
-              quizQuestions = allQ; // fallback to all
-            }
-          } else {
-            quizQuestions = allQ;
-          }
-
-          // Shuffle and limit
-          quizQuestions = DanskApp.shuffle(quizQuestions);
-          if (questionCount > 0 && quizQuestions.length > questionCount) {
-            quizQuestions = quizQuestions.slice(0, questionCount);
-          }
-
-          currentIdx = 0;
-          answers = [];
-          startQuizUI();
-        };
-        script.onerror = function() {
-          alert('Quizdata for dette kapitel er endnu ikke tilgængeligt.');
-        };
-        document.head.appendChild(script);
-      });
-
-      function startQuizUI() {
-        var ch = DanskApp.getChapter(chapterId);
-        document.getElementById('quizTitle').textContent = 'Quiz: ' + (ch ? ch.titleDa : '');
-        document.getElementById('configModal').classList.add('hidden');
-        document.getElementById('quizArea').style.display = 'block';
-        document.getElementById('resultsArea').style.display = 'none';
-        renderQuestion();
-      }
-
+      // ---------- Question rendering ----------
       function renderQuestion() {
-        if (currentIdx >= quizQuestions.length) {
-          showResults();
-          return;
-        }
+        if (currentIdx >= quizQuestions.length) { showResults(); return; }
 
         var q = quizQuestions[currentIdx];
-        var pct = Math.round(((currentIdx) / quizQuestions.length) * 100);
-        document.getElementById('quizProgressBar').style.width = pct + '%';
-        document.getElementById('quizCounter').textContent = (currentIdx + 1) + ' / ' + quizQuestions.length;
-
-        var html = '';
-        html += '<div class="card" style="padding:24px;">';
-        html += '<div class="quiz-question-wrap">';
-        html += '<div class="quiz-question">' + DanskApp.escapeHtml(q.questionDa) + '</div>';
-        html += '</div>';
-        html += '<div class="quiz-options">';
+        document.getElementById('quizEyebrow').textContent = 'SPØRGSMÅL ' + (currentIdx + 1);
+        document.getElementById('quizQuestion').textContent = q.questionDa;
 
         var letters = ['A', 'B', 'C', 'D'];
+        var html = '';
         q.options.forEach(function(opt, i) {
-          html += '<button class="quiz-option" data-id="' + opt.id + '">' +
-            '<span class="quiz-option__letter">' + letters[i] + '</span>' +
-            '<div class="quiz-option__texts">' +
-              '<div class="quiz-option__text-da">' + DanskApp.escapeHtml(opt.textDa) + '</div>' +
-            '</div>' +
-          '</button>';
+          html += '<button class="quiz-opt" data-id="' + opt.id + '">' +
+                    '<span class="quiz-opt__letter">' + letters[i] + '</span>' +
+                    DanskApp.escapeHtml(opt.textDa) +
+                  '</button>';
         });
+        document.getElementById('quizOpts').innerHTML = html;
 
-        html += '</div>';
-        html += '<div id="explanationArea"></div>';
-        html += '<div id="nextArea" style="text-align:right;"></div>';
-        html += '</div>';
+        document.getElementById('quizExplain').classList.remove('quiz-explain--show');
+        document.getElementById('quizNext').classList.remove('quiz-next--show');
 
-        document.getElementById('questionArea').innerHTML = html;
+        // Progress track: fill reflects the upcoming question position.
+        var fillPct = ((currentIdx + 1) / quizQuestions.length) * 100;
+        document.getElementById('quizTrackFill').style.width = fillPct + '%';
+        document.getElementById('quizTrackLabel').textContent =
+          pad2(currentIdx + 1) + '/' + pad2(quizQuestions.length);
 
-        // Answer handlers
-        document.querySelectorAll('.quiz-option').forEach(function(btn) {
+        document.querySelectorAll('.quiz-opt').forEach(function(btn) {
           btn.addEventListener('click', function() {
+            if (btn.classList.contains('quiz-opt--locked')) return;
             handleAnswer(btn.getAttribute('data-id'));
           });
         });
@@ -248,75 +443,91 @@
         var q = quizQuestions[currentIdx];
         var isCorrect = selectedId === q.correctId;
 
-        // Record
         DanskProgress.recordQuizAnswer(q.id, isCorrect);
         answers.push({ questionId: q.id, selectedId: selectedId, isCorrect: isCorrect });
 
-        // Highlight options
-        document.querySelectorAll('.quiz-option').forEach(function(btn) {
+        // Figma states: correct → green; wrong pick → red; the rest fade.
+        document.querySelectorAll('.quiz-opt').forEach(function(btn) {
           var id = btn.getAttribute('data-id');
-          btn.classList.add('disabled');
-          if (id === q.correctId) btn.classList.add('correct');
-          if (id === selectedId && !isCorrect) btn.classList.add('wrong');
+          btn.classList.add('quiz-opt--locked');
+          if (id === q.correctId)                 btn.classList.add('quiz-opt--correct');
+          else if (id === selectedId)             btn.classList.add('quiz-opt--wrong');
+          else                                    btn.classList.add('quiz-opt--faded');
         });
 
-        // Show explanation
-        var expHtml = '<div class="quiz-explanation">' +
-          '<div class="quiz-explanation__da">' + DanskApp.escapeHtml(q.explanationDa) + '</div>' +
-        '</div>';
-        document.getElementById('explanationArea').innerHTML = expHtml;
+        document.getElementById('quizExplainText').textContent = q.explanationDa || '';
+        document.getElementById('quizExplain').classList.add('quiz-explain--show');
 
-        // Next button
         var isLast = currentIdx >= quizQuestions.length - 1;
-        document.getElementById('nextArea').innerHTML =
-          '<button class="btn btn--primary" id="nextQuestionBtn">' +
-            (isLast ? 'Se resultater' : 'Næste spørgsmål') +
-          '</button>';
-        document.getElementById('nextQuestionBtn').addEventListener('click', function() {
-          currentIdx++;
-          renderQuestion();
-        });
+        var nextBtn = document.getElementById('quizNext');
+        nextBtn.childNodes[0].textContent = isLast ? 'Se resultater' : 'Næste Spørgsmål';
+        nextBtn.classList.add('quiz-next--show');
       }
 
+      document.getElementById('quizNext').addEventListener('click', function() {
+        currentIdx++;
+        renderQuestion();
+      });
+
+      // ---------- Results ----------
       function showResults() {
-        document.getElementById('quizArea').style.display = 'none';
-        document.getElementById('resultsArea').style.display = 'block';
+        document.getElementById('quizCard').style.display = 'none';
+        document.getElementById('quizResults').classList.add('quiz-results-card--show');
+        document.getElementById('quizTrack').style.display = 'none';
 
         var correct = answers.filter(function(a) { return a.isCorrect; }).length;
         var total = answers.length;
         var pct = total > 0 ? Math.round((correct / total) * 100) : 0;
-
         document.getElementById('resultScore').textContent = correct + '/' + total;
         document.getElementById('resultLabel').textContent = pct + '% korrekt';
-        document.getElementById('resultBar').style.width = pct + '%';
-
-        // Review wrong
-        document.getElementById('reviewBtn').addEventListener('click', function() {
-          var wrongQ = answers.filter(function(a) { return !a.isCorrect; });
-          if (wrongQ.length === 0) { alert('Ingen forkerte svar at gennemgå!'); return; }
-          quizQuestions = wrongQ.map(function(a) {
-            return quizQuestions.find(function(q) { return q.id === a.questionId; }) ||
-              answers.find(function(ans) { return ans.questionId === a.questionId; });
-          }).filter(Boolean);
-          // Re-fetch the actual question objects
-          var chNum = chapterId.replace('ch', '');
-          var allQ = window['DANSK_QUIZ_CH' + chNum] || [];
-          quizQuestions = allQ.filter(function(q) {
-            return wrongQ.some(function(w) { return w.questionId === q.id; });
-          });
-          currentIdx = 0;
-          answers = [];
-          startQuizUI();
-        });
-
-        // Retry
-        document.getElementById('retryBtn').addEventListener('click', function() {
-          quizQuestions = DanskApp.shuffle(quizQuestions);
-          currentIdx = 0;
-          answers = [];
-          startQuizUI();
-        });
       }
+
+      function restartUI() {
+        document.getElementById('quizCard').style.display = '';
+        document.getElementById('quizResults').classList.remove('quiz-results-card--show');
+        document.getElementById('quizTrack').style.display = '';
+        currentIdx = 0;
+        answers = [];
+        renderQuestion();
+      }
+
+      document.getElementById('retryBtn').addEventListener('click', function() {
+        quizQuestions = DanskApp.shuffle(quizQuestions);
+        restartUI();
+      });
+
+      document.getElementById('reviewBtn').addEventListener('click', function() {
+        var wrongQ = answers.filter(function(a) { return !a.isCorrect; });
+        if (wrongQ.length === 0) { restartUI(); return; }
+        var chNum = chapterId.replace('ch', '');
+        var allQ = window['DANSK_QUIZ_CH' + chNum] || [];
+        var filtered = allQ.filter(function(q) {
+          return wrongQ.some(function(w) { return w.questionId === q.id; });
+        });
+        if (filtered.length > 0) quizQuestions = filtered;
+        restartUI();
+      });
+
+      // ---------- Auto-start: load quiz data, shuffle all questions ----------
+      var script = document.createElement('script');
+      script.src = 'data/quiz-' + chapterId + '.js';
+      script.onload = function() {
+        var allQ = DanskApp.getQuizArr(chapterId);
+        if (allQ.length === 0) {
+          document.getElementById('quizQuestion').textContent =
+            'Der er endnu ingen quizspørgsmål til dette kapitel.';
+          return;
+        }
+        quizQuestions = DanskApp.shuffle(allQ.slice());
+        currentIdx = 0;
+        answers = [];
+        renderQuestion();
+      };
+      script.onerror = function() {
+        document.getElementById('quizQuestion').textContent =
+          'Quizdata for dette kapitel er endnu ikke tilgængeligt.';
+      };
+      document.head.appendChild(script);
     })();
   </script>
 

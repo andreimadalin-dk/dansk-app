@@ -86,7 +86,10 @@
       study: {},
       quiz: {},
       flashcards: {},
-      streaks: { lastStudyDate: null, currentStreak: 0 }
+      streaks: { lastStudyDate: null, currentStreak: 0 },
+      // meta.activeSeconds — cumulative time the user has been active on
+      // the platform (page visible + recent interaction), in seconds.
+      meta: { activeSeconds: 0 }
     };
   }
 
@@ -138,6 +141,12 @@
     merged.streaks.lastStudyDate = (ls.lastStudyDate && cs.lastStudyDate)
       ? (ls.lastStudyDate >= cs.lastStudyDate ? ls.lastStudyDate : cs.lastStudyDate)
       : (ls.lastStudyDate || cs.lastStudyDate);
+
+    // Active time: take the larger of the two (cumulative per account;
+    // max avoids double-counting when two devices both synced).
+    var lm = local.meta || {};
+    var cm = cloud.meta || {};
+    merged.meta.activeSeconds = Math.max(lm.activeSeconds || 0, cm.activeSeconds || 0);
 
     return merged;
   }
@@ -239,6 +248,18 @@
       this.recordStudySession();
     },
 
+    unmarkSectionRead: function(sectionId) {
+      var store = getStore();
+      delete store.study[sectionId];
+      save(store);
+    },
+
+    toggleSectionRead: function(sectionId) {
+      if (this.isSectionRead(sectionId)) this.unmarkSectionRead(sectionId);
+      else this.markSectionRead(sectionId);
+      return this.isSectionRead(sectionId);
+    },
+
     isSectionRead: function(sectionId) {
       var store = getStore();
       return !!(store.study[sectionId] && store.study[sectionId].read);
@@ -252,6 +273,36 @@
         if (store.study[id] && store.study[id].read) read++;
       });
       return { read: read, total: ids.length };
+    },
+
+    // Total number of articles (leaf sections) marked Læst, across all
+    // chapters — a live counter that follows reading progress.
+    getSectionsReadCount: function() {
+      var store = getStore();
+      return Object.keys(store.study).filter(function(k) {
+        return store.study[k] && store.study[k].read;
+      }).length;
+    },
+
+    // === Active time ===
+    // Cumulative seconds the user has been active on the platform.
+    getActiveSeconds: function() {
+      var store = getStore();
+      return (store.meta && store.meta.activeSeconds) || 0;
+    },
+
+    // Active minutes (floored) — used by the menu's "Studeret tid" row.
+    getStudyMinutes: function() {
+      return Math.floor(this.getActiveSeconds() / 60);
+    },
+
+    // Add elapsed active seconds (called by the heartbeat below).
+    addActiveSeconds: function(secs) {
+      if (!secs || secs <= 0) return;
+      var store = getStore();
+      if (!store.meta) store.meta = { activeSeconds: 0 };
+      store.meta.activeSeconds = (store.meta.activeSeconds || 0) + secs;
+      save(store);
     },
 
     // === Quiz ===
@@ -438,4 +489,59 @@
       }
     }
   };
+})();
+
+// ---- Active-time heartbeat ----
+// Powers the menu's "Studeret tid": cumulative time the user is actively
+// on the platform — counted only while the tab is visible AND there was
+// an interaction within the idle window. Runs on every page that loads
+// progress.js. Time is buffered locally and flushed ~once a minute (plus
+// on tab-hide / unload) to keep Firestore writes light.
+(function () {
+  if (window.__danskActivityStarted) return;
+  window.__danskActivityStarted = true;
+
+  var TICK_MS     = 15000;   // sample every 15s
+  var IDLE_MS     = 60000;   // ignore time if no interaction in the last 60s
+  var MAX_STEP_MS = 30000;   // cap one sample (guards background-throttled tabs)
+  var FLUSH_MS    = 60000;   // persist the buffer roughly once a minute
+
+  var lastActivity = Date.now();
+  var lastSample   = Date.now();
+  var pendingSec   = 0;
+  var sinceFlush   = 0;
+
+  function bump() { lastActivity = Date.now(); }
+  ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart', 'wheel'].forEach(function (ev) {
+    window.addEventListener(ev, bump, { passive: true });
+  });
+
+  function flush() {
+    if (pendingSec > 0 && window.DanskProgress) {
+      window.DanskProgress.addActiveSeconds(pendingSec);
+      pendingSec = 0;
+    }
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') {
+      flush();
+    } else {
+      // Reset the sampling clock so the hidden gap isn't counted.
+      lastActivity = Date.now();
+      lastSample = Date.now();
+    }
+  });
+  window.addEventListener('pagehide', flush);
+
+  setInterval(function () {
+    var now = Date.now();
+    var delta = now - lastSample;
+    lastSample = now;
+    if (document.visibilityState !== 'visible') return;
+    if (now - lastActivity > IDLE_MS) return;
+    pendingSec += Math.round(Math.min(delta, MAX_STEP_MS) / 1000);
+    sinceFlush += TICK_MS;
+    if (sinceFlush >= FLUSH_MS) { flush(); sinceFlush = 0; }
+  }, TICK_MS);
 })();

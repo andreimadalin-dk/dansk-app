@@ -613,7 +613,6 @@ a { color: inherit; text-decoration: none; }
   font-size: 12px;
   white-space: nowrap;
   z-index: 50;
-  box-shadow: 0 8px 24px rgba(45, 42, 34, 0.18);
   pointer-events: none;
 }
 
@@ -1207,7 +1206,6 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg-surface);
   border: 1px solid var(--border-dark);
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(45, 42, 34, 0.14);
   z-index: 200;
   overflow: hidden;
 }
@@ -1532,11 +1530,10 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.15s;
 }
 .stat-tile:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(45, 42, 34, 0.06);
 }
 .stat-tile__label {
   font-family: 'Inter', system-ui, sans-serif;
@@ -1568,11 +1565,10 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: 68px 1fr;
   gap: 24px;
   align-items: start;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.15s;
 }
 .chapter-row:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(45, 42, 34, 0.06);
 }
 .chapter-row__num {
   font-family: 'PP Acma', 'Inter', sans-serif;
@@ -1757,7 +1753,6 @@ a { color: inherit; text-decoration: none; }
   color: var(--fg, #2d2a22);
   border: 1.5px solid var(--fg, #2d2a22);
   border-radius: 12px;
-  box-shadow: 0 12px 28px -12px rgba(45, 42, 34, 0.25);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 

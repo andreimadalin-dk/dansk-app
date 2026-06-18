@@ -361,7 +361,7 @@
   <script src="js/firebase-config.js"></script>
   <script src="data/chapters.js"></script>
   <script src="data/vocabulary.js"></script>
-  <script src="js/progress.js?v=3"></script>
+  <script src="js/progress.js?v=5"></script>
   <script src="js/app.js?v=4"></script>
   <script src="js/auth.js?v=4"></script>
   <script>
@@ -582,7 +582,7 @@
       // Load content
       var chNum = chapterId.replace('ch', '');
       var script = document.createElement('script');
-      script.src = 'data/content-ch' + chNum + '.js';
+      script.src = 'data/content-ch' + chNum + '.js?v=2';
       script.onload = function() {
         var content = DanskApp.getContentObj(chapterId);
         buildReels(content);

@@ -92,6 +92,7 @@ window.DANSK_CONTENT_CH4 = {
       { type: 'date', da: '1993', en: '1993', fact: 'EU\'s indre marked træder i kraft; EF omdøbes til EU' },
       { type: 'date', da: '1992', en: '1992', fact: 'Danske vælgere afviser Maastricht-traktaten' },
       { type: 'date', da: '2022', en: '2022', fact: 'Danmark stemmer for at afskaffe forsvarsforbeholdet i EU (66,9 % ja)' },
+      { type: 'date', da: '1. juli – 31. dec. 2025', en: '1 Jul – 31 Dec 2025', fact: 'Dansk EU-formandskab — Danmark leder Rådet for Den Europæiske Union' },
       { type: 'person', da: 'Dan Jørgensen', en: 'Dan Jørgensen', fact: 'Dansk EU-kommissær siden 2024, ansvarlig for energi og boliger' },
       { type: 'person', da: 'Margrethe Vestager', en: 'Margrethe Vestager', fact: 'Dansk EU-kommissær 2014-24, næstformand i Kommissionen for konkurrencepolitik' },
       { type: 'concept', da: 'GDPR', en: 'GDPR', fact: 'EU-databeskyttelsesforordning, der trådte i kraft i 2018' }

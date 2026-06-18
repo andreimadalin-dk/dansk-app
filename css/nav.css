@@ -1,0 +1,366 @@
+/* ================================================================
+   Shared navigation + burger menu — mirrors Figma frames 750:596
+   (Top navigation), 603:882 (landing navbar) and 750:759 (Burger menu).
+   Loaded on every page that uses the unified header.
+   ================================================================ */
+
+/* ---------- Top nav ----------
+   Figma: full-width row, 1468px max content, "DCT" wordmark left,
+   single circular burger button right, padded 20px from each edge. */
+.site-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  /* The padding lives on the page wrapper (each page already pads
+     its outer container 20px), so the nav itself is flush. */
+}
+
+/* DCT wordmark — Figma 30px PP Acma Semibold, color #382626, line-height
+   0.81 to match the cap-height-only visual weight in the design. */
+.site-nav__logo {
+  font-family: 'PP Acma', 'DM Serif Display', serif;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 0.81;
+  color: #382626;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+/* Center cluster — only present on article pages: title + section label
+   stacked. Hidden on landing/chapters where the center is empty. */
+.site-nav__center {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+.site-nav__center--show { display: flex; }
+.site-nav__center-title {
+  font-family: 'PP Acma', 'DM Serif Display', serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.1;
+  color: #382626;
+  text-align: center;
+}
+.site-nav__center-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  color: #382626;
+  text-align: center;
+}
+
+/* Burger button — Figma: 40px circle, peach background #ddcfc2,
+   three horizontal lines centered. */
+.burger-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ddcfc2;
+  color: #382626;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+.burger-btn:hover { background: #cebdaf; }
+.burger-btn svg,
+.burger-btn img { display: block; width: 18px; height: 8px; }
+
+/* ---------- Burger menu overlay ----------
+   Figma 750:759 — 260px wide pill panel, dark #382626 bg, 30px radius,
+   anchored top-right just under the burger button. Internal layout
+   matches the design's "Loggedin" variant by default; auth.js / progress
+   swap stats text and the CTA label for the logged-out variant.
+
+   Positioned absolutely from the right edge of the viewport so a single
+   panel can be reused across pages regardless of where the trigger lives. */
+.burger-menu {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 260px;
+  background: #382626;
+  border-radius: 30px;
+  padding: 14px 16px 16px;
+  color: #fffaf5;
+  z-index: 60;
+  font-family: 'Inter', 'SuisseIntl', sans-serif;
+  display: none;
+}
+.burger-menu--open { display: block; }
+
+.burger-menu__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.burger-menu__eyebrow {
+  font-size: 11px;
+  line-height: 1.2;
+  color: #e4d8cc;
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+}
+.burger-menu__top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.burger-menu__lang {
+  position: relative;
+  width: 60px;
+  height: 32px;
+  background: #382626;
+  border: 0.8px solid rgba(206, 189, 175, 0.2);
+  border-radius: 80px;
+  color: #e4d8cc;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  padding: 0 10px;
+}
+button.burger-menu__lang::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: auto;
+  border-right: 1.4px solid #e4d8cc;
+  border-bottom: 1.4px solid #e4d8cc;
+  transform: rotate(45deg) translate(-2px, -2px);
+}
+/* Expanded language picker — Figma 750:831. The DK chip becomes a
+   stacked column of DK/EN/FR options, same 60px width but taller. */
+.burger-menu__lang--open {
+  flex-direction: column;
+  height: auto;
+  border-radius: 16px;
+  padding: 4px 0;
+  gap: 0;
+  align-items: stretch;
+}
+.burger-menu__lang-opt {
+  background: none;
+  border: none;
+  color: #e4d8cc;
+  font: inherit;
+  font-size: 11px;
+  height: 24px;
+  padding: 0 10px;
+  text-align: left;
+  cursor: pointer;
+}
+.burger-menu__lang-opt:first-child::after {
+  content: '';
+  display: block;
+  margin-top: 4px;
+  border-bottom: 1px solid rgba(206, 189, 175, 0.2);
+}
+.burger-menu__close {
+  width: 32px;
+  height: 32px;
+  background: #382626;
+  border: 0.8px solid rgba(206, 189, 175, 0.2);
+  border-radius: 50%;
+  color: #cebdaf;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.burger-menu__close svg { display: block; }
+
+/* Main nav links — Figma 26px PP Acma Semibold, vertical stack with
+   tight leading. Active route is bright (#fffaf5), others dimmed (#cebdaf). */
+.burger-menu__nav {
+  margin: 18px 0 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.burger-menu__nav a {
+  font-family: 'PP Acma', 'DM Serif Display', serif;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.2;
+  color: #cebdaf;
+  text-decoration: none;
+}
+.burger-menu__nav a[aria-current="page"] { color: #fffaf5; }
+
+.burger-menu__overview-label {
+  font-family: 'PP Acma', 'DM Serif Display', serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #fffaf5;
+  margin-bottom: 6px;
+}
+
+.burger-menu__stats {
+  border-top: 1px solid rgba(206, 189, 175, 0.25);
+  margin-bottom: 14px;
+}
+.burger-menu__stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(206, 189, 175, 0.25);
+  color: #cebdaf;
+  font-size: 11px;
+  font-family: 'Inter', 'SuisseIntl', sans-serif;
+}
+.burger-menu__stat-row span:last-child { font-size: 12px; }
+
+/* CTA pill — peach background, dark text, full width inside the menu. */
+.burger-menu__cta {
+  display: block;
+  width: 100%;
+  height: 40px;
+  border-radius: 50px;
+  border: none;
+  background: #ddcfc2;
+  color: #000;
+  font-family: 'PP Acma', 'DM Serif Display', serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burger-menu__signout {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: #ddcfc2;
+  font-family: 'Inter', 'SuisseIntl', sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* ---------- Auth accordion (login + register) ----------
+   Figma 750:868 (Register) and 750:917 (Log in). Replaces the stats
+   region with a serif accordion header, two pill inputs, a peach
+   submit button, and a swap link at the bottom. */
+.burger-menu__auth {
+  margin-top: 4px;
+  background: rgba(255, 250, 245, 0.06);
+  border-radius: 20px;
+  padding: 14px 14px 18px;
+}
+.burger-menu__auth-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'PP Acma', 'DM Serif Display', serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #fffaf5;
+  margin-bottom: 12px;
+}
+.burger-menu__auth-head svg { transform: rotate(180deg); color: #ddcfc2; }
+.burger-menu__auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.burger-menu__auth-input {
+  width: 100%;
+  height: 36px;
+  border: 1px solid rgba(206, 189, 175, 0.25);
+  border-radius: 50px;
+  background: transparent;
+  color: #fffaf5;
+  font-family: 'Inter', 'SuisseIntl', sans-serif;
+  font-size: 12px;
+  padding: 0 16px;
+  outline: none;
+}
+.burger-menu__auth-input::placeholder {
+  color: rgba(228, 216, 204, 0.5);
+}
+.burger-menu__auth-input:focus {
+  border-color: #ddcfc2;
+}
+.burger-menu__auth-submit {
+  width: 100%;
+  height: 40px;
+  margin-top: 4px;
+  border: none;
+  border-radius: 50px;
+  background: #ddcfc2;
+  color: #000;
+  font-family: 'PP Acma', 'DM Serif Display', serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.burger-menu__auth-swap {
+  background: none;
+  border: none;
+  color: #cebdaf;
+  font-family: 'Inter', 'SuisseIntl', sans-serif;
+  font-size: 11px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.burger-menu__auth-swap strong { color: #fffaf5; font-weight: 600; }
+.burger-menu__auth-error {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #f0a7a7;
+  text-align: center;
+}
+
+/* Backdrop — invisible but captures outside-clicks so the menu can be
+   dismissed without each page wiring its own listener. */
+.burger-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  background: transparent;
+  display: none;
+}
+.burger-menu-backdrop--open { display: block; }
+
+/* Narrow screens — anchor the menu near the top-right corner with a
+   smaller margin so it doesn't run off the edge. */
+@media (max-width: 480px) {
+  .burger-menu {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+}

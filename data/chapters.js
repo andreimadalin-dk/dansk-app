@@ -5,7 +5,7 @@ window.DANSK_CHAPTERS = [
   {
     id: 'ch1',
     number: 1,
-    titleDa: 'Danmarks Historie',
+    titleDa: 'Danmarks Historien',
     titleEn: 'Danish History',
     sections: [
       { id: 'ch1-s1', number: '1.1', titleDa: 'Indledning', titleEn: 'Introduction', subsections: [] },
@@ -171,7 +171,7 @@ window.DANSK_CHAPTERS = [
   {
     id: 'ch4',
     number: 4,
-    titleDa: 'Danmark og Omverdenen',
+    titleDa: 'Danmark & Omverdenen',
     titleEn: 'Denmark and the World',
     sections: [
       { id: 'ch4-s1', number: '4.1', titleDa: 'Indledning', titleEn: 'Introduction', subsections: [] },
@@ -218,7 +218,7 @@ window.DANSK_CHAPTERS = [
   {
     id: 'ch6',
     number: 6,
-    titleDa: 'Temaopslag',
+    titleDa: 'Tema Opslag',
     titleEn: 'Topic Pages',
     sections: [
       { id: 'ch6-s1', number: '6.1', titleDa: 'Danmarks geografi', titleEn: 'Danish geography', subsections: [] },
